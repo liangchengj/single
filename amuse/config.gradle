@@ -1,0 +1,15 @@
+ext {
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.3",
+            minSdkVersion    : 14,
+            targetSdkVersion : 29,
+            versionCode      : 1,
+            versionName      : "2020.6.4.1608",
+            ndkVersion       : "21.0.6113669"
+    ]
+
+    implementation = [
+            boost_multidex: 'com.bytedance.boost_multidex:boost_multidex:1.0.1'
+    ]
+}
