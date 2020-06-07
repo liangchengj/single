@@ -1,13 +1,8 @@
 package com.meyoustu.amuse.annotation.res;
 
 
-
-
-
-
-
-import android.support.annotation.IdRes;
-import android.support.annotation.Keep;
+import androidx.annotation.IdRes;
+import androidx.annotation.Keep;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

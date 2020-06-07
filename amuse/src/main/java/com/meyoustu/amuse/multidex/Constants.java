@@ -30,7 +30,6 @@ interface Constants {
      * We look for additional dex files named {@code classes2.dex},
      * {@code classes3.dex}, etc.
      */
-
     String DEX_PREFIX = "classes";
     String DEX_SUFFIX = ".dex";
     String ZIP_SUFFIX = ".zip";
@@ -72,5 +71,7 @@ interface Constants {
     int LOAD_TYPE_ZIP_OPT = 3;
     int LOAD_TYPE_INVALID = 9;
 
+    /* In order to adapt to Alibaba's independently developed mobile operating system. */
     String LIB_YUNOS_PATH = "/system/lib/libvmkid_lemur.so";
+
 }

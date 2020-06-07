@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 
+def amuse = project(':amuse')
+
 android {
-    compileSdkVersion 29
+
+    compileSdkVersion amuse.ext.android.compileSdkVersion
+    buildToolsVersion amuse.ext.android.buildToolsVersion
+
     defaultConfig {
         applicationId "com.meyoustu.amuse.single"
-        minSdkVersion 14
+        minSdkVersion amuse.ext.android.defconfig.minSdkVersion
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -20,12 +24,22 @@ android {
             buildTypes.release
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation project(':amuse')
+
+    testImplementation amuse.ext.dependencies.test.junit
+    androidTestImplementation amuse.ext.androidx.test.extjunit
+    androidTestImplementation amuse.ext.androidx.test.espressocore
+
+    implementation amuse.ext.androidx.appcompat
+    implementation amuse.ext.androidx.constraintlayout
+    implementation amuse
 }

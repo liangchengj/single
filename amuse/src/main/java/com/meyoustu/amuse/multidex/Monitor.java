@@ -2,8 +2,10 @@ package com.meyoustu.amuse.multidex;
 
 import android.os.Looper;
 import android.os.MessageQueue;
-import android.support.annotation.Keep;
 import android.util.Log;
+
+import androidx.annotation.Keep;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

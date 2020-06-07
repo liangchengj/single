@@ -3,7 +3,9 @@ package com.meyoustu.amuse.multidex;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Environment;
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -36,8 +38,7 @@ public class Utility {
      * @param fieldName     the field to modify.
      * @param extraElements elements to append at the end of the array.
      */
-    static void expandFieldArray(Object instance, String fieldName,
-                                 Object[] extraElements)
+    static void expandFieldArray(Object instance, String fieldName, Object[] extraElements)
             throws NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
         Field field = findField(instance.getClass(), fieldName);
@@ -312,8 +313,7 @@ public class Utility {
     static File obtainEntryFileFromInputStream(InputStream in, File target)
             throws IOException {
         // Temp files must not start with extractedFilePrefix to get cleaned up in prepareDexDir()
-        File tmp = File.createTempFile("tmp-", target.getName(),
-                target.getParentFile());
+        File tmp = File.createTempFile("tmp-", target.getName(), target.getParentFile());
         Monitor.get().logInfo("Extracting " + tmp.getPath());
         FileOutputStream out = new FileOutputStream(tmp);
         try {

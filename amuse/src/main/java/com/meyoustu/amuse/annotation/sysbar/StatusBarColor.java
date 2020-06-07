@@ -1,8 +1,8 @@
 package com.meyoustu.amuse.annotation.sysbar;
 
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.Keep;
+import androidx.annotation.ColorRes;
+import androidx.annotation.Keep;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;

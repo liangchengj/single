@@ -3,7 +3,9 @@ package com.meyoustu.amuse.multidex;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
+
 import java.io.File;
 import java.util.StringTokenizer;
 
@@ -91,9 +93,7 @@ public class MultiDex {
             }
         }
         Monitor.get().logInfo("VM with version " + versionString +
-                (isCapable ?
-                        " has support" :
-                        " does not have support"));
+                (isCapable ? " has support" : " does not have support"));
         return isCapable;
     }
 

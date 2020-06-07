@@ -1,7 +1,7 @@
 package com.meyoustu.amuse.multidex;
 
 import android.content.SharedPreferences;
-import dalvik.system.DexFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -10,6 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipFile;
+
+import dalvik.system.DexFile;
 
 
 abstract class DexLoader {
@@ -21,8 +23,7 @@ abstract class DexLoader {
         } else if (sdkInt >= 14) {
             return new V14();
         } else {
-            throw new UnsupportedOperationException(
-                    "only support SDK_INT >= 14, give up when < 14");
+            throw new UnsupportedOperationException("only support SDK_INT >= 14, give up when < 14");
         }
     }
 
@@ -154,15 +155,14 @@ abstract class DexLoader {
 
         ICSElementConstructor(Class<?> elementClass)
                 throws SecurityException, NoSuchMethodException {
-            mConstructor =
-                    elementClass.getConstructor(File.class, ZipFile.class, DexFile.class);
+            mConstructor = elementClass.getConstructor(File.class, ZipFile.class, DexFile.class);
             mConstructor.setAccessible(true);
         }
 
         @Override
         public Object newInstance(File file, Object dex)
-                throws IllegalArgumentException, InstantiationException,
-                IllegalAccessException, InvocationTargetException, IOException {
+                throws IllegalArgumentException, InstantiationException, IllegalAccessException,
+                InvocationTargetException, IOException {
             // it is no use to set zip of dex here, because apk has contained resources.
             return mConstructor.newInstance(file, null, dex);
         }
@@ -178,15 +178,14 @@ abstract class DexLoader {
 
         JBMR11ElementConstructor(Class<?> elementClass)
                 throws SecurityException, NoSuchMethodException {
-            mConstructor = elementClass
-                    .getConstructor(File.class, File.class, DexFile.class);
+            mConstructor = elementClass.getConstructor(File.class, File.class, DexFile.class);
             mConstructor.setAccessible(true);
         }
 
         @Override
         public Object newInstance(File file, Object dex)
-                throws IllegalArgumentException, InstantiationException,
-                IllegalAccessException, InvocationTargetException {
+                throws IllegalArgumentException, InstantiationException, IllegalAccessException,
+                InvocationTargetException {
             return mConstructor.newInstance(file, null, dex);
         }
     }
@@ -201,15 +200,14 @@ abstract class DexLoader {
 
         JBMR2ElementConstructor(Class<?> elementClass)
                 throws SecurityException, NoSuchMethodException {
-            mConstructor = elementClass
-                    .getConstructor(File.class, boolean.class, File.class, DexFile.class);
+            mConstructor = elementClass.getConstructor(File.class, boolean.class, File.class, DexFile.class);
             mConstructor.setAccessible(true);
         }
 
         @Override
         public Object newInstance(File file, Object dex)
-                throws IllegalArgumentException, InstantiationException,
-                IllegalAccessException, InvocationTargetException {
+                throws IllegalArgumentException, InstantiationException, IllegalAccessException,
+                InvocationTargetException {
             return mConstructor.newInstance(file, false, null, dex);
         }
     }

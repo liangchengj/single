@@ -1,8 +1,8 @@
 package com.meyoustu.amuse.util;
 
 import android.os.Build;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

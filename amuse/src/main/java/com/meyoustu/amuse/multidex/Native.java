@@ -1,7 +1,9 @@
 package com.meyoustu.amuse.multidex;
 
 import android.os.Build;
-import android.support.annotation.Keep;
+
+import androidx.annotation.Keep;
+
 import java.io.File;
 import java.lang.reflect.Method;
 

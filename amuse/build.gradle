@@ -1,14 +1,16 @@
 apply plugin: 'com.android.library'
+apply from: 'config.gradle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion project.ext.android.compileSdkVersion
+    buildToolsVersion project.ext.android.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion project.ext.android.defconfig.minSdkVersion
+        targetSdkVersion project.ext.android.defconfig.targetSdkVersion
 
-        versionCode 1
-        versionName "2020.6.6.2202"
+        versionCode project.ext.android.defconfig.versionCode
+        versionName project.ext.android.defconfig.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -16,19 +18,22 @@ android {
         // java.lang.RuntimeException:
         // Unable to get provider android.support.v4.content.FileProvider:
         // java.lang.ClassNotFoundException: android.support.v4.content.FileProvider
-        multiDexEnabled true
-        multiDexKeepProguard file('multidex_keep.pro')
+        multiDexEnabled project.ext.android.defconfig.multiDexEnabled
+        multiDexKeepProguard project.ext.android.defconfig.multiDexKeepProguard
 
-        ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86"
-            version "16.1.4479499"
-        }
 
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
-            }
-        }
+        ndk project.ext.android.defconfig.ndk
+
+        /*ndk {
+            abiFilters *//*"armeabi",*//* "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            // version "16.1.4479499"
+        }*/
+
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
+//            }
+//        }
     }
 
     externalNativeBuild {
@@ -41,10 +46,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation project.ext.dependencies.test.junit
+    androidTestImplementation project.ext.androidx.test.extjunit
+    androidTestImplementation project.ext.androidx.test.espressocore
 
     // noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    // implementation project.ext.android.support.appcompat
+    implementation project.ext.androidx.appcompat
 }

@@ -1,7 +1,10 @@
 package com.meyoustu.amuse.multidex;
 
-import android.support.annotation.Keep;
+
 import android.util.Log;
+
+import androidx.annotation.Keep;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

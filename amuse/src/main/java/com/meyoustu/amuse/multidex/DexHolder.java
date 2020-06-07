@@ -1,11 +1,13 @@
 package com.meyoustu.amuse.multidex;
 
 import android.content.SharedPreferences;
-import dalvik.system.DexFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import dalvik.system.DexFile;
 
 
 abstract class DexHolder {
@@ -39,8 +41,8 @@ abstract class DexHolder {
         long time = zipFile.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put z key " + (keyCheckSum + keyTime + secondaryNumber)
-                + " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put z key " + (keyCheckSum + keyTime + secondaryNumber) +
+                " checksum=" + checkSum + ", time=" + time);
     }
 
     private static void putDexFileInfo(SharedPreferences.Editor editor, int secondaryNumber, File file)
@@ -54,8 +56,8 @@ abstract class DexHolder {
         long time = file.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put f key " + (keyCheckSum + keyTime + secondaryNumber)
-                + " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put f key " + (keyCheckSum + keyTime + secondaryNumber) +
+                " checksum=" + checkSum + ", time=" + time);
     }
 
     private static void putDexOptInfo(SharedPreferences.Editor editor, int secondaryNumber, File optFile)
@@ -69,8 +71,8 @@ abstract class DexHolder {
         long time = optFile.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put o key " + (keyCheckSum + keyTime + secondaryNumber)
-                + " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put o key " + (keyCheckSum + keyTime + secondaryNumber) +
+                " checksum=" + checkSum + ", time=" + time);
     }
 
     static DexHolder obtainValidDexBuffer(SharedPreferences preferences, int secondaryNumber, File validDexFile, File optDexFile)
@@ -83,7 +85,8 @@ abstract class DexHolder {
         return new DexHolder.DexBuffer(secondaryNumber, validDexFile, optDexFile);
     }
 
-    static DexHolder obtainValidForceDexOpt(SharedPreferences preferences, int secondaryNumber, File dexFile, File optDexFile,
+    static DexHolder obtainValidForceDexOpt(SharedPreferences preferences, int secondaryNumber,
+                                            File dexFile, File optDexFile,
                                             ZipFile apkZipFile, ZipEntry dexFileEntry)
             throws IOException {
         File validDexFile = Utility.obtainEntryFileInZip(apkZipFile, dexFileEntry, dexFile);
@@ -94,7 +97,8 @@ abstract class DexHolder {
         return new DexHolder.DexOpt(secondaryNumber, validDexFile, optDexFile, true);
     }
 
-    static DexHolder obtainValidDexOpt(SharedPreferences preferences, int secondaryNumber, File validDexFile, File optDexFile)
+    static DexHolder obtainValidDexOpt(SharedPreferences preferences, int secondaryNumber,
+                                       File validDexFile, File optDexFile)
             throws IOException {
         SharedPreferences.Editor editor = preferences.edit();
         putTypeInfo(editor, secondaryNumber, Constants.LOAD_TYPE_DEX_OPT);
@@ -103,7 +107,9 @@ abstract class DexHolder {
         return new DexHolder.DexOpt(secondaryNumber, validDexFile, optDexFile, false);
     }
 
-    static DexHolder.ZipOpt obtainValidZipDex(SharedPreferences preferences, int secondaryNumber, File validZipFile, File validZipOptFile, ZipFile apkZipFile, ZipEntry dexFileEntry)
+    static DexHolder.ZipOpt obtainValidZipDex(SharedPreferences preferences, int secondaryNumber,
+                                              File validZipFile, File validZipOptFile,
+                                              ZipFile apkZipFile, ZipEntry dexFileEntry)
             throws IOException {
         Utility.obtainZipForEntryFileInZip(apkZipFile, dexFileEntry, validZipFile);
         SharedPreferences.Editor editor = preferences.edit();
@@ -145,9 +151,9 @@ abstract class DexHolder {
 
         @Override
         public String toString() {
-            return super.toString() + ", index: " + mIndex
-                    + ", [file: " + mFile.getPath() + ", size: " + mFile.length()
-                    + "], [opt file: " + mOptFile + ", size: " + mOptFile.length() + "]";
+            return super.toString() + ", index: " + mIndex +
+                    ", [file: " + mFile.getPath() + ", size: " + mFile.length() +
+                    "], [opt file: " + mOptFile + ", size: " + mOptFile.length() + "]";
         }
     }
 
@@ -194,10 +200,10 @@ abstract class DexHolder {
 
         @Override
         public String toString() {
-            return super.toString() + ", index: " + mIndex
-                    + ", [file: " + mFile.getPath() + ", size: " + mFile.length()
-                    + "], [opt file: " + mOptFile + ", size: " + mOptFile.length()
-                    + "], force: " + mForceOpt;
+            return super.toString() + ", index: " + mIndex +
+                    ", [file: " + mFile.getPath() + ", size: " + mFile.length() +
+                    "], [opt file: " + mOptFile + ", size: " + mOptFile.length() +
+                    "], force: " + mForceOpt;
         }
     }
 
@@ -225,7 +231,8 @@ abstract class DexHolder {
         @Override
         public DexHolder toFasterHolder(SharedPreferences preferences) {
             try {
-                if (!Native.isSupportFastLoad() || !Native.makeOptDexFile(mFile.getPath(), mOptFile.getPath())) {
+                if (!Native.isSupportFastLoad() ||
+                        !Native.makeOptDexFile(mFile.getPath(), mOptFile.getPath())) {
                     Monitor.get().logWarning("Opt dex in origin way");
                     DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0).close();
                 }
@@ -243,10 +250,9 @@ abstract class DexHolder {
 
         @Override
         public String toString() {
-            return super.toString() + ", index: " + mIndex
-                    + ", [file: " + mFile.getPath() + ", size: " + mFile.length()
-                    + "], [opt file: " + mOptFile + ", size: " + mOptFile.length()
-                    + "]";
+            return super.toString() + ", index: " + mIndex +
+                    ", [file: " + mFile.getPath() + ", size: " + mFile.length() +
+                    "], [opt file: " + mOptFile + ", size: " + mOptFile.length() + "]";
         }
     }
 
@@ -304,10 +310,10 @@ abstract class DexHolder {
 
         @Override
         public String toString() {
-            return super.toString() + ", index: " + mIndex
-                    + ", [file: " + mFile.getPath() + ", size: " + mFile.length()
-                    + "], [opt file: " + mOptFile + ", size: " + mOptFile.length()
-                    + "], bytes len: " + (mBytes == null ? null : mBytes.length);
+            return super.toString() + ", index: " + mIndex +
+                    ", [file: " + mFile.getPath() + ", size: " + mFile.length() +
+                    "], [opt file: " + mOptFile + ", size: " + mOptFile.length() +
+                    "], bytes len: " + (mBytes == null ? null : mBytes.length);
         }
     }
 

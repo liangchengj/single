@@ -58,6 +58,7 @@ class Locker {
             try {
                 cacheLock.release();
             } catch (IOException ignored) {
+                // Ignore
             }
         }
         Monitor.get().logInfo("Released lock " + lockFile.getPath());

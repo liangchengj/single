@@ -13,4 +13,6 @@ public interface ClickListener {
     void onTouchUp(View v, MotionEvent event);
 
     void onClick(View v);
+
+    int RESP_TIME_MILLLIS = 500;
 }

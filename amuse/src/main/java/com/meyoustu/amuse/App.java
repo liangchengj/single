@@ -1,23 +1,46 @@
 package com.meyoustu.amuse;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Outline;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RequiresPermission;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
+import androidx.annotation.AnimRes;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.annotation.XmlRes;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.meyoustu.amuse.annotation.res.AAnimation;
+import com.meyoustu.amuse.annotation.res.AColor;
+import com.meyoustu.amuse.annotation.res.ADimen;
+import com.meyoustu.amuse.annotation.res.ADrawable;
+import com.meyoustu.amuse.annotation.res.AString;
+import com.meyoustu.amuse.annotation.res.AStringArray;
+import com.meyoustu.amuse.annotation.res.AView;
+import com.meyoustu.amuse.annotation.res.AXml;
 import com.meyoustu.amuse.multidex.MultiDexApp;
+import com.meyoustu.amuse.util.Toast;
+import com.meyoustu.amuse.view.InitWithGone;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -33,11 +56,17 @@ import static android.net.Uri.fromParts;
 import static android.net.Uri.parse;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
+import static android.os.Build.VERSION_CODES.M;
 import static android.os.Build.VERSION_CODES.O;
 import static android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
 import static android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
 import static java.lang.System.currentTimeMillis;
+
+//import android.support.annotation.NonNull;
+//import android.support.v4.app.ActivityCompat;
+//import android.support.v4.app.NotificationCompat;
+//import android.support.v4.app.NotificationManagerCompat;
 
 /**
  * @author Liangcheng Juves
@@ -95,6 +124,7 @@ public class App extends MultiDexApp {
         }
     }
 
+
     public static boolean isPrimitive(Type type) {
         return type instanceof Class<?> && ((Class<?>) type).isPrimitive();
     }
@@ -120,13 +150,13 @@ public class App extends MultiDexApp {
     }
 
     private static <T> T annotatedInvoke(Annotation annotation, Class<T> classOfT)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            throws NoSuchMethodException, InvocationTargetException,
+            IllegalAccessException {
         return (T) wrap(classOfT).cast(
                 annotation.getClass().getMethod("value").invoke(annotation));
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static <T> T getClassAnnotatedValue(Context ctx,
                                                Class<? extends Annotation> annotation,
                                                Class<T> classOfT) {
@@ -135,16 +165,15 @@ public class App extends MultiDexApp {
             Annotation a = annotation.cast(clazz.getAnnotation(annotation));
             try {
                 return annotatedInvoke(a, classOfT);
-            } catch (NoSuchMethodException |
-                    IllegalAccessException |
-                    InvocationTargetException e) {
-                return null;
+            } catch (Throwable t) {
+                // In order to prevent the null pointer exception.
+                return annotatedDefVal(classOfT);
             }
         }
         return annotatedDefVal(classOfT);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     public static <T> T getFieldAnnotatedValue(Field field,
                                                Class<? extends Annotation> annotation,
                                                Class<T> classOfT) {
@@ -152,30 +181,111 @@ public class App extends MultiDexApp {
             Annotation a = annotation.cast(field.getAnnotation(annotation));
             try {
                 return annotatedInvoke(a, classOfT);
-            } catch (NoSuchMethodException |
-                    IllegalAccessException |
-                    InvocationTargetException e) {
-                return null;
+            } catch (Throwable t) {
+                // In order to prevent the null pointer exception.
+                return annotatedDefVal(classOfT);
             }
         }
         return annotatedDefVal(classOfT);
     }
 
 
+    /* Initialize the "Field" by checking whether it is annotated. */
+    public static void initResMemberByAnnotation(Activity activity)
+            throws IllegalAccessException {
+        Resources res = activity.getResources();
+        if (null == res) {
+            return;
+        }
+        for (Field field : activity.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            @IdRes
+            int aViewVal = getFieldAnnotatedValue(field, AView.class, int.class);
+            if (aViewVal != -1) {
+                field.set(activity, activity.findViewById(aViewVal));
+                if (field.isAnnotationPresent(InitWithGone.class)) {
+                    activity.findViewById(aViewVal).setVisibility(View.GONE);
+                }
+            }
+
+            @StringRes
+            int aStringVal = getFieldAnnotatedValue(field, AString.class, int.class);
+            if (aStringVal != -1) {
+                field.set(activity, activity.getString(aStringVal));
+            }
+
+            @ArrayRes
+            int aStringArrayVal = getFieldAnnotatedValue(field, AStringArray.class, int.class);
+            if (aStringArrayVal != -1) {
+                field.set(activity, res.getStringArray(aStringArrayVal));
+            }
+
+            @AnimRes
+            int aAnimationVal = getFieldAnnotatedValue(field, AAnimation.class, int.class);
+            if (aAnimationVal != -1) {
+                field.set(activity, AnimationUtils.loadAnimation(activity, aAnimationVal));
+            }
+
+            @DrawableRes
+            int aDrawableVal = getFieldAnnotatedValue(field, ADrawable.class, int.class);
+            if (aDrawableVal != -1) {
+                Drawable drawable;
+                if (SDK_INT >= LOLLIPOP) {
+                    drawable = activity.getDrawable(aDrawableVal);
+                } else {
+                    // In order to adapt to the old API.
+                    drawable = res.getDrawable(aDrawableVal);
+                }
+                field.set(activity, drawable);
+            }
+
+            @ColorRes
+            int aColorVal = getFieldAnnotatedValue(field, AColor.class, int.class);
+            if (aColorVal != -1) {
+                field.set(activity, res.getColor(aColorVal));
+            }
+
+            @DimenRes
+            int aDimenVal = getFieldAnnotatedValue(field, ADimen.class, int.class);
+            if (aDimenVal != -1) {
+                field.set(activity, res.getDimension(aDimenVal));
+            }
+
+            @XmlRes
+            int aXmlVal = getFieldAnnotatedValue(field, AXml.class, int.class);
+            if (aXmlVal != -1) {
+                field.set(activity, res.getXml(aXmlVal));
+            }
+        }
+    }
+
+
+    /**
+     * Call the system browser to open the network connection.
+     *
+     * @param context Application context object.
+     * @param url     Network connection url.
+     */
     public static final void browse(Context context, String url) {
         context.startActivity(new Intent(ACTION_VIEW)
                 .addCategory(CATEGORY_BROWSABLE)
                 .setData(parse(url)));
     }
 
-
+    /**
+     * Rounding corners for one or more views can only be used on Android 5.0 or above.
+     *
+     * @param radius The size of the rounded corners.
+     * @param views  One or more views.
+     */
     public static final void setViewRadius(final int radius, View... views) {
         if (SDK_INT >= LOLLIPOP) {
             for (View view : views)
                 view.setOutlineProvider(new ViewOutlineProvider() {
                     @Override
                     public void getOutline(View view, Outline outline) {
-                        outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radius);
+                        outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(),
+                                radius);
                         view.setClipToOutline(true);
                     }
                 });
@@ -185,11 +295,28 @@ public class App extends MultiDexApp {
     private static boolean sendNotificationCheckOnce;
 
 
-    public synchronized static final void sendNotification(Context ctx, int id, int importance,
-                                                           NotificationCompat.Style style, boolean autoCancel,
-                                                           String title, String message, int smallIcon,
-                                                           int largeIcon, RemoteViews remoteViews,
-                                                           PendingIntent pendingIntent) {
+    /**
+     * Push system notifications.
+     *
+     * @param ctx           Application context object.
+     * @param id            Used to confirm the identity of the notification.
+     * @param importance    The importance level of the notification.
+     * @param style         Notification display style.
+     * @param autoCancel    It is used to set whether to recycle the notification after the notification is pushed.
+     * @param title         The title of the notification.
+     * @param message       The content of the notification.
+     * @param smallIcon     Used to display a small icon in the upper left corner of the notification bar.
+     * @param largeIcon     Used to display the large icon in the upper left corner of the notification bar.
+     * @param remoteViews   Can be used to customize the view of notification content.
+     * @param pendingIntent The intent delivery object included in the notification.
+     */
+    public synchronized static final void sendNotification(
+            Context ctx, int id, int importance,
+            NotificationCompat.Style style, boolean autoCancel,
+            String title, String message, int smallIcon,
+            int largeIcon, RemoteViews remoteViews,
+            PendingIntent pendingIntent) {
+
         if (NotificationManagerCompat.from(ctx).areNotificationsEnabled()) {
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(ctx);
@@ -197,23 +324,26 @@ public class App extends MultiDexApp {
             smallIcon = (smallIcon <= 0) ? R.drawable.logo : smallIcon;
             largeIcon = (largeIcon <= 0) ? R.drawable.logo : largeIcon;
 
-            notificationManagerCompat.notify(id, new NotificationCompat.Builder(ctx, String.valueOf(id))
-                    .setAutoCancel(autoCancel)
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setWhen(currentTimeMillis())
-                    .setSmallIcon(smallIcon)
-                    .setLargeIcon(decodeResource(ctx.getResources(), largeIcon))
-                    .setCustomContentView(remoteViews)
-                    .setContentIntent(pendingIntent)
-                    .setStyle(style)
-                    .setPriority(importance)
-                    .build());
+            notificationManagerCompat.notify(id,
+                    new NotificationCompat.Builder(ctx, String.valueOf(id))
+                            .setAutoCancel(autoCancel)
+                            .setContentTitle(title)
+                            .setContentText(message)
+                            .setWhen(currentTimeMillis())
+                            .setSmallIcon(smallIcon)
+                            .setLargeIcon(decodeResource(ctx.getResources(), largeIcon))
+                            .setCustomContentView(remoteViews)
+                            .setContentIntent(pendingIntent)
+                            .setStyle(style)
+                            .setPriority(importance)
+                            .build());
 
         } else if (!sendNotificationCheckOnce) {
 
-            Intent intent = new Intent();
+            /* Check whether the system blocks push notifications for the application,
+            and if so, jump to settings to guide the user to set up. */
 
+            Intent intent = new Intent();
             String pkgName = ctx.getPackageName();
 
             try {
@@ -230,31 +360,105 @@ public class App extends MultiDexApp {
                 }
 
             } catch (Exception e) {
+                // In order to adapt to the old API.
                 intent.setAction(ACTION_APPLICATION_DETAILS_SETTINGS)
                         .setData(fromParts("package", pkgName, null));
             }
 
             sendNotificationCheckOnce = true;
+
+            // Jump to settings to guide the user to set up.
             ctx.startActivity(intent);
         }
     }
 
 
-    @RequiresPermission(ACCESS_NETWORK_STATE)
+    /**
+     * Check whether the activity or service corresponding to the application context has a network connection.
+     *
+     * @param ctx Application context object.
+     * @return "true" means that the activity or service where the application context is located has a network connection.
+     */
     public static final boolean hasNetWork(Context ctx) {
-        if (ActivityCompat.checkSelfPermission(ctx, ACCESS_NETWORK_STATE) !=
-                PERMISSION_GRANTED) {
-            Toast.showLong(ctx, "Not Found Permission ACCESS_NETWORK_STATE!");
-        } else if (((ConnectivityManager) ctx.getSystemService(CONNECTIVITY_SERVICE))
-                .getActiveNetworkInfo() != null) {
-            return true;
+        if (ActivityCompat.checkSelfPermission(ctx, ACCESS_NETWORK_STATE) != PERMISSION_GRANTED) {
+            Toast.showLong(ctx, "Not Found Permission \"ACCESS_NETWORK_STATE\"!");
+        } else {
+            ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(CONNECTIVITY_SERVICE);
+            if (SDK_INT >= M) {
+                Network network = cm.getActiveNetwork();
+                if (null == network) {
+                    return false;
+                }
+                NetworkCapabilities nc = cm.getNetworkCapabilities(network);
+                if (null == nc) {
+                    return false;
+                }
+                return nc.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            } else {
+                // In order to adapt to the old API.
+                @Deprecated
+                NetworkInfo ni = cm.getActiveNetworkInfo();
+                if (null == ni) {
+                    return false;
+                }
+                return ni.isConnected();
+            }
         }
         return false;
     }
 
 
-    public static final void openApp(Context context, String packageName) {
-        context.startActivity(context.getPackageManager().getLaunchIntentForPackage(packageName));
+    /**
+     * Check if a certain permission has been applied and the user agrees to authorize.
+     *
+     * @param ctx        Application context object.
+     * @param permission Permission name.
+     * @return "true" means that the user has agreed to authorization, so there is no need to repeat the application.
+     */
+    public static final boolean hasApplyPermission(Context ctx, String permission) {
+        return ActivityCompat.checkSelfPermission(ctx, permission) == PERMISSION_GRANTED;
+    }
+
+    /**
+     * Used to check whether a certain permission has been applied for and the user agrees to authorize,
+     * if not satisfied, reapply.
+     *
+     * @param activity    Class object of android.app.Activity.
+     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
+     * @param reqCode     Request code for permission.
+     */
+    public static final void chkAndApplyPermissions(@NonNull android.app.Activity activity,
+                                                    @NonNull String[] permissions,
+                                                    int reqCode) {
+        String append = "";
+        for (short i = 0; i < permissions.length; i++) {
+            String permission = permissions[0];
+            if (!hasApplyPermission(activity, permission) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+            ) {
+                append += i + ",";
+            }
+        }
+        if (!append.isEmpty()) {
+            append = append.substring(0, append.length() - 1);
+            String[] indexIds = append.split(",");
+            String[] shouldApplyPermissions = new String[indexIds.length];
+            for (short i = 0; i < shouldApplyPermissions.length; i++) {
+                shouldApplyPermissions[i] = permissions[Integer.parseInt(indexIds[i])];
+            }
+            ActivityCompat.requestPermissions(activity, shouldApplyPermissions, reqCode);
+        }
+    }
+
+
+    /**
+     * Open the application via ${applicationId} or the application package name.
+     *
+     * @param ctx     Application context object.
+     * @param pkgName Application package name.
+     */
+    public static final void openApp(Context ctx, String pkgName) {
+        ctx.startActivity(ctx.getPackageManager().getLaunchIntentForPackage(pkgName));
     }
 
 

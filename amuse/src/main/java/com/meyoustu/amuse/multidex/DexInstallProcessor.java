@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Environment;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +31,8 @@ class DexInstallProcessor {
         if (!filesDir.exists()) {
             Utility.mkdirChecked(filesDir);
         }
-        Utility.clearDirFiles(new File(filesDir.getParent(), Constants.CODE_CACHE_SECONDARY_FOLDER_NAME));
+        Utility.clearDirFiles(new File(filesDir.getParent(),
+                Constants.CODE_CACHE_SECONDARY_FOLDER_NAME));
 
         File rootDir = Utility.ensureDirCreated(filesDir, Constants.multidex_DIR_NAME);
         File dexDir = Utility.ensureDirCreated(rootDir, Constants.DEX_DIR_NAME);
@@ -49,11 +51,14 @@ class DexInstallProcessor {
 
         List<DexHolder> dexHolderList;
         try {
-            mPreferences = mainContext.getSharedPreferences(Constants.PREFS_FILE, Context.MODE_PRIVATE);
+            mPreferences = mainContext.getSharedPreferences(
+                    Constants.PREFS_FILE, Context.MODE_PRIVATE
+            );
 
             result.freeSpaceBefore = Environment.getDataDirectory().getFreeSpace();
 
-            dexHolderList = obtainDexObjectList(sourceApk, rootDir, dexDir, optDexDir, zipDir, result);
+            dexHolderList = obtainDexObjectList(sourceApk, rootDir, dexDir, optDexDir,
+                    zipDir, result);
 
             installSecondaryDexes(mainContext.getClassLoader(), dexHolderList);
             // Some IOException causes may be fixed by a clean extraction.
@@ -71,7 +76,8 @@ class DexInstallProcessor {
                     ", compare to " + Constants.SPACE_MIN_THRESHOLD);
         } else {
             for (final DexHolder dexHolder : dexHolderList) {
-                if (!(dexHolder instanceof DexHolder.ZipOpt || dexHolder instanceof DexHolder.DexOpt)) {
+                if (!(dexHolder instanceof DexHolder.ZipOpt ||
+                        dexHolder instanceof DexHolder.DexOpt)) {
                     Monitor.get().doAfterInstall(new Runnable() {
                         @Override
                         public void run() {
@@ -97,7 +103,8 @@ class DexInstallProcessor {
         ZipEntry dexEntry;
 
         List<DexHolder> dexHolderList = new ArrayList<>();
-        while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX + secondaryNumber + Constants.DEX_SUFFIX)) != null) {
+        while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
+                secondaryNumber + Constants.DEX_SUFFIX)) != null) {
             byte[] bytes = obtainEntryBytesInApk(apkZipFile, dexEntry);
             dexHolderList.add(new DexHolder.ApkBuffer(secondaryNumber, bytes, null, null));
             secondaryNumber++;
@@ -123,7 +130,8 @@ class DexInstallProcessor {
     }
 
     @SuppressLint("ApplySharedPref")
-    private List<DexHolder> obtainDexObjectList(File apkFile, File rootDir, File dexDir, File odexDir, File zipDir, Result result)
+    private List<DexHolder> obtainDexObjectList(File apkFile, File rootDir, File dexDir,
+                                                File odexDir, File zipDir, Result result)
             throws IOException {
         long archiveCheckSum = Utility.doZipCheckSum(apkFile);
         long archiveTimeStamp = apkFile.lastModified();
@@ -132,7 +140,8 @@ class DexInstallProcessor {
         String keyApkCrc = Constants.KEY_CRC;
         String keyApkDexNum = Constants.KEY_DEX_NUMBER;
 
-        boolean isModified = (mPreferences.getLong(keyApkTime, Constants.NO_VALUE) != archiveTimeStamp) ||
+        boolean isModified = (mPreferences.getLong(keyApkTime, Constants.NO_VALUE) !=
+                archiveTimeStamp) ||
                 (mPreferences.getLong(keyApkCrc, Constants.NO_VALUE) != archiveCheckSum);
 
         result.modified = isModified;
