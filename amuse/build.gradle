@@ -40,7 +40,7 @@ android {
 
     libraryVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${project.name}_${defaultConfig.versionName}.aar"
+            outputFileName = "${rootProject.name}_${defaultConfig.versionName}.aar"
         }
     }
 
