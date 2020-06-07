@@ -337,7 +337,7 @@ Java_com_meyoustu_amuse_multidex_Native_loadDirectDex(JNIEnv *env, jclass,
         }
 
 
-        args[0] = reinterpret_cast<uint32_t>(array_object_ptr);
+        args[0] = reinterpret_cast<uint64_t>(array_object_ptr);
         openDexFileBytes(args, &cookie);
 
         CHECK_EXCEPTION_AND_ABORT("fail to open dex file bytes");

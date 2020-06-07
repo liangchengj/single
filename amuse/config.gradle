@@ -11,11 +11,11 @@ ext {
                     minSdkVersion       : 14,
                     targetSdkVersion    : 29,
                     versionCode         : 1,
-                    versionName         : "2020.6.7.1816",
+                    versionName         : "2020.6.7.2112",
                     multiDexEnabled     : true,
                     multiDexKeepProguard: file('multidex_keep.pro'),
                     ndk                 : {
-                        abiFilters = ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+                        abiFilters = [/* "armeabi", */ "armeabi-v7a", "arm64-v8a", "x86"/* , "x86_64" */]
                     }
             ],
 

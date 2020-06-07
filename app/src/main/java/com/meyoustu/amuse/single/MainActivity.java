@@ -57,8 +57,7 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
             }
         }, 500);
 
-        Dialog dialog = new Dialog(this)
-                .setMessage(stringFromJNI());
+        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
         dialog.show();
     }
 

@@ -29,12 +29,21 @@ android {
             // version "16.1.4479499"
         }*/
 
-//        externalNativeBuild {
-//            cmake {
-//                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
-//            }
-//        }
+        /*externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++14", "-fno-exceptions", "-O2"
+            }
+        }*/
+
     }
+
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${project.name}_${defaultConfig.versionName}.aar"
+        }
+    }
+
 
     externalNativeBuild {
         cmake {
