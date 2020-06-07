@@ -1,5 +1,5 @@
-# multidex
-Native Load Dex for Android 4.X (Increase application startup speed).
+# single
+The Android framework branch of the Amuse project.
 ******
 ******
 ## To get a Git project into your build:
