@@ -24,16 +24,23 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.AnimRes;
+import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.StringRes;
+import androidx.annotation.XmlRes;
 import androidx.core.graphics.ColorUtils;
+import androidx.fragment.app.FragmentActivity;
 
 import com.meyoustu.amuse.annotation.ContentView;
 import com.meyoustu.amuse.annotation.DecorViewConfig;
+import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.Native;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
@@ -59,6 +66,8 @@ import static android.provider.SyncStateContract.Columns.DATA;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+import static com.meyoustu.amuse.App.getAnimId;
+import static com.meyoustu.amuse.App.getResId;
 import static com.meyoustu.amuse.annotation.DecorViewConfig.HIDE_SYS_BARS;
 import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
 
@@ -67,7 +76,7 @@ import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
  * @author Liangcheng Juves
  * Created at 2020/6/1 14:37
  */
-public abstract class Activity extends AppCompatActivity {
+public abstract class Activity extends FragmentActivity {
 
     public static final String IDENTIFIER_DRAWABLE = "drawable";
     public static final String IDENTIFIER_ID = "id";
@@ -76,6 +85,10 @@ public abstract class Activity extends AppCompatActivity {
     public static final String IDENTIFIER_DIMEN = "dimen";
     public static final String IDENTIFIER_COLOR = "color";
     public static final String IDENTIFIER_LAYOUT = "layout";
+    public static final String IDENTIFIER_ANIMATION = "anim";
+    public static final String IDENTIFIER_XML = "xml";
+
+    public static final String PKG_ANDROID = "android";
 
     /* Construction method.
     Load the dynamic link library by detecting whether it is annotated with "@Native". */
@@ -171,6 +184,10 @@ public abstract class Activity extends AppCompatActivity {
             }
         }
 
+        if (getClass().isAnnotationPresent(IntelliRes.class)) {
+            intelliRes();
+        }
+
         try {
             initResMemberByAnnotation();
         } catch (IllegalAccessException e) {
@@ -179,7 +196,41 @@ public abstract class Activity extends AppCompatActivity {
     }
 
 
-    protected final void setDecorViewRadius() {
+    private void intelliRes() {
+
+    }
+
+    private String intelliGuessName() {
+        String resId = "";
+        return resId;
+    }
+
+    protected final void setDecorViewRadius(int radius) {
+        App.setViewRadius(radius, decorView);
+    }
+
+    protected final void setViewRadius(int radius, @IdRes int... ids) {
+        if (null != ids) {
+            if (ids.length != 0) {
+                View[] views = new View[ids.length];
+                for (int i = 0; i < views.length; i++) {
+                    views[i] = findViewById(ids[i]);
+                }
+                App.setViewRadius(radius, views);
+            }
+        }
+    }
+
+    protected final void setViewOval(@IdRes int... ids) {
+        if (null != ids) {
+            if (ids.length != 0) {
+                View[] views = new View[ids.length];
+                for (int i = 0; i < views.length; i++) {
+                    views[i] = findViewById(ids[i]);
+                }
+                App.setViewOval(views);
+            }
+        }
     }
 
     /* Used for the view press effect and contains the click event of the view. */
@@ -331,7 +382,8 @@ public abstract class Activity extends AppCompatActivity {
     }
 
 
-    protected final int getDimensionPixelSize(int id) {
+    protected final @Dimension
+    int getDimensionPixelSize(int id) {
         return getResources().getDimensionPixelSize(id);
     }
 
@@ -347,16 +399,18 @@ public abstract class Activity extends AppCompatActivity {
         return getOrientation() == ORIENTATION_LANDSCAPE;
     }
 
-    protected final int getStatusBarHeight() {
+    protected final @Dimension
+    int getStatusBarHeight() {
         return orientationIsPortrait() ?
-                getDimensionPixelSize(getDimenId("status_bar_height", "android")) :
-                getDimensionPixelSize(getDimenId("status_bar_height_landscape", "android"));
+                getDimensionPixelSize(getDimenId("status_bar_height", PKG_ANDROID)) :
+                getDimensionPixelSize(getDimenId("status_bar_height_landscape", PKG_ANDROID));
     }
 
-    protected final int getNavigationBarHeight() {
+    protected final @Dimension
+    int getNavigationBarHeight() {
         return orientationIsPortrait() ?
-                getDimensionPixelSize(getDimenId("navigation_bar_height", "android")) :
-                getDimensionPixelSize(getDimenId("navigation_bar_height_landscape", "android"));
+                getDimensionPixelSize(getDimenId("navigation_bar_height", PKG_ANDROID)) :
+                getDimensionPixelSize(getDimenId("navigation_bar_height_landscape", PKG_ANDROID));
     }
 
     protected final ConnectivityManager getConnectivityManager() {
@@ -405,64 +459,98 @@ public abstract class Activity extends AppCompatActivity {
         return getResources().getIdentifier(name, defType, defPackage);
     }
 
-    protected final int getId(String name, String defPkgName) {
-        return getIdentifier(name, IDENTIFIER_ID, defPkgName);
+    protected final @IdRes
+    int getId(String name, String defPkgName) {
+        return getResId(this, name, defPkgName);
     }
 
-    protected final int getId(String name) {
+    protected final @IdRes
+    int getId(String name) {
         return getId(name, getPackageName());
     }
 
-    protected final int getLayoutId(String name, String defPkgName) {
+    protected final @LayoutRes
+    int getLayoutId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_LAYOUT, defPkgName);
     }
 
-    protected final int getLayoutId(String name) {
+    protected final @LayoutRes
+    int getLayoutId(String name) {
         return getLayoutId(name, getPackageName());
     }
 
-    protected final int getArrayId(String name, String defPkgName) {
+    protected final @ArrayRes
+    int getArrayId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_ARRAY, defPkgName);
     }
 
-    protected final int getArrayId(String name) {
+    protected final @ArrayRes
+    int getArrayId(String name) {
         return getArrayId(name, getPackageName());
     }
 
-    protected final int getStringId(String name, String defPkgName) {
+    protected final @StringRes
+    int getStringId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_STRING, defPkgName);
     }
 
-    protected final int getStringId(String name) {
+    protected final @StringRes
+    int getStringId(String name) {
         return getStringId(name, getPackageName());
     }
 
-    protected final int getDimenId(String name, String defPkgName) {
+    protected final @DimenRes
+    int getDimenId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_DIMEN, defPkgName);
     }
 
-    protected final int getDimenId(String name) {
+    protected final @DimenRes
+    int getDimenId(String name) {
         return getDimenId(name, getPackageName());
     }
 
 
-    protected final int getColorId(String name, String defPkgName) {
+    protected final @ColorRes
+    int getColorId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_COLOR, defPkgName);
     }
 
-    protected final int getColorId(String name) {
+    protected final @ColorRes
+    int getColorId(String name) {
         return getColorId(name, getPackageName());
     }
 
 
-    protected final int getDrawableId(String name, String defPkgName) {
+    protected final @DrawableRes
+    int getDrawableId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_DRAWABLE, defPkgName);
     }
 
-    protected final int getDrawableId(String name) {
+    protected final @DrawableRes
+    int getDrawableId(String name) {
         return getDrawableId(name, getPackageName());
     }
 
+
+    protected final @AnimRes
+    int getAnimationId(String name, String defPkgName) {
+        return getAnimId(this, name, defPkgName);
+    }
+
+    protected final @AnimRes
+    int getAnimationId(String name) {
+        return getAnimationId(name, getPackageName());
+    }
+
+    protected final @XmlRes
+    int getXmlId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_XML, defPkgName);
+    }
+
+    protected final @XmlRes
+    int getXmlId(String name) {
+        return getXmlId(name, getPackageName());
+    }
 
     protected final String getImgPathFromURI(Uri uri) {
         String result;

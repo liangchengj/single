@@ -16,11 +16,12 @@ allprojects {
 ### Step 2. Add the dependency
 ``` gradle
 dependencies {
-    implementation 'com.github.liangchengj:single:2020.6.7.2112'
+    implementation 'com.github.liangchengj:single:2020.6.8.2333'
 }
 ```
 ******
 ### Usage <e.g.> :
+#### AndroidManifest.xml
 ``` xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -40,15 +41,42 @@ dependencies {
     </application>
 </manifest>
 ```
+#### activity_main.xml
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/hello_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hello,world"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+#### MainActivity.java
 ``` java
 @StatusBarColor(android.R.color.white)
 @NavigationBarColor(android.R.color.white)
+@IntelliRes
 @Native("main")
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
-    @AView(R.id.sample_text)
     @InitWithGone
-    TextView textView;
+    TextView helloText;
+
+    Animation androidFadeIn;
 
     @AColor(R.color.accent_color)
     int accentColor;
@@ -56,8 +84,6 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
     @AString(R.string.app_name)
     String appName;
 
-    @AAnimation(android.R.anim.fade_in)
-    Animation fadeIn;
 
     @Override
     protected int initView() {
@@ -67,16 +93,17 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        textView.setText("hello,amuse");
-        textView.setTextColor(accentColor);
-        textView.setText(appName);
-        textView.setText(stringFromJNI());
 
-        textView.postDelayed(new Runnable() {
+        helloText.setText("hello,amuse");
+        helloText.setTextColor(accentColor);
+        helloText.setText(appName);
+        helloText.setText(stringFromJNI());
+
+        helloText.postDelayed(new Runnable() {
             @Override
             public void run() {
-                textView.setVisibility(View.VISIBLE);
-                textView.startAnimation(fadeIn);
+                helloText.setVisibility(View.VISIBLE);
+                helloText.startAnimation(androidFadeIn);
             }
         }, 500);
 

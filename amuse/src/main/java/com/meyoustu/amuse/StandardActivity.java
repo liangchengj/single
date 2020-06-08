@@ -9,5 +9,5 @@ import android.app.Activity;
  * Note: Classes that inherit android.app.Activity cannot use AndroidX related libraries.
  */
 public abstract class StandardActivity extends Activity {
-
+    /* So far it is just a namespace. */
 }

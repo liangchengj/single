@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
@@ -30,6 +31,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.res.AAnimation;
 import com.meyoustu.amuse.annotation.res.AColor;
 import com.meyoustu.amuse.annotation.res.ADimen;
@@ -46,6 +48,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.content.Intent.ACTION_VIEW;
@@ -61,12 +64,10 @@ import static android.os.Build.VERSION_CODES.O;
 import static android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
 import static android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS;
 import static android.provider.Settings.EXTRA_APP_PACKAGE;
+import static com.meyoustu.amuse.Activity.IDENTIFIER_ANIMATION;
+import static com.meyoustu.amuse.Activity.IDENTIFIER_ID;
+import static com.meyoustu.amuse.Activity.PKG_ANDROID;
 import static java.lang.System.currentTimeMillis;
-
-//import android.support.annotation.NonNull;
-//import android.support.v4.app.ActivityCompat;
-//import android.support.v4.app.NotificationCompat;
-//import android.support.v4.app.NotificationManagerCompat;
 
 /**
  * @author Liangcheng Juves
@@ -190,21 +191,194 @@ public class App extends MultiDexApp {
     }
 
 
+    private static String intelliGuessResId(Field field) {
+        String name = field.getName();
+        char[] cs = name.toCharArray();
+        if (cs[0] == 'm' && Character.isUpperCase(cs[1])) {
+            name = name.substring(1);
+            cs = name.toCharArray();
+        }
+
+        LinkedList<Integer> list = new LinkedList<>();
+        list.add(0);
+        for (int i = 0; i < cs.length; i++) {
+            if (Character.isUpperCase(cs[i])) {
+                list.add(i);
+            }
+        }
+        list.add(cs.length);
+
+        String append = "";
+        for (int i = 0; i < list.size() - 1; i++) {
+            int begin = list.get(i);
+            int end = list.get(i + 1);
+            if (end > begin) {
+                append += name.substring(begin, end).toLowerCase() + "_";
+            }
+        }
+        append = append.substring(0, append.length() - 1);
+        return append;
+    }
+
+    private static boolean typeOfView(Field field) {
+        return field.getType().getName().contains(View.class.getSimpleName());
+    }
+
+    private static boolean typeOfAnimation(Field field) {
+        return field.getType().getName().contains(Animation.class.getSimpleName());
+    }
+
+    private static boolean noAnnotated(Field field) {
+        return !field.isAnnotationPresent(AAnimation.class) &&
+                !field.isAnnotationPresent(AColor.class) &&
+                !field.isAnnotationPresent(ADimen.class) &&
+                !field.isAnnotationPresent(ADrawable.class) &&
+                !field.isAnnotationPresent(AString.class) &&
+                !field.isAnnotationPresent(AStringArray.class) &&
+                !field.isAnnotationPresent(AView.class) &&
+                !field.isAnnotationPresent(AXml.class);
+    }
+
+
+    static @IdRes
+    int getResId(Context ctx, String name, String defPkgName) {
+        return ctx.getResources().getIdentifier(name, IDENTIFIER_ID, defPkgName);
+    }
+
+    static @AnimRes
+    int getAnimId(Context ctx, String name, String defPkgName) {
+        return ctx.getResources().getIdentifier(name, IDENTIFIER_ANIMATION, defPkgName);
+    }
+
     /* Initialize the "Field" by checking whether it is annotated. */
-    public static void initResMemberByAnnotation(Activity activity)
+    public static <T extends View> void initResMemberByAnnotation(Activity activity)
             throws IllegalAccessException {
         Resources res = activity.getResources();
         if (null == res) {
             return;
         }
+        boolean initWithIntelli = activity.getClass().isAnnotationPresent(IntelliRes.class);
         for (Field field : activity.getClass().getDeclaredFields()) {
             field.setAccessible(true);
+
+            if (initWithIntelli) {
+                /* ====== Intelli deal view. */
+                if (typeOfView(field)) {
+                    T v = null;
+                    String guessName = intelliGuessResId(field);
+                    try {
+                        if (guessName.startsWith(PKG_ANDROID)) {
+                            guessName = guessName.replace(PKG_ANDROID + "_", "");
+                            v = activity.findViewById(getResId(activity,
+                                    guessName.replace(PKG_ANDROID, ""), PKG_ANDROID));
+                        } else {
+                            v = activity.findViewById(getResId(activity,
+                                    guessName, activity.getPackageName()));
+                        }
+                    } catch (Throwable t) {
+                        try {
+                            LinkedList<Integer> list = new LinkedList<>();
+                            list.add(0);
+                            char[] cs = guessName.toCharArray();
+                            for (int i = 0; i < cs.length; i++) {
+                                if (cs[i] == '_') {
+                                    list.add(i);
+                                }
+                            }
+                            list.add(cs.length);
+
+                            for (int i = 0; i < list.size() - 1; i++) {
+                                int begin = list.get(i);
+                                int end = list.get(i + 1);
+                                if (end > begin) {
+                                    cs[list.get(i + 1) + 1] = Character.toUpperCase(cs[list.get(i + 1) + 1]);
+                                    cs[list.get(i + 1)] = '\0';
+                                }
+                            }
+
+                            v = activity.findViewById(getResId(activity,
+                                    new String(cs), activity.getPackageName()));
+                        } catch (Throwable tx) {
+                            if (noAnnotated(field)) {
+                                continue;
+                            }
+                        }
+                    } finally {
+                        if (null != v) {
+                            field.set(activity, v);
+                            if (field.isAnnotationPresent(InitWithGone.class)) {
+                                v.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                }
+                /* ====== Intelli deal view. */
+
+                /* ====== Intelli deal animation. */
+                if (typeOfAnimation(field)) {
+                    String guessName = intelliGuessResId(field);
+                    try {
+                        if (guessName.startsWith(PKG_ANDROID)) {
+                            guessName = guessName.replace(PKG_ANDROID + "_", "");
+                            field.set(activity, field.getType().cast(
+                                    AnimationUtils.loadAnimation(activity, getAnimId(
+                                            activity, guessName.replace(PKG_ANDROID, ""),
+                                            PKG_ANDROID
+                                    ))));
+                        } else {
+                            field.set(activity, field.getType().cast(
+                                    AnimationUtils.loadAnimation(activity, getAnimId(
+                                            activity, guessName,
+                                            activity.getPackageName()
+                                    ))));
+                        }
+                    } catch (Throwable t) {
+                        try {
+                            LinkedList<Integer> list = new LinkedList<>();
+                            list.add(0);
+                            char[] cs = guessName.toCharArray();
+                            for (int i = 0; i < cs.length; i++) {
+                                if (cs[i] == '_') {
+                                    list.add(i);
+                                }
+                            }
+                            list.add(cs.length);
+
+                            for (int i = 0; i < list.size() - 1; i++) {
+                                int begin = list.get(i);
+                                int end = list.get(i + 1);
+                                if (end > begin) {
+                                    cs[list.get(i + 1) + 1] = Character.toUpperCase(cs[list.get(i + 1) + 1]);
+                                    cs[list.get(i + 1)] = '\0';
+                                }
+                            }
+
+                            field.set(activity, field.getType().cast(
+                                    AnimationUtils.loadAnimation(activity, getAnimId(
+                                            activity, new String(cs),
+                                            activity.getPackageName()
+                                    ))));
+                        } catch (Throwable tx) {
+                            if (noAnnotated(field)) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+                /* ====== Intelli deal animation. */
+
+                if (noAnnotated(field)) {
+                    continue;
+                }
+            }
+
             @IdRes
             int aViewVal = getFieldAnnotatedValue(field, AView.class, int.class);
             if (aViewVal != -1) {
-                field.set(activity, activity.findViewById(aViewVal));
-                if (field.isAnnotationPresent(InitWithGone.class)) {
-                    activity.findViewById(aViewVal).setVisibility(View.GONE);
+                T t = activity.findViewById(aViewVal);
+                field.set(activity, t);
+                if (field.isAnnotationPresent(InitWithGone.class) && typeOfView(field)) {
+                    t.setVisibility(View.GONE);
                 }
             }
 
@@ -223,7 +397,8 @@ public class App extends MultiDexApp {
             @AnimRes
             int aAnimationVal = getFieldAnnotatedValue(field, AAnimation.class, int.class);
             if (aAnimationVal != -1) {
-                field.set(activity, AnimationUtils.loadAnimation(activity, aAnimationVal));
+                field.set(activity, field.getType().cast(
+                        AnimationUtils.loadAnimation(activity, aAnimationVal)));
             }
 
             @DrawableRes
@@ -266,7 +441,7 @@ public class App extends MultiDexApp {
      * @param context Application context object.
      * @param url     Network connection url.
      */
-    public static final void browse(Context context, String url) {
+    public static final void launchBrowser(Context context, String url) {
         context.startActivity(new Intent(ACTION_VIEW)
                 .addCategory(CATEGORY_BROWSABLE)
                 .setData(parse(url)));
@@ -280,15 +455,39 @@ public class App extends MultiDexApp {
      */
     public static final void setViewRadius(final int radius, View... views) {
         if (SDK_INT >= LOLLIPOP) {
-            for (View view : views)
-                view.setOutlineProvider(new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(),
-                                radius);
-                        view.setClipToOutline(true);
+            if (null != views) {
+                for (View view : views) {
+                    if (null != view) {
+                        view.setOutlineProvider(new ViewOutlineProvider() {
+                            @Override
+                            public void getOutline(View view, Outline outline) {
+                                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(),
+                                        radius);
+                                view.setClipToOutline(true);
+                            }
+                        });
                     }
-                });
+                }
+            }
+        }
+    }
+
+
+    public static final void setViewOval(View... views) {
+        if (SDK_INT >= LOLLIPOP) {
+            if (null != views) {
+                for (View view : views) {
+                    if (null != view) {
+                        view.setOutlineProvider(new ViewOutlineProvider() {
+                            @Override
+                            public void getOutline(View view, Outline outline) {
+                                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+                                view.setClipToOutline(true);
+                            }
+                        });
+                    }
+                }
+            }
         }
     }
 

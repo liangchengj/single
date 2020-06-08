@@ -4,11 +4,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
+import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.Native;
-import com.meyoustu.amuse.annotation.res.AAnimation;
 import com.meyoustu.amuse.annotation.res.AColor;
 import com.meyoustu.amuse.annotation.res.AString;
-import com.meyoustu.amuse.annotation.res.AView;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
 import com.meyoustu.amuse.view.Dialog;
@@ -20,12 +19,14 @@ import com.meyoustu.amuse.view.InitWithGone;
  */
 @StatusBarColor(android.R.color.white)
 @NavigationBarColor(android.R.color.white)
+@IntelliRes
 @Native("main")
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
-    @AView(R.id.sample_text)
     @InitWithGone
-    TextView textView;
+    TextView helloText;
+
+    Animation androidFadeIn;
 
     @AColor(R.color.accent_color)
     int accentColor;
@@ -33,8 +34,6 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
     @AString(R.string.app_name)
     String appName;
 
-    @AAnimation(android.R.anim.fade_in)
-    Animation fadeIn;
 
     @Override
     protected int initView() {
@@ -44,16 +43,17 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        textView.setText("hello,amuse");
-        textView.setTextColor(accentColor);
-        textView.setText(appName);
-        textView.setText(stringFromJNI());
 
-        textView.postDelayed(new Runnable() {
+        helloText.setText("hello,amuse");
+        helloText.setTextColor(accentColor);
+        helloText.setText(appName);
+        helloText.setText(stringFromJNI());
+
+        helloText.postDelayed(new Runnable() {
             @Override
             public void run() {
-                textView.setVisibility(View.VISIBLE);
-                textView.startAnimation(fadeIn);
+                helloText.setVisibility(View.VISIBLE);
+                helloText.startAnimation(androidFadeIn);
             }
         }, 500);
 
@@ -63,4 +63,3 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
 
     native private String stringFromJNI();
 }
-

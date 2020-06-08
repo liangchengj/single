@@ -11,7 +11,7 @@ ext {
                     minSdkVersion       : 14,
                     targetSdkVersion    : 29,
                     versionCode         : 1,
-                    versionName         : "2020.6.7.2112",
+                    versionName         : "2020.6.8.2333",
                     multiDexEnabled     : true,
                     multiDexKeepProguard: file('multidex_keep.pro'),
                     ndk                 : {
