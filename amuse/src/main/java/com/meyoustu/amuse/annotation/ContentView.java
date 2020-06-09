@@ -1,9 +1,5 @@
 package com.meyoustu.amuse.annotation;
 
-
-//import android.support.annotation.Keep;
-//import android.support.annotation.LayoutRes;
-
 import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 
