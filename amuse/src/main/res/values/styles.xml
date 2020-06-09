@@ -20,4 +20,18 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+
+    <style name="AmuseHorizontalDividerTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="AmuseVerticalDividerTheme">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
 </resources><!-- @author Liangcheng Juves --><!-- Created at 2020/6/2 17:50 -->

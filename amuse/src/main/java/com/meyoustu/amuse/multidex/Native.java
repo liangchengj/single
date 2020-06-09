@@ -14,7 +14,7 @@ final class Native {
     private static boolean supportFastLoadDex;
 
     static {
-        Monitor.get().loadLibrary("multidex");
+        Monitor.get().loadLibrary("amuse");
     }
 
     private static void checkSupportFastLoad(Result result) {
@@ -33,8 +33,8 @@ final class Native {
             }
 
             String yunosVersion = (String) getPropertyMethod.invoke(null, "ro.yunos.version", null);
-            if (yunosVersion != null && !yunosVersion.isEmpty() ||
-                    new File(Constants.LIB_YUNOS_PATH).exists()) {
+            if (yunosVersion != null && !yunosVersion.isEmpty()
+                    || new File(Constants.LIB_YUNOS_PATH).exists()) {
                 result.isYunOS = true;
                 Monitor.get().logWarning("Yun os is " + yunosVersion + ", skip boost!");
                 return;

@@ -20,7 +20,7 @@ import com.meyoustu.amuse.view.InitWithGone;
 @StatusBarColor(android.R.color.white)
 @NavigationBarColor(android.R.color.white)
 @IntelliRes
-@Native("main")
+@Native({"amuse", "main"})
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
     @InitWithGone

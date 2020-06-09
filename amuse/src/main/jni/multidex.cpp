@@ -189,8 +189,8 @@ static func_openDexFileBytes findOpenDexFileFunc(JNINativeMethod *func, const ch
                                                  const char *signature = "([B)I") {
     size_t len_name = strlen(name);
     while (func->name != nullptr) {
-        if ((strncmp(name, func->name, len_name) == 0) &&
-            (strncmp(signature, func->signature, len_name) == 0)) {
+        if ((strncmp(name, func->name, len_name) == 0)
+            && (strncmp(signature, func->signature, len_name) == 0)) {
             return reinterpret_cast<func_openDexFileBytes>(func->fnPtr);
         }
         func++;
@@ -337,7 +337,7 @@ Java_com_meyoustu_amuse_multidex_Native_loadDirectDex(JNIEnv *env, jclass,
         }
 
 
-        args[0] = reinterpret_cast<uint64_t>(array_object_ptr);
+        args[0] = reinterpret_cast</* uint32_t */uint64_t>(array_object_ptr);
         openDexFileBytes(args, &cookie);
 
         CHECK_EXCEPTION_AND_ABORT("fail to open dex file bytes");

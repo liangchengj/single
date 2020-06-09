@@ -22,19 +22,37 @@ android {
         multiDexKeepProguard project.ext.android.defconfig.multiDexKeepProguard
 
 
+        // version "16.1.4479499"
         ndk project.ext.android.defconfig.ndk
 
-        /*ndk {
-            abiFilters *//*"armeabi",*//* "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-            // version "16.1.4479499"
-        }*/
-
-        /*externalNativeBuild {
+        externalNativeBuild {
             cmake {
                 cppFlags "-std=c++14", "-fno-exceptions", "-O2"
             }
-        }*/
+        }
 
+        // This block is different from the one you use to link Gradle
+        // to your CMake or ndk-build script.
+        externalNativeBuild {
+
+            // For ndk-build, instead use the ndkBuild block.
+            cmake {
+
+                // Passes optional arguments to CMake.
+                arguments "-DANDROID_ARM_NEON=TRUE", "-DANDROID_TOOLCHAIN=clang"
+
+                // Sets a flag to enable format macro constants for the C compiler.
+                cFlags "-D__STDC_FORMAT_MACROS"
+
+                // Sets optional flags for the C++ compiler.
+                cppFlags "-fexceptions", "-frtti"
+            }
+        }
+
+    }
+
+    sourceSets.main {
+        jniLibs.srcDir 'lib'
     }
 
 
@@ -43,7 +61,6 @@ android {
             outputFileName = "${rootProject.name}_${defaultConfig.versionName}.aar"
         }
     }
-
 
     externalNativeBuild {
         cmake {

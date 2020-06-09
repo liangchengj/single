@@ -93,9 +93,13 @@ public abstract class Activity extends FragmentActivity {
     /* Construction method.
     Load the dynamic link library by detecting whether it is annotated with "@Native". */
     protected Activity() {
-        String nativeLibName = getClassAnnotatedValue(Native.class, String.class);
-        if (!nativeLibName.isEmpty()) {
-            System.loadLibrary(nativeLibName);
+        String[] nativeLibNames = getClassAnnotatedValue(Native.class, String[].class);
+        if (null != nativeLibNames) {
+            for (String nativeLibName : nativeLibNames) {
+                if (!nativeLibName.isEmpty()) {
+                    System.loadLibrary(nativeLibName);
+                }
+            }
         }
     }
 
@@ -184,25 +188,11 @@ public abstract class Activity extends FragmentActivity {
             }
         }
 
-        if (getClass().isAnnotationPresent(IntelliRes.class)) {
-            intelliRes();
-        }
-
         try {
             initResMemberByAnnotation();
         } catch (IllegalAccessException e) {
             // Ignore
         }
-    }
-
-
-    private void intelliRes() {
-
-    }
-
-    private String intelliGuessName() {
-        String resId = "";
-        return resId;
     }
 
     protected final void setDecorViewRadius(int radius) {
@@ -296,17 +286,18 @@ public abstract class Activity extends FragmentActivity {
 
             int oldApiBarColor = Color.valOf(222);
 
-            if (isLightColor(statusBarColor) || statusBarColor == Color.TRANSPARENT) {
+            if (isLightColor(statusBarColor)
+                    || statusBarColor == Color.TRANSPARENT) {
                 if (SDK_INT >= M) {
                     setDecorViewSystemUiVisibility(
-                            SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |
-                                    SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                            SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                                    | SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 } else {
                     getWindow().setStatusBarColor(oldApiBarColor);
                 }
             }
-            if (isLightColor(navigationBarColor) ||
-                    navigationBarColor == Color.TRANSPARENT) {
+            if (isLightColor(navigationBarColor)
+                    || navigationBarColor == Color.TRANSPARENT) {
                 if (SDK_INT >= N) {
                     setDecorViewSystemUiVisibility(
                             SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR |
@@ -367,12 +358,7 @@ public abstract class Activity extends FragmentActivity {
 
     /* Get the color from the resource file. */
     protected final int getResColor(@ColorRes int id) {
-        if (SDK_INT >= M) {
-            return getResources().getColor(id, getTheme());
-        } else {
-            // In order to adapt to the old API.
-            return getResources().getColor(id);
-        }
+        return App.getResColor(this, id);
     }
 
 
@@ -619,7 +605,8 @@ public abstract class Activity extends FragmentActivity {
             long versionNow = parseVersion(pkgInfo.versionName);
             long version = parseVersion(versionName);
             return version > versionNow;
-        } catch (PackageManager.NameNotFoundException | NumberFormatException e) {
+        } catch (PackageManager.NameNotFoundException
+                | NumberFormatException e) {
             errorLog("appHasNewVersion", e);
             return false;
         }

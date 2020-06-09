@@ -84,9 +84,9 @@ public class MultiDex {
                 try {
                     int major = Integer.parseInt(majorToken);
                     int minor = Integer.parseInt(minorToken);
-                    isCapable = (major > Constants.VM_WITH_MULTIDEX_VERSION_MAJOR) ||
-                            ((major == Constants.VM_WITH_MULTIDEX_VERSION_MAJOR) &&
-                                    (minor >= Constants.VM_WITH_MULTIDEX_VERSION_MINOR));
+                    isCapable = (major > Constants.VM_WITH_MULTIDEX_VERSION_MAJOR)
+                            || ((major == Constants.VM_WITH_MULTIDEX_VERSION_MAJOR)
+                            && (minor >= Constants.VM_WITH_MULTIDEX_VERSION_MINOR));
                 } catch (NumberFormatException e) {
                     // let isCapable be false
                 }

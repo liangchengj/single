@@ -423,14 +423,14 @@ public final class Dialog extends android.app.Dialog {
             final float X = event.getX();
             final float Y = event.getY();
 
-            if (X > view.main.left &&
-                    X < view.middle &&
-                    Y > view.line &&
-                    Y < view.main.bottom - view.radius ||
-                    X > view.main.left + view.radius &&
-                            X < view.middle &&
-                            Y > view.line &&
-                            Y < view.main.bottom) {
+            if (X > view.main.left
+                    && X < view.middle
+                    && Y > view.line
+                    && Y < view.main.bottom - view.radius
+                    || X > view.main.left + view.radius
+                    && X < view.middle
+                    && Y > view.line
+                    && Y < view.main.bottom) {
 
                 if (event.getAction() == ACTION_DOWN) {
                     touchDown = currentTimeMillis();
@@ -456,14 +456,14 @@ public final class Dialog extends android.app.Dialog {
             }
 
 
-            if (X < view.main.right &&
-                    X > view.middle &&
-                    Y > view.line &&
-                    Y < view.main.bottom - view.radius ||
-                    X < view.main.right - view.radius &&
-                            X > view.middle &&
-                            Y > view.line &&
-                            Y < view.main.bottom) {
+            if (X < view.main.right
+                    && X > view.middle
+                    && Y > view.line
+                    && Y < view.main.bottom - view.radius
+                    || X < view.main.right - view.radius
+                    && X > view.middle
+                    && Y > view.line
+                    && Y < view.main.bottom) {
 
                 if (event.getAction() == ACTION_DOWN) {
                     touchDown = currentTimeMillis();
@@ -498,10 +498,10 @@ public final class Dialog extends android.app.Dialog {
             }
 
 
-            if (X < view.main.left ||
-                    X > view.main.right ||
-                    Y < view.main.top ||
-                    Y > view.main.bottom) {
+            if (X < view.main.left
+                    || X > view.main.right
+                    || Y < view.main.top
+                    || Y > view.main.bottom) {
                 if (event.getAction() == ACTION_DOWN) {
                     touchDown = currentTimeMillis();
                 } else if (event.getAction() == ACTION_UP) {

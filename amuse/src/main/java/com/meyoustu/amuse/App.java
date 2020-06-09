@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.AnimRes;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorRes;
@@ -27,9 +28,11 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.XmlRes;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.res.AAnimation;
@@ -45,9 +48,11 @@ import com.meyoustu.amuse.util.Toast;
 import com.meyoustu.amuse.view.InitWithGone;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
@@ -89,10 +94,10 @@ public class App extends MultiDexApp {
         try {
             Class<?> clazz = Class.forName(ctx.getApplicationInfo().processName + ".BuildConfig");
             return clazz.getDeclaredField("DEBUG").getBoolean(ctx);
-        } catch (ClassNotFoundException |
-                NoSuchFieldException |
-                IllegalArgumentException |
-                IllegalAccessException e) {
+        } catch (ClassNotFoundException
+                | NoSuchFieldException
+                | IllegalArgumentException
+                | IllegalAccessException e) {
             // It may happen that the class cannot be found after confusion;
             // generally, we will introduce the confusion mechanism after we formally package and
             // release it, so it returns "false", which is the same as the value officially
@@ -136,16 +141,20 @@ public class App extends MultiDexApp {
                 return (T) new Boolean(false);
             } else if (classOfT == char.class) {
                 return (T) new Character(' ');
-            } else if (classOfT == byte.class ||
-                    classOfT == short.class ||
-                    classOfT == int.class ||
-                    classOfT == long.class ||
-                    classOfT == float.class ||
-                    classOfT == double.class) {
+            } else if (classOfT == byte.class
+                    || classOfT == short.class
+                    || classOfT == int.class
+                    || classOfT == long.class
+                    || classOfT == float.class
+                    || classOfT == double.class) {
                 return (T) new Integer(-1);
             }
         } else if (classOfT == String.class) {
             return (T) "";
+        } else if (classOfT == String[].class) {
+            return (T) new String[]{""};
+        } else if (classOfT.isArray()) {
+            return (T) Array.newInstance(classOfT, 0);
         }
         return null;
     }
@@ -221,22 +230,24 @@ public class App extends MultiDexApp {
     }
 
     private static boolean typeOfView(Field field) {
-        return field.getType().getName().contains(View.class.getSimpleName());
+        return field.getType() == View.class
+                || field.getType().getSuperclass() == View.class;
     }
 
     private static boolean typeOfAnimation(Field field) {
-        return field.getType().getName().contains(Animation.class.getSimpleName());
+        return field.getType() == Animation.class
+                || field.getType().getSuperclass() == Animation.class;
     }
 
     private static boolean noAnnotated(Field field) {
-        return !field.isAnnotationPresent(AAnimation.class) &&
-                !field.isAnnotationPresent(AColor.class) &&
-                !field.isAnnotationPresent(ADimen.class) &&
-                !field.isAnnotationPresent(ADrawable.class) &&
-                !field.isAnnotationPresent(AString.class) &&
-                !field.isAnnotationPresent(AStringArray.class) &&
-                !field.isAnnotationPresent(AView.class) &&
-                !field.isAnnotationPresent(AXml.class);
+        return !field.isAnnotationPresent(AAnimation.class)
+                && !field.isAnnotationPresent(AColor.class)
+                && !field.isAnnotationPresent(ADimen.class)
+                && !field.isAnnotationPresent(ADrawable.class)
+                && !field.isAnnotationPresent(AString.class)
+                && !field.isAnnotationPresent(AStringArray.class)
+                && !field.isAnnotationPresent(AView.class)
+                && !field.isAnnotationPresent(AXml.class);
     }
 
 
@@ -417,7 +428,7 @@ public class App extends MultiDexApp {
             @ColorRes
             int aColorVal = getFieldAnnotatedValue(field, AColor.class, int.class);
             if (aColorVal != -1) {
-                field.set(activity, res.getColor(aColorVal));
+                field.set(activity, getResColor(activity, aColorVal));
             }
 
             @DimenRes
@@ -431,6 +442,16 @@ public class App extends MultiDexApp {
             if (aXmlVal != -1) {
                 field.set(activity, res.getXml(aXmlVal));
             }
+        }
+    }
+
+    /* Get the color from the resource file. */
+    static int getResColor(Context ctx, @ColorRes int id) {
+        if (SDK_INT >= M) {
+            return ctx.getResources().getColor(id, ctx.getTheme());
+        } else {
+            // In order to adapt to the old API.
+            return ctx.getResources().getColor(id);
         }
     }
 
@@ -632,8 +653,8 @@ public class App extends MultiDexApp {
         String append = "";
         for (short i = 0; i < permissions.length; i++) {
             String permission = permissions[0];
-            if (!hasApplyPermission(activity, permission) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+            if (!hasApplyPermission(activity, permission)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
             ) {
                 append += i + ",";
             }
@@ -662,8 +683,15 @@ public class App extends MultiDexApp {
 
 
     // ====== Log Util
-    private static String dealMsg(Object msg) {
-        return Thread.currentThread().getStackTrace()[7].getMethodName() + "\n" + msg.toString();
+    private static String dealMsg(Context ctx, Object msg) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String methodName = stackTraceElements[4].getMethodName();
+        String end = "\n" + msg;
+        if ("errorLog".equals(methodName)) {
+            return stackTraceElements[5].getMethodName() + end;
+        } else {
+            return methodName + end;
+        }
     }
 
     private static String getTag(Context ctx) {
@@ -672,66 +700,67 @@ public class App extends MultiDexApp {
 
 
     public static void verboseLog(Context ctx, Object msg) {
-        if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.v(getTag(ctx), dealMsg(msg));
-        }
+        verboseLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
     }
 
     public static void verboseLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.v(getTag(ctx), dealMsg(msg), t);
+            Log.v(getTag(ctx), dealMsg(ctx, msg), t);
         }
     }
 
     public static void debugLog(Context ctx, Object msg) {
-        if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.d(getTag(ctx), dealMsg(msg));
-        }
+        debugLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
     }
 
     public static void debugLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.d(getTag(ctx), dealMsg(msg), t);
+            Log.d(getTag(ctx), dealMsg(ctx, msg), t);
         }
     }
 
     public static void infoLog(Context ctx, Object msg) {
-        if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.i(getTag(ctx), dealMsg(msg));
-        }
+        infoLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
     }
 
     public static void infoLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.i(getTag(ctx), dealMsg(msg), t);
+            Log.i(getTag(ctx), dealMsg(ctx, msg), t);
         }
     }
 
     public static void warnLog(Context ctx, Object msg) {
-        if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.w(getTag(ctx), dealMsg(msg));
-        }
+        warnLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
     }
 
     public static void warnLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.w(getTag(ctx), dealMsg(msg), t);
+            Log.w(getTag(ctx), dealMsg(ctx, msg), t);
         }
     }
 
     public static void errorLog(Context ctx, Object msg) {
-        if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.e(getTag(ctx), dealMsg(msg));
-        }
+        errorLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
     }
 
     public static void errorLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.e(getTag(ctx), dealMsg(msg), t);
+            Log.e(getTag(ctx), dealMsg(ctx, msg), t);
         }
     }
 
     // ====== End Log Util
+
+
+    static native void verboseLog(boolean ifDebug, String tag, Object msg);
+
+    static native void debugLog(boolean ifDebug, String tag, Object msg);
+
+    static native void infoLog(boolean ifDebug, String tag, Object msg);
+
+    static native void warnLog(boolean ifDebug, String tag, Object msg);
+
+    static native void errorLog(boolean ifDebug, String tag, Object msg);
 
 
 }

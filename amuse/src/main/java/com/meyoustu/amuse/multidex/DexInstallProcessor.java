@@ -76,8 +76,8 @@ class DexInstallProcessor {
                     ", compare to " + Constants.SPACE_MIN_THRESHOLD);
         } else {
             for (final DexHolder dexHolder : dexHolderList) {
-                if (!(dexHolder instanceof DexHolder.ZipOpt ||
-                        dexHolder instanceof DexHolder.DexOpt)) {
+                if (!(dexHolder instanceof DexHolder.ZipOpt
+                        || dexHolder instanceof DexHolder.DexOpt)) {
                     Monitor.get().doAfterInstall(new Runnable() {
                         @Override
                         public void run() {
@@ -141,8 +141,8 @@ class DexInstallProcessor {
         String keyApkDexNum = Constants.KEY_DEX_NUMBER;
 
         boolean isModified = (mPreferences.getLong(keyApkTime, Constants.NO_VALUE) !=
-                archiveTimeStamp) ||
-                (mPreferences.getLong(keyApkCrc, Constants.NO_VALUE) != archiveCheckSum);
+                archiveTimeStamp)
+                || (mPreferences.getLong(keyApkCrc, Constants.NO_VALUE) != archiveCheckSum);
 
         result.modified = isModified;
 

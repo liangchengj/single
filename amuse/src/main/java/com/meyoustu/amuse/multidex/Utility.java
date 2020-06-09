@@ -56,8 +56,8 @@ public class Utility {
         long freeSpaceAfter = Environment.getDataDirectory().getFreeSpace();
         long remainedMem = runtime.maxMemory() - runtime.totalMemory();
         Monitor.get().logInfo("Memory remains " + remainedMem + ", free space " + freeSpaceAfter);
-        return remainedMem > Constants.MEM_THRESHOLD ||
-                freeSpaceAfter < Constants.SPACE_MIN_THRESHOLD;
+        return remainedMem > Constants.MEM_THRESHOLD
+                || freeSpaceAfter < Constants.SPACE_MIN_THRESHOLD;
     }
 
     static void clearDirFiles(File dir) {

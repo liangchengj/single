@@ -231,8 +231,8 @@ abstract class DexHolder {
         @Override
         public DexHolder toFasterHolder(SharedPreferences preferences) {
             try {
-                if (!Native.isSupportFastLoad() ||
-                        !Native.makeOptDexFile(mFile.getPath(), mOptFile.getPath())) {
+                if (!Native.isSupportFastLoad()
+                        || !Native.makeOptDexFile(mFile.getPath(), mOptFile.getPath())) {
                     Monitor.get().logWarning("Opt dex in origin way");
                     DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0).close();
                 }
