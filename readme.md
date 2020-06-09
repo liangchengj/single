@@ -16,7 +16,7 @@ allprojects {
 ### Step 2. Add the dependency
 ``` gradle
 dependencies {
-    implementation 'com.github.liangchengj:single:2020.6.8.2333'
+    implementation 'com.github.liangchengj:single:2020.6.10.057'
 }
 ```
 ******
