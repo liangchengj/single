@@ -5,8 +5,6 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.annotation.Keep;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.Native;
@@ -14,7 +12,6 @@ import com.meyoustu.amuse.annotation.res.AColor;
 import com.meyoustu.amuse.annotation.res.AString;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
-import com.meyoustu.amuse.view.Dialog;
 import com.meyoustu.amuse.view.InitWithGone;
 
 /**
@@ -85,8 +82,6 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
 //                ft.commit();
 //            }
 //        }, 1000);
-
-
 
 
     }
