@@ -7,7 +7,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
 
-class Locker {
+final class Locker {
     private RandomAccessFile lockRaf;
     private FileLock cacheLock;
     private FileChannel lockChannel;

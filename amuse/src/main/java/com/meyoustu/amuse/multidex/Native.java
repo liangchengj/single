@@ -1,13 +1,11 @@
 package com.meyoustu.amuse.multidex;
 
-import android.os.Build;
-
-import androidx.annotation.Keep;
-
 import java.io.File;
 import java.lang.reflect.Method;
 
-@Keep
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.KITKAT;
+
 final class Native {
     private static volatile boolean alreadyInit;
 
@@ -21,7 +19,7 @@ final class Native {
         try {
             Method getPropertyMethod = Class.forName("android.os.SystemProperties")
                     .getDeclaredMethod("get", String.class, String.class);
-            if (Build.VERSION.SDK_INT >= 19) {
+            if (SDK_INT >= KITKAT) {
                 String vmLibName = (String) getPropertyMethod.invoke(null,
                         "persist.sys.dalvik.vm.lib", null);
                 result.vmLibName = vmLibName;
@@ -32,7 +30,8 @@ final class Native {
                 }
             }
 
-            String yunosVersion = (String) getPropertyMethod.invoke(null, "ro.yunos.version", null);
+            String yunosVersion = (String) getPropertyMethod
+                    .invoke(null, "ro.yunos.version", null);
             if (yunosVersion != null && !yunosVersion.isEmpty()
                     || new File(Constants.LIB_YUNOS_PATH).exists()) {
                 result.isYunOS = true;
@@ -40,7 +39,7 @@ final class Native {
                 return;
             }
 
-            supportFastLoadDex = initialize(Build.VERSION.SDK_INT, RuntimeException.class);
+            supportFastLoadDex = initialize(SDK_INT, RuntimeException.class);
 
             result.supportFastLoadDex = supportFastLoadDex;
         } catch (Throwable tr) {
@@ -66,5 +65,6 @@ final class Native {
 
     static native boolean makeOptDexFile(String filePath, String optFilePath);
 
-    private static native boolean initialize(int sdkVersion, Class<RuntimeException> runtimeExceptionClass);
+    private static native boolean initialize(int sdkVersion,
+                                             Class<RuntimeException> runtimeExceptionClass);
 }

@@ -25,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.AnimRes;
 import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
@@ -40,7 +41,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.meyoustu.amuse.annotation.ContentView;
 import com.meyoustu.amuse.annotation.DecorViewConfig;
-import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.Native;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
@@ -62,6 +62,7 @@ import static android.os.Build.VERSION_CODES.M;
 import static android.os.Build.VERSION_CODES.N;
 import static android.os.Build.VERSION_CODES.N_MR1;
 import static android.os.Build.VERSION_CODES.O;
+import static android.os.Build.VERSION_CODES.P;
 import static android.provider.SyncStateContract.Columns.DATA;
 import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
@@ -70,6 +71,7 @@ import static com.meyoustu.amuse.App.getAnimId;
 import static com.meyoustu.amuse.App.getResId;
 import static com.meyoustu.amuse.annotation.DecorViewConfig.HIDE_SYS_BARS;
 import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
+import static java.lang.System.currentTimeMillis;
 
 
 /**
@@ -189,7 +191,8 @@ public abstract class Activity extends FragmentActivity {
         }
 
         try {
-            initResMemberByAnnotation();
+            /* Initialize the "Field" by checking whether it is annotated. */
+            App.initResMemberByAnnotation(this);
         } catch (IllegalAccessException e) {
             // Ignore
         }
@@ -232,10 +235,10 @@ public abstract class Activity extends FragmentActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     clickListener.onTouchDown(v, event);
-                    touchDown = System.currentTimeMillis();
+                    touchDown = currentTimeMillis();
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     clickListener.onTouchUp(v, event);
-                    if (System.currentTimeMillis() - touchDown <= RESP_TIME_MILLLIS) {
+                    if (currentTimeMillis() - touchDown <= RESP_TIME_MILLLIS) {
                         clickListener.onClick(v);
                     }
                 }
@@ -263,17 +266,12 @@ public abstract class Activity extends FragmentActivity {
         }
     }
 
-    /* Initialize the "Field" by checking whether it is annotated. */
-    private void initResMemberByAnnotation()
-            throws IllegalAccessException {
-        App.initResMemberByAnnotation(this);
-    }
 
     /**
      * @param color The value of the color.
      * @return "true" means the color is bright.
      */
-    protected final boolean isLightColor(int color) {
+    protected final boolean isLightColor(@ColorInt int color) {
         return ColorUtils.calculateLuminance(color) >= 0.5;
     }
 
@@ -281,17 +279,19 @@ public abstract class Activity extends FragmentActivity {
     // In order to adaptively initialize the System Bar.
     private void initSysBar() {
         if (SDK_INT >= LOLLIPOP) {
+            @ColorInt
             int statusBarColor = getWindow().getStatusBarColor();
+            @ColorInt
             int navigationBarColor = getWindow().getNavigationBarColor();
 
+            @ColorInt
             int oldApiBarColor = Color.valOf(222);
 
             if (isLightColor(statusBarColor)
                     || statusBarColor == Color.TRANSPARENT) {
                 if (SDK_INT >= M) {
                     setDecorViewSystemUiVisibility(
-                            SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                                    | SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                            SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 } else {
                     getWindow().setStatusBarColor(oldApiBarColor);
                 }
@@ -300,12 +300,14 @@ public abstract class Activity extends FragmentActivity {
                     || navigationBarColor == Color.TRANSPARENT) {
                 if (SDK_INT >= N) {
                     setDecorViewSystemUiVisibility(
-                            SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR |
-                                    SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                            SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 } else {
                     getWindow().setNavigationBarColor(oldApiBarColor);
                 }
             }
+        }
+        if (SDK_INT >= P) {
+            getWindow().setNavigationBarDividerColor(Color.TRANSPARENT);
         }
     }
 
@@ -357,7 +359,8 @@ public abstract class Activity extends FragmentActivity {
     }
 
     /* Get the color from the resource file. */
-    protected final int getResColor(@ColorRes int id) {
+    protected final @ColorInt
+    int getResColor(@ColorRes int id) {
         return App.getResColor(this, id);
     }
 
@@ -369,7 +372,7 @@ public abstract class Activity extends FragmentActivity {
 
 
     protected final @Dimension
-    int getDimensionPixelSize(int id) {
+    int getDimensionPixelSize(@DimenRes int id) {
         return getResources().getDimensionPixelSize(id);
     }
 
@@ -387,16 +390,18 @@ public abstract class Activity extends FragmentActivity {
 
     protected final @Dimension
     int getStatusBarHeight() {
-        return orientationIsPortrait() ?
-                getDimensionPixelSize(getDimenId("status_bar_height", PKG_ANDROID)) :
-                getDimensionPixelSize(getDimenId("status_bar_height_landscape", PKG_ANDROID));
+        String name = "status_bar_height";
+        return orientationIsPortrait()
+                ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+                : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
     }
 
     protected final @Dimension
     int getNavigationBarHeight() {
-        return orientationIsPortrait() ?
-                getDimensionPixelSize(getDimenId("navigation_bar_height", PKG_ANDROID)) :
-                getDimensionPixelSize(getDimenId("navigation_bar_height_landscape", PKG_ANDROID));
+        String name = "navigation_bar_height";
+        return orientationIsPortrait()
+                ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+                : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
     }
 
     protected final ConnectivityManager getConnectivityManager() {
@@ -455,6 +460,11 @@ public abstract class Activity extends FragmentActivity {
         return getId(name, getPackageName());
     }
 
+    protected final @IdRes
+    int getIdFromAndroid(String name) {
+        return getId(name, PKG_ANDROID);
+    }
+
     protected final @LayoutRes
     int getLayoutId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_LAYOUT, defPkgName);
@@ -463,6 +473,11 @@ public abstract class Activity extends FragmentActivity {
     protected final @LayoutRes
     int getLayoutId(String name) {
         return getLayoutId(name, getPackageName());
+    }
+
+    protected final @LayoutRes
+    int getLayoutIdFromAndroid(String name) {
+        return getLayoutId(name, PKG_ANDROID);
     }
 
     protected final @ArrayRes
@@ -475,6 +490,11 @@ public abstract class Activity extends FragmentActivity {
         return getArrayId(name, getPackageName());
     }
 
+    protected final @ArrayRes
+    int getArrayIdFromAndroid(String name) {
+        return getArrayId(name, PKG_ANDROID);
+    }
+
     protected final @StringRes
     int getStringId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_STRING, defPkgName);
@@ -485,6 +505,11 @@ public abstract class Activity extends FragmentActivity {
         return getStringId(name, getPackageName());
     }
 
+    protected final @StringRes
+    int getStringIdFromAndroid(String name) {
+        return getStringId(name, PKG_ANDROID);
+    }
+
     protected final @DimenRes
     int getDimenId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_DIMEN, defPkgName);
@@ -493,6 +518,11 @@ public abstract class Activity extends FragmentActivity {
     protected final @DimenRes
     int getDimenId(String name) {
         return getDimenId(name, getPackageName());
+    }
+
+    protected final @DimenRes
+    int getDimenIdFromAndroid(String name) {
+        return getDimenId(name, PKG_ANDROID);
     }
 
 
@@ -506,6 +536,10 @@ public abstract class Activity extends FragmentActivity {
         return getColorId(name, getPackageName());
     }
 
+    protected final @ColorRes
+    int getColorIdFromAndroid(String name) {
+        return getColorId(name, PKG_ANDROID);
+    }
 
     protected final @DrawableRes
     int getDrawableId(String name, String defPkgName) {
@@ -515,6 +549,11 @@ public abstract class Activity extends FragmentActivity {
     protected final @DrawableRes
     int getDrawableId(String name) {
         return getDrawableId(name, getPackageName());
+    }
+
+    protected final @DrawableRes
+    int getDrawableIdFromAndroid(String name) {
+        return getDrawableId(name, PKG_ANDROID);
     }
 
 
@@ -528,6 +567,11 @@ public abstract class Activity extends FragmentActivity {
         return getAnimationId(name, getPackageName());
     }
 
+    protected final @AnimRes
+    int getAnimationIdFromAndroid(String name) {
+        return getAnimationId(name, PKG_ANDROID);
+    }
+
     protected final @XmlRes
     int getXmlId(String name, String defPkgName) {
         return getIdentifier(name, IDENTIFIER_XML, defPkgName);
@@ -536,6 +580,11 @@ public abstract class Activity extends FragmentActivity {
     protected final @XmlRes
     int getXmlId(String name) {
         return getXmlId(name, getPackageName());
+    }
+
+    protected final @XmlRes
+    int getXmlIdFromAndroid(String name) {
+        return getXmlId(name, PKG_ANDROID);
     }
 
     protected final String getImgPathFromURI(Uri uri) {
@@ -578,16 +627,19 @@ public abstract class Activity extends FragmentActivity {
      * Used to check whether a certain permission has been applied for and the user agrees to authorize,
      * if not satisfied, reapply.
      *
-     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
      * @param reqCode     Request code for permission.
+     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
      */
-    protected final void chkAndApplyPermissions(@NonNull String[] permissions, int reqCode) {
-        App.chkAndApplyPermissions(this, permissions, reqCode);
+    protected final void chkAndApplyPermissions(int reqCode, String... permissions) {
+        App.chkAndApplyPermissions(this, reqCode, permissions);
     }
 
     /* Use certain rules to parse the application version number. */
     private long parseVersion(String versionName) {
-        return Long.parseLong(versionName.replace(".", ""));
+        versionName = versionName.replace("_", "");
+        versionName = versionName.replace(".", "");
+        versionName = versionName.replace("-", "");
+        return Long.parseLong(versionName);
     }
 
     /**
@@ -656,7 +708,7 @@ public abstract class Activity extends FragmentActivity {
         Toast.showShort(this, msg);
     }
 
-    protected final void toastShort(@IdRes int id) {
+    protected final void toastShort(@StringRes int id) {
         Toast.showShort(this, id);
     }
 
@@ -664,7 +716,7 @@ public abstract class Activity extends FragmentActivity {
         Toast.showLong(this, msg);
     }
 
-    protected final void toastLong(@IdRes int id) {
+    protected final void toastLong(@StringRes int id) {
         Toast.showLong(this, id);
     }
 

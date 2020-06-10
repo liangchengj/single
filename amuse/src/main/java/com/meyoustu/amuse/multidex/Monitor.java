@@ -4,15 +4,15 @@ import android.os.Looper;
 import android.os.MessageQueue;
 import android.util.Log;
 
-import androidx.annotation.Keep;
+import com.meyoustu.amuse.BuildConfig;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Keep
-public class Monitor {
-    private static final boolean enableLog = true;
+
+final class Monitor {
+    private static final boolean enableLog = BuildConfig.DEBUG;
 
     private static Monitor sMonitor;
 
@@ -36,37 +36,35 @@ public class Monitor {
         return mProcessName;
     }
 
-    public Monitor setExecutor(ScheduledExecutorService executor) {
+    Monitor setExecutor(ScheduledExecutorService executor) {
         mExecutor = executor;
         return this;
     }
 
-    public Monitor setProcessName(String processName) {
+    Monitor setProcessName(String processName) {
         mProcessName = processName;
         return this;
     }
 
-    protected void loadLibrary(String libName) {
+    void loadLibrary(String libName) {
         System.loadLibrary(libName);
     }
 
-    protected void logError(String msg) {
+    void logError(String msg) {
         if (!enableLog) {
             return;
         }
-
         Log.println(Log.ERROR, Constants.TAG, msg);
     }
 
-    protected void logWarning(String msg) {
+    void logWarning(String msg) {
         if (!enableLog) {
             return;
         }
-
         Log.w(Constants.TAG, msg);
     }
 
-    protected void logInfo(String msg) {
+    void logInfo(String msg) {
         if (!enableLog) {
             return;
         }
@@ -75,7 +73,7 @@ public class Monitor {
         Log.i(Constants.TAG, msg);
     }
 
-    protected void logDebug(String msg) {
+    void logDebug(String msg) {
         if (!enableLog) {
             return;
         }
@@ -84,7 +82,7 @@ public class Monitor {
         Log.d(Constants.TAG, msg);
     }
 
-    protected void logError(String msg, Throwable tr) {
+    void logError(String msg, Throwable tr) {
         if (!enableLog) {
             return;
         }
@@ -92,7 +90,7 @@ public class Monitor {
         Log.e(Constants.TAG, msg, tr);
     }
 
-    protected void logWarning(String msg, Throwable tr) {
+    void logWarning(String msg, Throwable tr) {
         if (!enableLog) {
             return;
         }
@@ -100,20 +98,21 @@ public class Monitor {
         Log.w(Constants.TAG, msg, tr);
     }
 
-    protected boolean isEnableNativeCheckSum() {
+    boolean isEnableNativeCheckSum() {
         return true;
     }
 
-    protected void logErrorAfterInstall(String msg, Throwable tr) {
+    void logErrorAfterInstall(String msg, Throwable tr) {
         Log.e(Constants.TAG, msg, tr);
     }
 
-    protected void reportAfterInstall(long cost, long freeSpace, long reducedSpace, String dexHolderInfo) {
-        Log.println(Log.INFO, Constants.TAG, "Cost time: " + cost + ", free space: " + freeSpace +
-                ", reduced space: " + reducedSpace + ", holder: " + dexHolderInfo);
+    void reportAfterInstall(long cost, long freeSpace, long reducedSpace,
+                            String dexHolderInfo) {
+        Log.println(Log.INFO, Constants.TAG, "Cost time: " + cost + ", free space: " + freeSpace
+                + ", reduced space: " + reducedSpace + ", holder: " + dexHolderInfo);
     }
 
-    protected void doBeforeHandleOpt() {
+    void doBeforeHandleOpt() {
         try {
             Thread.sleep(10_000);
         } catch (InterruptedException e) {
@@ -121,7 +120,7 @@ public class Monitor {
         }
     }
 
-    protected void doAfterInstall(final Runnable optRunnable) {
+    void doAfterInstall(final Runnable optRunnable) {
         Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
             @Override
             public boolean queueIdle() {

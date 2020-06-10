@@ -7,14 +7,12 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 
-import androidx.annotation.Keep;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-@Keep
+
 public class OptimizeService extends IntentService {
     static volatile boolean sAlreadyOpt;
 
@@ -92,8 +90,9 @@ public class OptimizeService extends IntentService {
         try {
             ApplicationInfo applicationInfo = this.getApplicationInfo();
             if (applicationInfo == null) {
-                throw new RuntimeException("No ApplicationInfo available, i.e. running on a test Context:" +
-                        " MultiDex support library is disabled.");
+                throw new RuntimeException("No ApplicationInfo available,"
+                        + " i.e. running on a test Context:"
+                        + " MultiDex support library is disabled.");
             }
 
             File apkFile = new File(applicationInfo.sourceDir);
@@ -111,8 +110,8 @@ public class OptimizeService extends IntentService {
                 DexHolder dexHolder;
                 if (type == Constants.LOAD_TYPE_APK_BUF) {
                     ZipFile apkZipFile = new ZipFile(apkFile);
-                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
-                            secondaryNumber + Constants.DEX_SUFFIX);
+                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX
+                            + secondaryNumber + Constants.DEX_SUFFIX);
                     byte[] bytes = Utility.obtainEntryBytesInZip(apkZipFile, dexFileEntry);
                     dexHolder = new DexHolder.ApkBuffer(secondaryNumber, bytes, dexFile, optDexFile);
                 } else if (type == Constants.LOAD_TYPE_DEX_BUF) {
@@ -127,8 +126,8 @@ public class OptimizeService extends IntentService {
                     dexHolder = null;
                 }
 
-                Monitor.get().logInfo("Process beginning holder " + dexHolder.toString() +
-                        ", type: " + type);
+                Monitor.get().logInfo("Process beginning holder " + dexHolder.toString()
+                        + ", type: " + type);
 
                 DexHolder fasterHolder = dexHolder;
 
@@ -139,7 +138,8 @@ public class OptimizeService extends IntentService {
                                 + ", compare to " + Constants.SPACE_THRESHOLD);
                         return;
                     } else {
-                        Monitor.get().logInfo("Free space is enough: " + freeSpace + ", continue...");
+                        Monitor.get().logInfo("Free space is enough: "
+                                + freeSpace + ", continue...");
                     }
 
                     Monitor.get().logDebug("Process holder, " + fasterHolder);
@@ -154,10 +154,11 @@ public class OptimizeService extends IntentService {
 
                             DexHolder.StoreInfo info = fasterHolder.getInfo();
 
-                            Monitor.get().logDebug("Put info, " + info.index +
-                                    " file is " + info.file.getPath());
+                            Monitor.get().logDebug("Put info, " + info.index
+                                    + " file is " + info.file.getPath());
 
-                            long reducedSpace = Environment.getDataDirectory().getFreeSpace() - freeSpace;
+                            long reducedSpace = Environment.getDataDirectory()
+                                    .getFreeSpace() - freeSpace;
 
                             Monitor.get().reportAfterInstall(cost, freeSpace, reducedSpace,
                                     fasterHolder.toString());
@@ -167,7 +168,8 @@ public class OptimizeService extends IntentService {
                         Result.get().unFatalThrowable.add(tr);
                     }
 
-                    Locker prepareLocker = new Locker(new File(mRootDir, Constants.LOCK_PREPARE_FILENAME));
+                    Locker prepareLocker
+                            = new Locker(new File(mRootDir, Constants.LOCK_PREPARE_FILENAME));
                     if (prepareLocker.test()) {
                         prepareLocker.close();
                     } else {

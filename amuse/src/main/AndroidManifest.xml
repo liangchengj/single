@@ -19,12 +19,13 @@
         <service
             android:name=".multidex.OptimizeService"
             android:exported="false"
-            android:process=":multidex" />
+            android:process=":amuse" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
+            <!-- META_DATA_FILE_PROVIDER_PATHS -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/external_file_paths" />

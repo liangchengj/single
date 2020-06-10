@@ -15,7 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 
-class DexInstallProcessor {
+final class DexInstallProcessor {
     private SharedPreferences mPreferences;
     private boolean mDoCheckSum;
 
@@ -52,8 +52,7 @@ class DexInstallProcessor {
         List<DexHolder> dexHolderList;
         try {
             mPreferences = mainContext.getSharedPreferences(
-                    Constants.PREFS_FILE, Context.MODE_PRIVATE
-            );
+                    Constants.PREFS_FILE, Context.MODE_PRIVATE);
 
             result.freeSpaceBefore = Environment.getDataDirectory().getFreeSpace();
 
@@ -72,8 +71,8 @@ class DexInstallProcessor {
         long freeSpaceAfter = Environment.getDataDirectory().getFreeSpace();
         result.freeSpaceAfter = freeSpaceAfter;
         if (freeSpaceAfter < Constants.SPACE_MIN_THRESHOLD) {
-            Monitor.get().logWarning("Free space is too small: " + freeSpaceAfter +
-                    ", compare to " + Constants.SPACE_MIN_THRESHOLD);
+            Monitor.get().logWarning("Free space is too small: " + freeSpaceAfter
+                    + ", compare to " + Constants.SPACE_MIN_THRESHOLD);
         } else {
             for (final DexHolder dexHolder : dexHolderList) {
                 if (!(dexHolder instanceof DexHolder.ZipOpt
@@ -103,8 +102,8 @@ class DexInstallProcessor {
         ZipEntry dexEntry;
 
         List<DexHolder> dexHolderList = new ArrayList<>();
-        while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
-                secondaryNumber + Constants.DEX_SUFFIX)) != null) {
+        while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX
+                + secondaryNumber + Constants.DEX_SUFFIX)) != null) {
             byte[] bytes = obtainEntryBytesInApk(apkZipFile, dexEntry);
             dexHolderList.add(new DexHolder.ApkBuffer(secondaryNumber, bytes, null, null));
             secondaryNumber++;
@@ -125,6 +124,7 @@ class DexInstallProcessor {
         try {
             Native.recoverAction();
         } catch (UnsatisfiedLinkError ignored) {
+            // Ignore
         }
         Monitor.get().logDebug("After install all, sp value is " + mPreferences.getAll());
     }
@@ -140,8 +140,7 @@ class DexInstallProcessor {
         String keyApkCrc = Constants.KEY_CRC;
         String keyApkDexNum = Constants.KEY_DEX_NUMBER;
 
-        boolean isModified = (mPreferences.getLong(keyApkTime, Constants.NO_VALUE) !=
-                archiveTimeStamp)
+        boolean isModified = (mPreferences.getLong(keyApkTime, Constants.NO_VALUE) != archiveTimeStamp)
                 || (mPreferences.getLong(keyApkCrc, Constants.NO_VALUE) != archiveCheckSum);
 
         result.modified = isModified;
@@ -161,8 +160,8 @@ class DexInstallProcessor {
             final ZipFile apkZipFile = new ZipFile(apkFile);
             ZipEntry dexEntry;
 
-            while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX + secondaryNumber +
-                    Constants.DEX_SUFFIX)) != null) {
+            while ((dexEntry = apkZipFile.getEntry(Constants.DEX_PREFIX + secondaryNumber
+                    + Constants.DEX_SUFFIX)) != null) {
                 File dexFile = new File(dexDir, secondaryNumber + Constants.DEX_SUFFIX);
                 File optDexFile = new File(odexDir, secondaryNumber + Constants.ODEX_SUFFIX);
                 if (Native.isSupportFastLoad()) {
@@ -215,9 +214,9 @@ class DexInstallProcessor {
                 Constants.LOAD_TYPE_INVALID);
         if (type == Constants.LOAD_TYPE_INVALID) {
             if (Native.isSupportFastLoad()) {
-                type = Utility.isBetterUseApkBuf() ?
-                        Constants.LOAD_TYPE_APK_BUF :
-                        Constants.LOAD_TYPE_DEX_BUF;
+                type = Utility.isBetterUseApkBuf()
+                        ? Constants.LOAD_TYPE_APK_BUF
+                        : Constants.LOAD_TYPE_DEX_BUF;
             } else {
                 type = Constants.LOAD_TYPE_ZIP_OPT;
             }
@@ -231,8 +230,8 @@ class DexInstallProcessor {
                 return new DexHolder.ZipOpt(secondaryNumber, zipFile, zipOptFile);
             } else {
                 ZipFile apkZipFile = new ZipFile(apkFile);
-                ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
-                        secondaryNumber + Constants.DEX_SUFFIX);
+                ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX
+                        + secondaryNumber + Constants.DEX_SUFFIX);
                 DexHolder.ZipOpt zipOpt = DexHolder.obtainValidZipDex(mPreferences,
                         secondaryNumber, zipFile, zipOptFile, apkZipFile, dexFileEntry);
                 apkZipFile.close();
@@ -263,8 +262,8 @@ class DexInstallProcessor {
                     type = Constants.LOAD_TYPE_APK_BUF;
                 } else {
                     ZipFile apkZipFile = new ZipFile(apkFile);
-                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
-                            secondaryNumber + Constants.DEX_SUFFIX);
+                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX
+                            + secondaryNumber + Constants.DEX_SUFFIX);
                     return DexHolder.obtainValidForceDexOpt(mPreferences, secondaryNumber,
                             dexFile, optDexFile, apkZipFile, dexFileEntry);
                 }
@@ -284,8 +283,8 @@ class DexInstallProcessor {
                     return new DexHolder.DexOpt(secondaryNumber, validDexFile, optDexFile, true);
                 } else {
                     ZipFile apkZipFile = new ZipFile(apkFile);
-                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX +
-                            secondaryNumber + Constants.DEX_SUFFIX);
+                    ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX
+                            + secondaryNumber + Constants.DEX_SUFFIX);
                     return DexHolder.obtainValidForceDexOpt(mPreferences, secondaryNumber, dexFile,
                             optDexFile, apkZipFile, dexFileEntry);
                 }
@@ -297,8 +296,8 @@ class DexInstallProcessor {
                 Monitor.get().logError("Do not support apk buf!");
             }
             ZipFile apkZipFile = new ZipFile(apkFile);
-            ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX + secondaryNumber +
-                    Constants.DEX_SUFFIX);
+            ZipEntry dexFileEntry = apkZipFile.getEntry(Constants.DEX_PREFIX + secondaryNumber
+                    + Constants.DEX_SUFFIX);
             byte[] bytes = obtainEntryBytesInApk(apkZipFile, dexFileEntry);
             DexHolder dexHolder = new DexHolder.ApkBuffer(secondaryNumber, bytes, dexFile, optDexFile);
             apkZipFile.close();
@@ -355,10 +354,10 @@ class DexInstallProcessor {
         long expectedModTime = mPreferences.getLong(keyTime + secondaryNumber, Constants.NO_VALUE);
         long lastModified = file.lastModified();
         if (expectedModTime != lastModified) {
-            Monitor.get().logWarning("Invalid file: " +
-                    " (key \"" + (keyCheckSum + keyTime + secondaryNumber) + "\")," +
-                    " expected modification time: " +
-                    expectedModTime + ", modification time: " + lastModified);
+            Monitor.get().logWarning("Invalid file: "
+                    + " (key \"" + (keyCheckSum + keyTime + secondaryNumber) + "\"),"
+                    + " expected modification time: "
+                    + expectedModTime + ", modification time: " + lastModified);
             return false;
         }
 
@@ -387,9 +386,9 @@ class DexInstallProcessor {
             long expectedCheckSum = mPreferences.getLong(keyCheckSum +
                     secondaryNumber, Constants.NO_VALUE);
             if (expectedCheckSum != checkSum) {
-                Monitor.get().logWarning("Invalid file: " +
-                        " (key \"" + (keyCheckSum + keyTime + secondaryNumber) + "\")," +
-                        " expected checksum: " + expectedCheckSum + ", file checksum: " + checkSum);
+                Monitor.get().logWarning("Invalid file: "
+                        + " (key \"" + (keyCheckSum + keyTime + secondaryNumber) + "\"),"
+                        + " expected checksum: " + expectedCheckSum + ", file checksum: " + checkSum);
                 return false;
             }
         }

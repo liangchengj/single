@@ -19,10 +19,9 @@ android {
         // Unable to get provider android.support.v4.content.FileProvider:
         // java.lang.ClassNotFoundException: android.support.v4.content.FileProvider
         multiDexEnabled project.ext.android.defconfig.multiDexEnabled
-        multiDexKeepProguard project.ext.android.defconfig.multiDexKeepProguard
 
 
-        // version "16.1.4479499"
+        // version "16.1.4479499" -> may be
         ndk project.ext.android.defconfig.ndk
 
         externalNativeBuild {
@@ -49,10 +48,6 @@ android {
             }
         }
 
-    }
-
-    sourceSets.main {
-        jniLibs.srcDir 'lib'
     }
 
 

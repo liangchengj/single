@@ -1,8 +1,11 @@
 package com.meyoustu.amuse.multidex;
 
 
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+
 interface Constants {
-    String TAG = "MultiDex";
+
+    String TAG = MultiDex.class.getName();
 
     String CODE_CACHE_SECONDARY_FOLDER_NAME = "code_cache/secondary-dexes";
 
@@ -14,7 +17,7 @@ interface Constants {
 
     String ZIP_DIR_NAME = "zip_cache";
 
-    int MIN_SDK_VERSION = 14;
+    int MIN_SDK_VERSION = ICE_CREAM_SANDWICH;
 
     int VM_WITH_MULTIDEX_VERSION_MAJOR = 2;
 

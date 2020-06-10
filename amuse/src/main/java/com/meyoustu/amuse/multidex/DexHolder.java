@@ -41,8 +41,8 @@ abstract class DexHolder {
         long time = zipFile.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put z key " + (keyCheckSum + keyTime + secondaryNumber) +
-                " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put z key " + (keyCheckSum + keyTime + secondaryNumber)
+                + " checksum=" + checkSum + ", time=" + time);
     }
 
     private static void putDexFileInfo(SharedPreferences.Editor editor, int secondaryNumber, File file)
@@ -56,8 +56,8 @@ abstract class DexHolder {
         long time = file.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put f key " + (keyCheckSum + keyTime + secondaryNumber) +
-                " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put f key " + (keyCheckSum + keyTime + secondaryNumber)
+                + " checksum=" + checkSum + ", time=" + time);
     }
 
     private static void putDexOptInfo(SharedPreferences.Editor editor, int secondaryNumber, File optFile)
@@ -71,11 +71,12 @@ abstract class DexHolder {
         long time = optFile.lastModified();
         editor.putLong(keyTime + secondaryNumber, time);
 
-        Monitor.get().logInfo("Put o key " + (keyCheckSum + keyTime + secondaryNumber) +
-                " checksum=" + checkSum + ", time=" + time);
+        Monitor.get().logInfo("Put o key " + (keyCheckSum + keyTime + secondaryNumber)
+                + " checksum=" + checkSum + ", time=" + time);
     }
 
-    static DexHolder obtainValidDexBuffer(SharedPreferences preferences, int secondaryNumber, File validDexFile, File optDexFile)
+    static DexHolder obtainValidDexBuffer(SharedPreferences preferences, int secondaryNumber,
+                                          File validDexFile, File optDexFile)
             throws IOException {
         SharedPreferences.Editor editor = preferences.edit();
         putTypeInfo(editor, secondaryNumber, Constants.LOAD_TYPE_DEX_BUF);
@@ -151,9 +152,9 @@ abstract class DexHolder {
 
         @Override
         public String toString() {
-            return super.toString() + ", index: " + mIndex +
-                    ", [file: " + mFile.getPath() + ", size: " + mFile.length() +
-                    "], [opt file: " + mOptFile + ", size: " + mOptFile.length() + "]";
+            return super.toString() + ", index: " + mIndex
+                    + ", [file: " + mFile.getPath() + ", size: " + mFile.length()
+                    + "], [opt file: " + mOptFile + ", size: " + mOptFile.length() + "]";
         }
     }
 

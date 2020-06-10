@@ -1,13 +1,16 @@
 package com.meyoustu.amuse.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.StringRes;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
-import static android.widget.Toast.makeText;
 
 /**
  * @author Liangcheng Juves
@@ -16,26 +19,41 @@ import static android.widget.Toast.makeText;
  * Simplify the usage of Toast that comes with Android.
  */
 public final class Toast {
+
+    /**
+     * @hide
+     */
+    @IntDef(value = {LENGTH_SHORT, LENGTH_LONG})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Duration {
+    }
+
+    static {
+        System.loadLibrary("amuse");
+    }
+
     private Toast() {
     }
 
     public static void showShort(Context ctx, Object msg) {
-        makeText(ctx, msg.toString(), LENGTH_SHORT).show();
+        toastMsg(ctx, msg, LENGTH_SHORT);
     }
 
-    @SuppressLint("ResourceType")
-    public static void showShort(Context ctx, @IdRes int id) {
-        makeText(ctx, id, LENGTH_SHORT).show();
+    public static void showShort(Context ctx, @StringRes int id) {
+        toastRes(ctx, id, LENGTH_SHORT);
     }
 
     public static void showLong(Context ctx, Object msg) {
-        makeText(ctx, msg.toString(), LENGTH_LONG).show();
+        toastMsg(ctx, msg, LENGTH_LONG);
     }
 
 
-    @SuppressLint("ResourceType")
-    public static void showLong(Context ctx, @IdRes int id) {
-        makeText(ctx, id, LENGTH_LONG).show();
+    public static void showLong(Context ctx, @StringRes int id) {
+        toastRes(ctx, id, LENGTH_LONG);
     }
+
+    static native void toastMsg(Context ctx, Object msg, @Duration int duration);
+
+    static native void toastRes(Context ctx, @StringRes int id, @Duration int duration);
 
 }

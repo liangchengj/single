@@ -53,7 +53,8 @@ public final class Dialog extends android.app.Dialog {
 
     private long touchDown;
 
-    private View.OnClickListener leftListener, rightListener, cancelOnTouchOutSideListener;
+    private View.OnClickListener leftListener, rightListener,
+            cancelOnTouchOutSideListener;
 
     private boolean canceledOnTouchOutside = false;
 
@@ -72,7 +73,6 @@ public final class Dialog extends android.app.Dialog {
                 view = new View();
             }
         }
-
         view.setVisibility(GONE);
     }
 
@@ -197,13 +197,15 @@ public final class Dialog extends android.app.Dialog {
         return this;
     }
 
-    public Dialog setLeftButton(String textOnButton, View.OnClickListener onClickListener) {
+    public Dialog setLeftButton(String textOnButton,
+                                View.OnClickListener onClickListener) {
         leftListener = onClickListener;
         view.setTextOnLeft(textOnButton);
         return this;
     }
 
-    public Dialog setRightButton(String textOnButton, View.OnClickListener onClickListener) {
+    public Dialog setRightButton(String textOnButton,
+                                 View.OnClickListener onClickListener) {
         rightListener = onClickListener;
         view.setTextOnRight(textOnButton);
         return this;
@@ -245,7 +247,7 @@ public final class Dialog extends android.app.Dialog {
 
         private String textOnRight = "Cancel";
 
-        private float radius, max_width, max_height,
+        private float radius, maxWidth, maxHeight,
                 line, middle, textSizeOnMessage, textSizeOnButton;
 
         private RectF main = new RectF();
@@ -270,40 +272,39 @@ public final class Dialog extends android.app.Dialog {
 
         @Override
         protected void onDraw(Canvas canvas) {
-
             super.onDraw(canvas);
 
-            max_width = getWindow().getDecorView().getWidth();
-            max_height = getWindow().getDecorView().getHeight();
-            radius = max_width / 17f;
-            line = max_height / 1.87f;
-            middle = max_width / 2;
+            maxWidth = getWindow().getDecorView().getWidth();
+            maxHeight = getWindow().getDecorView().getHeight();
+            radius = maxWidth / 17f;
+            line = maxHeight / 1.87f;
+            middle = maxWidth / 2;
 
 
             if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
                 if (((float) getResources().getDisplayMetrics().heightPixels /
                         getResources().getDisplayMetrics().widthPixels) >= 1.88f) {
-                    main.top = max_height / 2.47f;
-                    main.left = max_width / 110;
+                    main.top = maxHeight / 2.47f;
+                    main.left = maxWidth / 110;
 
-                    textSizeOnButton = max_width / 17.4f;
-                    textSizeOnMessage = max_width / 15.8f;
+                    textSizeOnButton = maxWidth / 17.4f;
+                    textSizeOnMessage = maxWidth / 15.8f;
                 } else {
-                    main.top = max_height / 2.50f;
-                    main.left = max_width / 12;
+                    main.top = maxHeight / 2.50f;
+                    main.left = maxWidth / 12;
 
-                    textSizeOnButton = max_width / 22.0f;
-                    textSizeOnMessage = max_width / 18.0f;
+                    textSizeOnButton = maxWidth / 22.0f;
+                    textSizeOnMessage = maxWidth / 18.0f;
                 }
             } else {
-                main.top = max_height / 3.11f;
-                main.left = max_width / 110;
+                main.top = maxHeight / 3.11f;
+                main.left = maxWidth / 110;
 
-                textSizeOnButton = max_width / 17.4f;
-                textSizeOnMessage = max_width / 15.8f;
+                textSizeOnButton = maxWidth / 17.4f;
+                textSizeOnMessage = maxWidth / 15.8f;
             }
-            main.bottom = max_height - main.top;
-            main.right = max_width - main.left;
+            main.bottom = maxHeight - main.top;
+            main.right = maxWidth - main.left;
 
 
             paint.setAntiAlias(true);
@@ -334,8 +335,8 @@ public final class Dialog extends android.app.Dialog {
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTypeface(Typeface.DEFAULT);
 
-            canvas.drawText(Message, middle, main.top + (textSizeOnMessage / 2) +
-                    ((line - main.top) / 2), paint);
+            canvas.drawText(Message, middle, main.top + (textSizeOnMessage / 2)
+                    + ((line - main.top) / 2), paint);
 
 
             paint.setStyle(Paint.Style.FILL);
@@ -505,13 +506,13 @@ public final class Dialog extends android.app.Dialog {
                 if (event.getAction() == ACTION_DOWN) {
                     touchDown = currentTimeMillis();
                 } else if (event.getAction() == ACTION_UP) {
-                    if (currentTimeMillis() - touchDown <= 500 && canceledOnTouchOutside) {
+                    if (currentTimeMillis() - touchDown <= 500
+                            && canceledOnTouchOutside) {
                         if (cancelOnTouchOutSideListener != null) {
                             cancelOnTouchOutSideListener.onClick(v);
                         }
                         dismiss();
                     }
-
                 }
             }
             return true;

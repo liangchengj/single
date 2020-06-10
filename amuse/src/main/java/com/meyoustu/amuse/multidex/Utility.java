@@ -4,8 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Environment;
 
-import androidx.annotation.Keep;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -28,8 +26,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-@Keep
-public class Utility {
+final class Utility {
     /**
      * Replace the value of a field containing a non null array, by a new array containing the
      * elements of the original array plus the elements of extraElements.
@@ -39,13 +36,12 @@ public class Utility {
      * @param extraElements elements to append at the end of the array.
      */
     static void expandFieldArray(Object instance, String fieldName, Object[] extraElements)
-            throws NoSuchFieldException, IllegalArgumentException,
-            IllegalAccessException {
+            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Field field = findField(instance.getClass(), fieldName);
         Object[] original = (Object[]) field.get(instance);
         Object[] combined = (Object[]) Array.newInstance(
-                original.getClass().getComponentType(), original.length +
-                        extraElements.length);
+                original.getClass().getComponentType(), original.length
+                        + extraElements.length);
         System.arraycopy(original, 0, combined, 0, original.length);
         System.arraycopy(extraElements, 0, combined, original.length, extraElements.length);
         field.set(instance, combined);
@@ -67,13 +63,13 @@ public class Utility {
 
         File[] files = dir.listFiles();
         if (files == null) {
-            Monitor.get().logWarning("Failed to list secondary dex dir" +
-                    " content (" + dir.getPath() + ").");
+            Monitor.get().logWarning("Failed to list secondary dex dir"
+                    + " content (" + dir.getPath() + ").");
             return;
         }
         for (File oldFile : files) {
-            Monitor.get().logInfo("Trying to delete old file " + oldFile.getPath() + " of size " +
-                    oldFile.length());
+            Monitor.get().logInfo("Trying to delete old file " + oldFile.getPath() + " of size "
+                    + oldFile.length());
             if (!oldFile.delete()) {
                 Monitor.get().logWarning("Failed to delete old file " + oldFile.getPath());
             } else {
@@ -105,13 +101,11 @@ public class Utility {
             byte[] buf = new byte[Constants.BUFFER_SIZE];
             try {
                 checkedInputStream = new CheckedInputStream(new FileInputStream(file), new Adler32());
-
                 for (; ; ) {
                     if (checkedInputStream.read(buf) < 0) {
                         break;
                     }
                 }
-
                 result = checkedInputStream.getChecksum().getValue();
             } finally {
                 Utility.closeQuietly(checkedInputStream);
@@ -210,15 +204,15 @@ public class Utility {
         if (!dir.isDirectory()) {
             File parent = dir.getParentFile();
             if (parent == null) {
-                Monitor.get().logError("Failed to create dir " + dir.getPath() +
-                        ". Parent file is null.");
+                Monitor.get().logError("Failed to create dir " + dir.getPath()
+                        + ". Parent file is null.");
             } else {
-                Monitor.get().logError("Failed to create dir " + dir.getPath() +
-                        ". parent file is a dir " + parent.isDirectory() +
-                        ", a file " + parent.isFile() +
-                        ", exists " + parent.exists() +
-                        ", readable " + parent.canRead() +
-                        ", writable " + parent.canWrite());
+                Monitor.get().logError("Failed to create dir " + dir.getPath()
+                        + ". parent file is a dir " + parent.isDirectory()
+                        + ", a file " + parent.isFile()
+                        + ", exists " + parent.exists()
+                        + ", readable " + parent.canRead()
+                        + ", writable " + parent.canWrite());
             }
             throw new IOException("Failed to create directory " + dir.getPath());
         }
@@ -258,8 +252,8 @@ public class Utility {
             }
         }
 
-        throw new NoSuchMethodException("Method " + name + " with parameters " +
-                Arrays.asList(parameterTypes) + " not found in " + targetClazz);
+        throw new NoSuchMethodException("Method " + name + " with parameters "
+                + Arrays.asList(parameterTypes) + " not found in " + targetClazz);
     }
 
     static Method findMethod(Class<?> targetClazz, String name, Class<?>... parameterTypes)
@@ -324,13 +318,13 @@ public class Utility {
                 length = in.read(buffer);
             }
             if (!tmp.setReadOnly()) {
-                throw new IOException("Failed to mark readonly \"" + tmp.getAbsolutePath() +
-                        "\" (tmp of \"" + target.getAbsolutePath() + "\")");
+                throw new IOException("Failed to mark readonly \"" + tmp.getAbsolutePath()
+                        + "\" (tmp of \"" + target.getAbsolutePath() + "\")");
             }
             Monitor.get().logInfo("Renaming to " + target.getPath());
             if (!tmp.renameTo(target)) {
-                throw new IOException("Failed to rename \"" + tmp.getAbsolutePath() +
-                        "\" to \"" + target.getAbsolutePath() + "\"");
+                throw new IOException("Failed to rename \"" + tmp.getAbsolutePath()
+                        + "\" to \"" + target.getAbsolutePath() + "\"");
             }
             return target;
         } finally {
@@ -387,7 +381,8 @@ public class Utility {
                     validZipFile.getParentFile());
 
             try {
-                ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(tmp)));
+                ZipOutputStream out = new ZipOutputStream(
+                        new BufferedOutputStream(new FileOutputStream(tmp)));
                 try {
                     ZipEntry classesDex = new ZipEntry("classes.dex");
                     // keep zip entry time since it is the criteria used by Dalvik
@@ -405,13 +400,13 @@ public class Utility {
                     out.close();
                 }
                 if (!tmp.setReadOnly()) {
-                    throw new IOException("Failed to mark readonly \"" + tmp.getAbsolutePath() +
-                            "\" (tmp of \"" + validZipFile.getAbsolutePath() + "\")");
+                    throw new IOException("Failed to mark readonly \"" + tmp.getAbsolutePath()
+                            + "\" (tmp of \"" + validZipFile.getAbsolutePath() + "\")");
                 }
                 Monitor.get().logInfo("Renaming to " + validZipFile.getPath());
                 if (!tmp.renameTo(validZipFile)) {
-                    throw new IOException("Failed to rename \"" + tmp.getAbsolutePath() +
-                            "\" to \"" + validZipFile.getAbsolutePath() + "\"");
+                    throw new IOException("Failed to rename \"" + tmp.getAbsolutePath()
+                            + "\" to \"" + validZipFile.getAbsolutePath() + "\"");
                 }
                 return;
             } catch (IOException e) {
@@ -459,7 +454,7 @@ public class Utility {
     }
 
     static boolean isOptimizeProcess(String processName) {
-        return processName != null && processName.endsWith(":multidex");
+        return processName != null && processName.endsWith(":amuse");
     }
 
 //    static boolean isMainProcess(Context context) {
@@ -475,8 +470,8 @@ public class Utility {
             int pid = android.os.Process.myPid();
             ActivityManager mActivityManager = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
-            for (ActivityManager.RunningAppProcessInfo appProcess :
-                    mActivityManager.getRunningAppProcesses()) {
+            for (ActivityManager.RunningAppProcessInfo appProcess
+                    : mActivityManager.getRunningAppProcesses()) {
                 if (appProcess.pid == pid) {
                     return appProcess.processName;
                 }
@@ -484,7 +479,6 @@ public class Utility {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

@@ -4,18 +4,16 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 
-import androidx.annotation.Keep;
-
 import java.io.File;
 import java.util.StringTokenizer;
 
-@Keep
-public class MultiDex {
-    public static Result install(Context context) {
+final class MultiDex {
+
+    static Result install(Context context) {
         return install(context, null);
     }
 
-    public static Result install(Context context, Monitor monitor) {
+    static Result install(Context context, Monitor monitor) {
         Monitor.init(monitor);
 
         monitor = Monitor.get();
@@ -28,8 +26,8 @@ public class MultiDex {
         }
 
         if (Build.VERSION.SDK_INT < Constants.MIN_SDK_VERSION) {
-            monitor.logInfo("MultiDex installation failed. SDK " + Build.VERSION.SDK_INT +
-                    " is unsupported. Min SDK version is " + Constants.MIN_SDK_VERSION + ".");
+            monitor.logInfo("MultiDex installation failed. SDK " + Build.VERSION.SDK_INT
+                    + " is unsupported. Min SDK version is " + Constants.MIN_SDK_VERSION + ".");
             return null;
         }
 
@@ -64,7 +62,7 @@ public class MultiDex {
         return result;
     }
 
-    public static boolean isOptimizeProcess(String processName) {
+    static boolean isOptimizeProcess(String processName) {
         return Utility.isOptimizeProcess(processName);
     }
 
@@ -92,8 +90,8 @@ public class MultiDex {
                 }
             }
         }
-        Monitor.get().logInfo("VM with version " + versionString +
-                (isCapable ? " has support" : " does not have support"));
+        Monitor.get().logInfo("VM with version " + versionString
+                + (isCapable ? " has support" : " does not have support"));
         return isCapable;
     }
 

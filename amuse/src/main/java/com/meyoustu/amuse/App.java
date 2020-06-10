@@ -18,9 +18,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
-import androidx.activity.ComponentActivity;
 import androidx.annotation.AnimRes;
 import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
@@ -28,11 +28,9 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.XmlRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.meyoustu.amuse.annotation.IntelliRes;
 import com.meyoustu.amuse.annotation.res.AAnimation;
@@ -52,7 +50,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
@@ -90,7 +87,7 @@ public class App extends MultiDexApp {
      * @param ctx The type is "android.content.Context".
      * @return The static Boolean variable "DEBUG" of the BuildConfig class.
      */
-    public static final boolean getDebugValOfBuildConfig(Context ctx) {
+    public static boolean getDebugValOfBuildConfig(Context ctx) {
         try {
             Class<?> clazz = Class.forName(ctx.getApplicationInfo().processName + ".BuildConfig");
             return clazz.getDeclaredField("DEBUG").getBoolean(ctx);
@@ -446,7 +443,8 @@ public class App extends MultiDexApp {
     }
 
     /* Get the color from the resource file. */
-    static int getResColor(Context ctx, @ColorRes int id) {
+    static @ColorInt
+    int getResColor(Context ctx, @ColorRes int id) {
         if (SDK_INT >= M) {
             return ctx.getResources().getColor(id, ctx.getTheme());
         } else {
@@ -533,16 +531,13 @@ public class App extends MultiDexApp {
     public synchronized static final void sendNotification(
             Context ctx, int id, int importance,
             NotificationCompat.Style style, boolean autoCancel,
-            String title, String message, int smallIcon,
-            int largeIcon, RemoteViews remoteViews,
+            String title, String message, @IdRes int smallIcon,
+            @IdRes int largeIcon, RemoteViews remoteViews,
             PendingIntent pendingIntent) {
 
         if (NotificationManagerCompat.from(ctx).areNotificationsEnabled()) {
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(ctx);
-
-            smallIcon = (smallIcon <= 0) ? R.drawable.logo : smallIcon;
-            largeIcon = (largeIcon <= 0) ? R.drawable.logo : largeIcon;
 
             notificationManagerCompat.notify(id,
                     new NotificationCompat.Builder(ctx, String.valueOf(id))
@@ -635,7 +630,7 @@ public class App extends MultiDexApp {
      * @param permission Permission name.
      * @return "true" means that the user has agreed to authorization, so there is no need to repeat the application.
      */
-    public static final boolean hasApplyPermission(Context ctx, String permission) {
+    public static final boolean hasApplyPermission(@NonNull Context ctx, @NonNull String permission) {
         return ActivityCompat.checkSelfPermission(ctx, permission) == PERMISSION_GRANTED;
     }
 
@@ -644,15 +639,15 @@ public class App extends MultiDexApp {
      * if not satisfied, reapply.
      *
      * @param activity    Class object of android.app.Activity.
-     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
      * @param reqCode     Request code for permission.
+     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
      */
     public static final void chkAndApplyPermissions(@NonNull android.app.Activity activity,
-                                                    @NonNull String[] permissions,
-                                                    int reqCode) {
+                                                    int reqCode,
+                                                    @NonNull String... permissions) {
         String append = "";
         for (short i = 0; i < permissions.length; i++) {
-            String permission = permissions[0];
+            String permission = permissions[i];
             if (!hasApplyPermission(activity, permission)
                     || ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
             ) {
@@ -677,13 +672,13 @@ public class App extends MultiDexApp {
      * @param ctx     Application context object.
      * @param pkgName Application package name.
      */
-    public static final void openApp(Context ctx, String pkgName) {
+    public static final void openApp(@NonNull Context ctx, @NonNull String pkgName) {
         ctx.startActivity(ctx.getPackageManager().getLaunchIntentForPackage(pkgName));
     }
 
 
     // ====== Log Util
-    private static String dealMsg(Context ctx, Object msg) {
+    private static String dealMsg(@NonNull Object msg) {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         String methodName = stackTraceElements[4].getMethodName();
         String end = "\n" + msg;
@@ -700,56 +695,54 @@ public class App extends MultiDexApp {
 
 
     public static void verboseLog(Context ctx, Object msg) {
-        verboseLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
+        verboseLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(msg));
     }
 
     public static void verboseLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.v(getTag(ctx), dealMsg(ctx, msg), t);
+            Log.v(getTag(ctx), dealMsg(msg), t);
         }
     }
 
     public static void debugLog(Context ctx, Object msg) {
-        debugLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
+        debugLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(msg));
     }
 
     public static void debugLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.d(getTag(ctx), dealMsg(ctx, msg), t);
+            Log.d(getTag(ctx), dealMsg(msg), t);
         }
     }
 
     public static void infoLog(Context ctx, Object msg) {
-        infoLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
+        infoLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(msg));
     }
 
     public static void infoLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.i(getTag(ctx), dealMsg(ctx, msg), t);
+            Log.i(getTag(ctx), dealMsg(msg), t);
         }
     }
 
     public static void warnLog(Context ctx, Object msg) {
-        warnLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
+        warnLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(msg));
     }
 
     public static void warnLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.w(getTag(ctx), dealMsg(ctx, msg), t);
+            Log.w(getTag(ctx), dealMsg(msg), t);
         }
     }
 
     public static void errorLog(Context ctx, Object msg) {
-        errorLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(ctx, msg));
+        errorLog(getDebugValOfBuildConfig(ctx), getTag(ctx), dealMsg(msg));
     }
 
     public static void errorLog(Context ctx, Object msg, Throwable t) {
         if (getDebugValOfBuildConfig(ctx) == true) {
-            Log.e(getTag(ctx), dealMsg(ctx, msg), t);
+            Log.e(getTag(ctx), dealMsg(msg), t);
         }
     }
-
-    // ====== End Log Util
 
 
     static native void verboseLog(boolean ifDebug, String tag, Object msg);
@@ -762,5 +755,6 @@ public class App extends MultiDexApp {
 
     static native void errorLog(boolean ifDebug, String tag, Object msg);
 
+    // ====== End Log Util
 
 }

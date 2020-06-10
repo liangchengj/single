@@ -13,14 +13,18 @@ import java.util.zip.ZipFile;
 
 import dalvik.system.DexFile;
 
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+import static android.os.Build.VERSION_CODES.KITKAT;
+
 
 abstract class DexLoader {
+
     ElementConstructor mElementConstructor;
 
     static DexLoader create(int sdkInt) {
-        if (sdkInt >= 19) {
+        if (sdkInt >= KITKAT) {
             return new V19();
-        } else if (sdkInt >= 14) {
+        } else if (sdkInt >= ICE_CREAM_SANDWICH) {
             return new V14();
         } else {
             throw new UnsupportedOperationException("only support SDK_INT >= 14, give up when < 14");
@@ -45,7 +49,8 @@ abstract class DexLoader {
         for (int i = 0; i < dexHolderList.size(); ++i) {
             DexHolder dexHolder = dexHolderList.get(i);
             elements.add(dexHolder.toDexListElement(mElementConstructor));
-            Monitor.get().logInfo("Install holder: " + dexHolder.getClass().getName() + ", index " + i);
+            Monitor.get().logInfo("Install holder: " + dexHolder.getClass().getName()
+                    + ", index " + i);
         }
 
         Utility.expandFieldArray(dexPathList, "dexElements", elements.toArray());
@@ -127,6 +132,7 @@ abstract class DexLoader {
                 try {
                     constructor = new JBMR11ElementConstructor(elementClass);
                 } catch (Exception ignored) {
+                    // Ignore
                 }
             }
 
@@ -134,9 +140,9 @@ abstract class DexLoader {
                 try {
                     constructor = new JBMR2ElementConstructor(elementClass);
                 } catch (Exception ignored) {
+                    // Ignore
                 }
             }
-
             mElementConstructor = constructor;
         }
     }
@@ -200,7 +206,8 @@ abstract class DexLoader {
 
         JBMR2ElementConstructor(Class<?> elementClass)
                 throws SecurityException, NoSuchMethodException {
-            mConstructor = elementClass.getConstructor(File.class, boolean.class, File.class, DexFile.class);
+            mConstructor = elementClass.getConstructor(File.class, boolean.class, File.class,
+                    DexFile.class);
             mConstructor.setAccessible(true);
         }
 
@@ -229,5 +236,4 @@ abstract class DexLoader {
             return mConstructor.newInstance(file, false, null, dex);
         }
     }
-
 }
