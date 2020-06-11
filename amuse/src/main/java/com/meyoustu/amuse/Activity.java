@@ -117,6 +117,9 @@ public abstract class Activity extends FragmentActivity {
     private int layoutId = -1;
     private View decorView;
 
+    /* Get the context of the current Activity. */
+    protected final Context ctx = this;
+
     protected final View getDecorView() {
         return decorView;
     }
@@ -151,11 +154,7 @@ public abstract class Activity extends FragmentActivity {
         if (decorViewConfigVal != -1) {
             setDecorViewSystemUiVisibility(decorViewConfigVal);
         } else {
-            try {
-                initSysBarByAnnotation();
-            } catch (IllegalAccessException e) {
-                // Ignore
-            }
+            initSysBarByAnnotation();
             // In order to adaptively initialize the System Bar.
             initSysBar();
             if (getClass().isAnnotationPresent(WindowFullScreen.class)) {
@@ -311,8 +310,7 @@ public abstract class Activity extends FragmentActivity {
         }
     }
 
-    private void initSysBarByAnnotation()
-            throws IllegalAccessException {
+    private void initSysBarByAnnotation() {
         @ColorRes
         int statusVal = getClassAnnotatedValue(StatusBarColor.class, int.class);
         if (statusVal != -1 && SDK_INT >= LOLLIPOP) {
@@ -348,10 +346,6 @@ public abstract class Activity extends FragmentActivity {
         }
     }
 
-    /* Get the context of the current Activity. */
-    protected final Context getContext() {
-        return Activity.this;
-    }
 
     /* Used to obtain the screen pixel density. */
     protected final float getDisplayDensity() {

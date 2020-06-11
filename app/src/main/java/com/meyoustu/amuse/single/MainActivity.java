@@ -18,10 +18,16 @@ import com.meyoustu.amuse.view.InitWithGone;
  * @author Liangcheng Juves
  * Created at 2020/6/1 14:37
  */
-@StatusBarColor(android.R.color.white)
-@NavigationBarColor(android.R.color.white)
-/* Use this annotation to assign a value to a member by judging its name. */
+
+/* The default value is {@code Color.WHITE}. */
+@StatusBarColor
+
+/** The default value is {@code Color.WHITE}. */
+@NavigationBarColor
+
+/** Use this annotation to assign a value to a member by judging its name. */
 @IntelliRes
+
 @Native({"amuse", "main"})
 /** If you have enabled obfuscation, please use this annotation.
  * @see build.gradle {@code minifyEnabled true} */
@@ -40,9 +46,9 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
     @AString(R.string.app_name)
     String appName;
 
-
+    /* Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
     @Override
-    protected int initView() {
+    public int initView() {
         return R.layout.activity_main;
     }
 

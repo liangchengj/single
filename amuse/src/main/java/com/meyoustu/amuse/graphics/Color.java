@@ -1,5 +1,8 @@
 package com.meyoustu.amuse.graphics;
 
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
+
 /**
  * @author Liangcheng Juves
  * Created at 2020/6/7 14:35
@@ -14,5 +17,13 @@ public class Color extends android.graphics.Color {
 
     public static int valOf(int value) {
         return valueOf(VALUE_MONOCHROME_MAXIMUM, value);
+    }
+
+    /**
+     * @param color The value of the color.
+     * @return "true" means the color is bright.
+     */
+    public static boolean isLightColor(@ColorInt int color) {
+        return ColorUtils.calculateLuminance(color) >= 0.5;
     }
 }

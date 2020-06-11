@@ -1,8 +1,11 @@
 package com.meyoustu.amuse.annotation.sysbar;
 
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Keep;
+
+import com.meyoustu.amuse.graphics.Color;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -20,5 +23,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Inherited
 @Target(TYPE)
 public @interface NavigationBarColor {
-    @ColorRes int value() default -1;
+    @ColorInt int value() default Color.WHITE;
 }
