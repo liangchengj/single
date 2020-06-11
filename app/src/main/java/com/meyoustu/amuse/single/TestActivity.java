@@ -1,12 +1,15 @@
 package com.meyoustu.amuse.single;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.meyoustu.amuse.App;
+import com.meyoustu.amuse.content.SharedPreferences;
+import com.meyoustu.amuse.util.Toast;
 
 /**
  * @author Liangcheng Juves
@@ -17,6 +20,11 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = SharedPreferences.initialize(this);
+        sharedPreferences.putNumber("Test", 1);
+
+        Toast.showLong(this, sharedPreferences.getInt("Test", 0));
 
 //        final MainFragment mainFragment = MainFragment.newInstance();
 //

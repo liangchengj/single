@@ -2,7 +2,6 @@ package com.meyoustu.amuse.util;
 
 import android.content.Context;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.StringRes;
 
@@ -40,7 +39,16 @@ public final class Toast {
     }
 
     public static void showShort(Context ctx, @StringRes int id) {
-        toastRes(ctx, id, LENGTH_SHORT);
+        try {
+            String string = ctx.getString(id);
+            if (null != string) {
+                toastRes(ctx, id, LENGTH_SHORT);
+            } else {
+                toastMsg(ctx, String.valueOf(id), LENGTH_SHORT);
+            }
+        } catch (Throwable t) {
+            toastMsg(ctx, String.valueOf(id), LENGTH_SHORT);
+        }
     }
 
     public static void showLong(Context ctx, Object msg) {
@@ -49,7 +57,16 @@ public final class Toast {
 
 
     public static void showLong(Context ctx, @StringRes int id) {
-        toastRes(ctx, id, LENGTH_LONG);
+        try {
+            String string = ctx.getString(id);
+            if (null != string) {
+                toastRes(ctx, id, LENGTH_LONG);
+            } else {
+                toastMsg(ctx, String.valueOf(id), LENGTH_LONG);
+            }
+        } catch (Throwable t) {
+            toastMsg(ctx, String.valueOf(id), LENGTH_LONG);
+        }
     }
 
     static native void toastMsg(Context ctx, Object msg, @Duration int duration);

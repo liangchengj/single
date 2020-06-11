@@ -12,6 +12,7 @@ import com.meyoustu.amuse.annotation.res.AColor;
 import com.meyoustu.amuse.annotation.res.AString;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
+import com.meyoustu.amuse.content.SharedPreferences;
 import com.meyoustu.amuse.view.InitWithGone;
 
 /**
@@ -74,6 +75,10 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
 //                MainFragment mainFragment = new MainFragment();
             }
         });
+
+        SharedPreferences sharedPreferences = SharedPreferences.initialize(ctx);
+        sharedPreferences.putNumber("Test", 1);
+        helloText.setText(String.valueOf(sharedPreferences.getInt("Test", 1)));
 
 //        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
 //        dialog.show();
