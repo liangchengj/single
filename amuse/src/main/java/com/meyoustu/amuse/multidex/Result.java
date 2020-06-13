@@ -1,6 +1,5 @@
 package com.meyoustu.amuse.multidex;
 
-
 import android.util.Log;
 
 import java.io.File;
@@ -8,66 +7,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class Result {
-    private static Result result = new Result();
+  private static Result result = new Result();
 
-    boolean modified;
+  boolean modified;
 
-    long freeSpaceBefore;
+  long freeSpaceBefore;
 
-    long freeSpaceAfter;
+  long freeSpaceAfter;
 
-    String vmLibName;
+  String vmLibName;
 
-    boolean isYunOS;
+  boolean isYunOS;
 
-    File dataDir;
+  File dataDir;
 
-    File rootDir;
+  File rootDir;
 
-    File dexDir;
+  File dexDir;
 
-    File optDexDir;
+  File optDexDir;
 
-    File zipDir;
+  File zipDir;
 
-    Throwable fatalThrowable;
+  Throwable fatalThrowable;
 
-    List<Throwable> unFatalThrowable = new ArrayList<>();
+  List<Throwable> unFatalThrowable = new ArrayList<>();
 
-    List<String> dexInfoList = new ArrayList<>();
+  List<String> dexInfoList = new ArrayList<>();
 
-    boolean supportFastLoadDex;
+  boolean supportFastLoadDex;
 
-    static Result get() {
-        if (result != null) {
-            return result;
-        } else {
-            Log.w(Constants.TAG, "Avoid npe, but return a invalid tmp result");
-            return new Result();
-        }
+  static Result get() {
+    if (result != null) {
+      return result;
+    } else {
+      Log.w(Constants.TAG, "Avoid npe, but return a invalid tmp result");
+      return new Result();
     }
+  }
 
-    private Result() {
-    }
+  private Result() {}
 
-    void setDirs(File dataDir, File rootDir, File dexDir,
-                 File optDexDir, File zipDir) {
-        this.dataDir = dataDir;
-        this.rootDir = rootDir;
-        this.dexDir = dexDir;
-        this.optDexDir = optDexDir;
-        this.zipDir = zipDir;
-    }
+  void setDirs(File dataDir, File rootDir, File dexDir, File optDexDir, File zipDir) {
+    this.dataDir = dataDir;
+    this.rootDir = rootDir;
+    this.dexDir = dexDir;
+    this.optDexDir = optDexDir;
+    this.zipDir = zipDir;
+  }
 
-    void setFatalThrowable(Throwable tr) {
-        fatalThrowable = tr;
-    }
+  void setFatalThrowable(Throwable tr) {
+    fatalThrowable = tr;
+  }
 
-    void addUnFatalThrowable(Throwable tr) {
-        unFatalThrowable.add(tr);
-    }
+  void addUnFatalThrowable(Throwable tr) {
+    unFatalThrowable.add(tr);
+  }
 
-    void addDexInfo(String dexInfo) {
-        dexInfoList.add(dexInfo);
-    }
+  void addDexInfo(String dexInfo) {
+    dexInfoList.add(dexInfo);
+  }
 }

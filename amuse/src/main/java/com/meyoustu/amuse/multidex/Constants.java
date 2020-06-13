@@ -1,80 +1,74 @@
 package com.meyoustu.amuse.multidex;
 
-
 import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
 interface Constants {
 
-    String TAG = MultiDex.class.getName();
+  String TAG = MultiDex.class.getName();
 
-    String CODE_CACHE_SECONDARY_FOLDER_NAME = "code_cache/secondary-dexes";
+  String CODE_CACHE_SECONDARY_FOLDER_NAME = "code_cache/secondary-dexes";
 
-    String multidex_DIR_NAME = "multidex";
+  String multidex_DIR_NAME = "multidex";
 
-    String DEX_DIR_NAME = "dex_cache";
+  String DEX_DIR_NAME = "dex_cache";
 
-    String ODEX_DIR_NAME = "odex_cache";
+  String ODEX_DIR_NAME = "odex_cache";
 
-    String ZIP_DIR_NAME = "zip_cache";
+  String ZIP_DIR_NAME = "zip_cache";
 
-    int MIN_SDK_VERSION = ICE_CREAM_SANDWICH;
+  int MIN_SDK_VERSION = ICE_CREAM_SANDWICH;
 
-    int VM_WITH_MULTIDEX_VERSION_MAJOR = 2;
+  int VM_WITH_MULTIDEX_VERSION_MAJOR = 2;
 
-    int VM_WITH_MULTIDEX_VERSION_MINOR = 1;
+  int VM_WITH_MULTIDEX_VERSION_MINOR = 1;
 
-    long SPACE_THRESHOLD = 150_000_000L;
+  long SPACE_THRESHOLD = 150_000_000L;
 
-    long SPACE_MIN_THRESHOLD = 20_000_000L;
+  long SPACE_MIN_THRESHOLD = 20_000_000L;
 
-    long MEM_THRESHOLD = 128_000_000L;
+  long MEM_THRESHOLD = 128_000_000L;
 
-    /**
-     * We look for additional dex files named {@code classes2.dex},
-     * {@code classes3.dex}, etc.
-     */
-    String DEX_PREFIX = "classes";
-    String DEX_SUFFIX = ".dex";
-    String ZIP_SUFFIX = ".zip";
-    String ODEX_SUFFIX = ".odex";
+  /** We look for additional dex files named {@code classes2.dex}, {@code classes3.dex}, etc. */
+  String DEX_PREFIX = "classes";
 
-    String EXTRACTED_NAME_EXT = ".classes";
-    String EXTRACTED_SUFFIX = ".dex";
-    int MAX_EXTRACT_ATTEMPTS = 3;
-    int EXTRACTED_SUFFIX_LENGTH = EXTRACTED_SUFFIX.length();
+  String DEX_SUFFIX = ".dex";
+  String ZIP_SUFFIX = ".zip";
+  String ODEX_SUFFIX = ".odex";
 
-    String PREFS_FILE = "multidex.records";
-    String KEY_TIME_STAMP = "timestamp";
-    String KEY_CRC = "crc";
-    String KEY_DEX_NUMBER = "dex.number";
-    String KEY_DEX_CHECKSUM = "dex.checksum.";
-    String KEY_DEX_TIME = "dex.time.";
-    String KEY_ODEX_CHECKSUM = "odex.checksum.";
-    String KEY_ODEX_TIME = "odex.time.";
-    String KEY_DEX_OBJ_TYPE = "dex.obj.type";
+  String EXTRACTED_NAME_EXT = ".classes";
+  String EXTRACTED_SUFFIX = ".dex";
+  int MAX_EXTRACT_ATTEMPTS = 3;
+  int EXTRACTED_SUFFIX_LENGTH = EXTRACTED_SUFFIX.length();
 
-    /**
-     * Size of reading buffers.
-     */
-    int BUFFER_SIZE = 0x2000;
-    /* Keep value away from 0 because it is a too probable time stamp value */
-    long NO_VALUE = -1L;
+  String PREFS_FILE = "multidex.records";
+  String KEY_TIME_STAMP = "timestamp";
+  String KEY_CRC = "crc";
+  String KEY_DEX_NUMBER = "dex.number";
+  String KEY_DEX_CHECKSUM = "dex.checksum.";
+  String KEY_DEX_TIME = "dex.time.";
+  String KEY_ODEX_CHECKSUM = "odex.checksum.";
+  String KEY_ODEX_TIME = "odex.time.";
+  String KEY_DEX_OBJ_TYPE = "dex.obj.type";
 
-    String LOCK_PREPARE_FILENAME = "multidex.prepare.lock";
-    String LOCK_INSTALL_FILENAME = "multidex.install.lock";
+  /** Size of reading buffers. */
+  int BUFFER_SIZE = 0x2000;
+  /* Keep value away from 0 because it is a too probable time stamp value */
+  long NO_VALUE = -1L;
 
-    /* redefine those constant here because of bug 13721174 preventing to compile using the
-     * constants defined in ZipFile */
-    int ENDHDR = 22;
-    int ENDSIG = 0x6054b50;
+  String LOCK_PREPARE_FILENAME = "multidex.prepare.lock";
+  String LOCK_INSTALL_FILENAME = "multidex.install.lock";
 
-    int LOAD_TYPE_APK_BUF = 0;
-    int LOAD_TYPE_DEX_BUF = 1;
-    int LOAD_TYPE_DEX_OPT = 2;
-    int LOAD_TYPE_ZIP_OPT = 3;
-    int LOAD_TYPE_INVALID = 9;
+  /* redefine those constant here because of bug 13721174 preventing to compile using the
+   * constants defined in ZipFile */
+  int ENDHDR = 22;
+  int ENDSIG = 0x6054b50;
 
-    /* In order to adapt to Alibaba's independently developed mobile operating system. */
-    String LIB_YUNOS_PATH = "/system/lib/libvmkid_lemur.so";
+  int LOAD_TYPE_APK_BUF = 0;
+  int LOAD_TYPE_DEX_BUF = 1;
+  int LOAD_TYPE_DEX_OPT = 2;
+  int LOAD_TYPE_ZIP_OPT = 3;
+  int LOAD_TYPE_INVALID = 9;
 
+  /* In order to adapt to Alibaba's independently developed mobile operating system. */
+  String LIB_YUNOS_PATH = "/system/lib/libvmkid_lemur.so";
 }

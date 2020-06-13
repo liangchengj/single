@@ -1,6 +1,5 @@
 package com.meyoustu.amuse.annotation.res;
 
-
 import androidx.annotation.Keep;
 import androidx.annotation.StringRes;
 
@@ -12,11 +11,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * @author Liangcheng Juves
- * Created at 2020/6/2 8:56
+ * @info Created at 2020/6/2 11:13
  */
 @Keep
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface AString {
-    @StringRes int value() default -1;
+  @StringRes
+  int value() default -1;
 }

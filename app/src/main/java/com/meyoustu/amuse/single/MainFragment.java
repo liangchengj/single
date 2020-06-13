@@ -11,22 +11,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.meyoustu.amuse.Fragment;
 
-/**
- * @author Liangcheng Juves
- * Created at 2020/6/10 15:49
- */
+/** @author Liangcheng Juves Created at 2020/6/10 15:49 */
 public class MainFragment extends Fragment<AppCompatActivity> {
 
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.frag_main, container, false);
+  }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_main, container, false);
-    }
-
-    public static final MainFragment newInstance() {
-        return new MainFragment();
-    }
+  public static final MainFragment newInstance() {
+    return new MainFragment();
+  }
 }

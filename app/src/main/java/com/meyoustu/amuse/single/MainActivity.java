@@ -15,10 +15,7 @@ import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
 import com.meyoustu.amuse.content.SharedPreferences;
 import com.meyoustu.amuse.view.InitWithGone;
 
-/**
- * @author Liangcheng Juves
- * Created at 2020/6/1 14:37
- */
+/** @author Liangcheng Juves Created at 2020/6/1 14:37 */
 
 /* The default value is {@code Color.WHITE}. */
 @StatusBarColor
@@ -28,74 +25,77 @@ import com.meyoustu.amuse.view.InitWithGone;
 
 /** Use this annotation to assign a value to a member by judging its name. */
 @IntelliRes
-
 @Native({"amuse", "main"})
-/** If you have enabled obfuscation, please use this annotation.
- * @see build.gradle {@code minifyEnabled true} */
+/**
+ * If you have enabled obfuscation, please use this annotation.
+ *
+ * @see build.gradle {@code minifyEnabled true}
+ */
 @Keep
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
-    /* After using this annotation to initialize the View, it will be made invisible. */
-    @InitWithGone
-    TextView helloText;
+  /* After using this annotation to initialize the View, it will be made invisible. */
+  @InitWithGone TextView helloText;
 
-    Animation androidFadeIn;
+  Animation androidFadeIn;
 
-    @AColor(R.color.accent_color)
-    int accentColor;
+  @AColor(R.color.accent_color)
+  int accentColor;
 
-    @AString(R.string.app_name)
-    String appName;
+  @AString(R.string.app_name)
+  String appName;
 
-    /* Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
-    @Override
-    public int initView() {
-        return R.layout.activity_main;
-    }
+  /* Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
+  @Override
+  public int initView() {
+    return R.layout.activity_main;
+  }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+  @Override
+  protected void onResume() {
+    super.onResume();
 
-        helloText.setText("hello,amuse");
-        helloText.setTextColor(accentColor);
-        helloText.setText(appName);
-        helloText.setText(stringFromJNI());
+    helloText.setText("hello,amuse");
+    helloText.setTextColor(accentColor);
+    helloText.setText(appName);
+    helloText.setText(stringFromJNI());
 
-        helloText.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                helloText.setVisibility(View.VISIBLE);
-                helloText.startAnimation(androidFadeIn);
-            }
-        }, 500);
-        helloText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                MainFragment mainFragment = new MainFragment();
-            }
+    helloText.postDelayed(
+        new Runnable() {
+          @Override
+          public void run() {
+            helloText.setVisibility(View.VISIBLE);
+            helloText.startAnimation(androidFadeIn);
+          }
+        },
+        500);
+    helloText.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            //                MainFragment mainFragment = new MainFragment();
+          }
         });
 
-        SharedPreferences sharedPreferences = SharedPreferences.initialize(ctx);
-        sharedPreferences.putNumber("Test", 1);
-        helloText.setText(String.valueOf(sharedPreferences.getInt("Test", 1)));
+    SharedPreferences sharedPreferences = SharedPreferences.initialize(ctx);
+    sharedPreferences.putNumber("Test", 1);
+    helloText.setText(String.valueOf(sharedPreferences.getInt("Test", 1)));
 
-//        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
-//        dialog.show();
-//
-//        helloText.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                MainFragment mainFragment = new MainFragment();
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ft.add(R.id.main_frag, mainFragment, "MAIN");
-//                ft.commit();
-//            }
-//        }, 1000);
+    //        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
+    //        dialog.show();
+    //
+    //        helloText.postDelayed(new Runnable() {
+    //            @Override
+    //            public void run() {
+    //                MainFragment mainFragment = new MainFragment();
+    //                FragmentManager fm = getSupportFragmentManager();
+    //                FragmentTransaction ft = fm.beginTransaction();
+    //                ft.add(R.id.main_frag, mainFragment, "MAIN");
+    //                ft.commit();
+    //            }
+    //        }, 1000);
 
+  }
 
-    }
-
-    native private String stringFromJNI();
+  private native String stringFromJNI();
 }

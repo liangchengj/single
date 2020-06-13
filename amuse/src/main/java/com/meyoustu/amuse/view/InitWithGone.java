@@ -6,11 +6,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * @author Liangcheng Juves
- * Created at 2020/6/7 18:37
- */
+/** @author Liangcheng Juves Created at 2020/6/7 18:37 */
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface InitWithGone {
-}
+public @interface InitWithGone {}

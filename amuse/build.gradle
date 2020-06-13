@@ -48,10 +48,6 @@ android {
             }
         }
 
-        compileOptions {
-            targetCompatibility 1.8
-            sourceCompatibility 1.8
-        }
     }
 
 
@@ -66,10 +62,13 @@ android {
             path "CMakeLists.txt"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     testImplementation project.ext.dependencies.test.junit
     androidTestImplementation project.ext.androidx.test.extjunit
@@ -77,5 +76,5 @@ dependencies {
 
     // noinspection GradleCompatible
     // implementation project.ext.android.support.appcompat
-    implementation project.ext.androidx.appcompat
+    api project.ext.androidx.appcompat
 }

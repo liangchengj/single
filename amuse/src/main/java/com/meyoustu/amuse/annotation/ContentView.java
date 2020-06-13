@@ -1,6 +1,5 @@
 package com.meyoustu.amuse.annotation;
 
-
 import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 
@@ -11,14 +10,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * @author Liangcheng Juves
- * Created at 2020/6/2 12:29
- */
+/** @author Liangcheng Juves Created at 2020/6/2 12:29 */
 @Keep
 @Retention(RUNTIME)
 @Inherited
 @Target(TYPE)
 public @interface ContentView {
-    @LayoutRes int value() default -1;
+  @LayoutRes
+  int value() default -1;
 }

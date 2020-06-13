@@ -41,13 +41,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     testImplementation amuse.ext.dependencies.test.junit
     androidTestImplementation amuse.ext.androidx.test.extjunit
     androidTestImplementation amuse.ext.androidx.test.espressocore
 
-    implementation amuse.ext.androidx.appcompat
+    // implementation amuse.ext.androidx.appcompat
     implementation amuse.ext.androidx.constraintlayout
     implementation amuse
 }
