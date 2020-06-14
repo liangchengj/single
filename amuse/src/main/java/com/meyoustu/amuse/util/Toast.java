@@ -12,8 +12,11 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 /**
- * @author Liangcheng Juves Created at 2020/6/1 21:06
- *     <p>Simplify the usage of Toast that comes with Android.
+ * Created at 2020/6/14 10:16.
+ *
+ * <p>Simplify the usage of Toast that comes with Android.
+ *
+ * @author Liangcheng Juves
  */
 public final class Toast {
 

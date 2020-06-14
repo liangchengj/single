@@ -10,8 +10,9 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * Created at 2020/6/14 10:16.
+ *
  * @author Liangcheng Juves
- * @info Created at 2020/6/2 11:13
  */
 @Keep
 @Retention(RUNTIME)

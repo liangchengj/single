@@ -73,7 +73,11 @@ import static com.meyoustu.amuse.annotation.DecorViewConfig.HIDE_SYS_BARS;
 import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
 import static java.lang.System.currentTimeMillis;
 
-/** @author Liangcheng Juves Created at 2020/6/1 14:37 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 public abstract class Activity extends FragmentActivity {
 
   public static final String IDENTIFIER_DRAWABLE = "drawable";

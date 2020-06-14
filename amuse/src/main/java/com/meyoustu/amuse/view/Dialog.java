@@ -38,7 +38,11 @@ import static com.meyoustu.amuse.graphics.Color.WHITE;
 import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
 import static java.lang.System.currentTimeMillis;
 
-/** @author Liangcheng Juves Created at 2020/6/7 14:32 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 public final class Dialog extends android.app.Dialog {
 
   private static final int COLOR_NIGHT = Color.valOf(52);

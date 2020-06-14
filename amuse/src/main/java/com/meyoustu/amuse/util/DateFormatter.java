@@ -9,8 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * Created at 2020/6/14 10:16.
+ *
  * @author Liangcheng Juves
- * @info Created at 2020/05/17 01:19
  */
 public final class DateFormatter {
   private DateFormatter() {
@@ -34,6 +35,10 @@ public final class DateFormatter {
     DateFormatter dateFormatter = new DateFormatter();
     dateFormatter.simpleDateFormat = new SimpleDateFormat(text);
     return dateFormatter;
+  }
+
+  public static final String formatNowNormally() {
+    return new Date().toString();
   }
 
   private final ThreadLocal<DateFormat> threadLocal;

@@ -10,7 +10,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** @author Liangcheng Juves Created at 2020/6/2 12:29 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 @Keep
 @Retention(RUNTIME)
 @Inherited

@@ -3,7 +3,11 @@ package com.meyoustu.amuse.listen;
 import android.view.MotionEvent;
 import android.view.View;
 
-/** @author Liangcheng Juves Created at 2020/6/2 16:26 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 public interface ClickListener {
   void onTouchDown(View v, MotionEvent event);
 

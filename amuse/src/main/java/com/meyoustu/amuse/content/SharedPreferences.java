@@ -8,7 +8,11 @@ import androidx.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
-/** @author Liangcheng Juves Created at 2020/6/11 16:54 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 public final class SharedPreferences {
 
   private SharedPreferences(android.content.SharedPreferences preferences) {

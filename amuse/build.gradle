@@ -68,6 +68,9 @@ android {
     }
 }
 
+
+// from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
 dependencies {
 
     testImplementation project.ext.dependencies.test.junit

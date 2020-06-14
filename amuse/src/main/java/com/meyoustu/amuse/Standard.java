@@ -68,9 +68,12 @@ import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * @author Liangcheng Juves Created at 2020/6/10 17:52
- *     <p>Default interface methods are only supported starting with Android N (--min-api 24):
- *     boolean com.meyoustu.amuse.Standard.appHasNewVersion(java.lang.String)]
+ * Created at 2020/6/14 10:16.
+ *
+ * <p>Default interface methods are only supported starting with Android N (--min-api 24): * boolean
+ * com.meyoustu.amuse.Standard.appHasNewVersion(java.lang.String)]
+ *
+ * @author Liangcheng Juves
  */
 @RequiresApi(N)
 public interface Standard {

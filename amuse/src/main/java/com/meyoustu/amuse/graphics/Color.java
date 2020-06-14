@@ -3,7 +3,11 @@ package com.meyoustu.amuse.graphics;
 import androidx.annotation.ColorInt;
 import androidx.core.graphics.ColorUtils;
 
-/** @author Liangcheng Juves Created at 2020/6/7 14:35 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 public class Color extends android.graphics.Color {
 
   public static final int VALUE_MONOCHROME_MAXIMUM = 255;

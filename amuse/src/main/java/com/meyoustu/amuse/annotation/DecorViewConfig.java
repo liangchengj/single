@@ -16,7 +16,11 @@ import static android.view.View.SYSTEM_UI_FLAG_VISIBLE;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** @author Liangcheng Juves Created at 2020/6/7 14:52 */
+/**
+ * Created at 2020/6/14 10:16.
+ *
+ * @author Liangcheng Juves
+ */
 @Retention(RUNTIME)
 @Inherited
 @Target(TYPE)

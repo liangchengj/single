@@ -72,9 +72,13 @@ import static com.meyoustu.amuse.Activity.PKG_ANDROID;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * @author Liangcheng Juves Created at 2020/6/1 14:37
- *     <p>*** This class cannot be an abstract class. *** The constructor of this class cannot be
- *     modified with protected or private.
+ * Created at 2020/6/14 10:16.
+ *
+ * <p>***This class cannot be an abstract class.
+ *
+ * <p>*** The constructor of this class cannot be * modified with protected or private.
+ *
+ * @author Liangcheng Juves
  */
 public class App extends MultiDexApp {
 
