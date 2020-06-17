@@ -10,10 +10,10 @@ android {
     defaultConfig {
         applicationId "com.meyoustu.amuse.single"
         minSdkVersion amuse.ext.android.defconfig.minSdkVersion
-        targetSdkVersion 29
+        targetSdkVersion amuse.ext.android.defconfig.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner amuse.ext.android.defconfig.testInstrumentationRunner.androidx
     }
     buildTypes {
         release {
@@ -42,7 +42,7 @@ android {
 
 dependencies {
 
-    testImplementation amuse.ext.dependencies.test.junit
+    testImplementation amuse.ext.dependencies.test.junit.junit
     androidTestImplementation amuse.ext.androidx.test.extjunit
     androidTestImplementation amuse.ext.androidx.test.espressocore
 

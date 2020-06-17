@@ -8,15 +8,19 @@ ext {
             buildToolsVersion: "29.0.3",
 
             defconfig        : [
-                    minSdkVersion       : 14,
-                    targetSdkVersion    : 29,
-                    versionCode         : 1,
-                    versionName         : "2020.6.10.057",
-                    multiDexEnabled     : true,
-                    multiDexKeepProguard: file('multidex_keep.pro'),
-                    ndk                 : {
+                    minSdkVersion            : 14,
+                    targetSdkVersion         : 29,
+                    versionCode              : 1,
+                    versionName              : "2020.6.10.057",
+                    multiDexEnabled          : true,
+                    multiDexKeepProguard     : file('multidex_keep.pro'),
+                    ndk                      : {
                         abiFilters = [/* "armeabi", */ "armeabi-v7a", "arm64-v8a", "x86"/* , "x86_64" */]
-                    }
+                    },
+                    testInstrumentationRunner: [
+                            android : "android.support.test.runner.AndroidJUnitRunner",
+                            androidx: "androidx.test.runner.AndroidJUnitRunner"
+                    ]
             ],
 
             support          : [
@@ -42,7 +46,9 @@ ext {
 
     dependencies = [
             test = [
-                    junit: 'junit:junit:4.13'
+                    junit: [
+                            junit: 'junit:junit:4.13'
+                    ]
             ]
     ]
 }

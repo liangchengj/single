@@ -12,7 +12,7 @@ android {
         versionCode project.ext.android.defconfig.versionCode
         versionName project.ext.android.defconfig.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner project.ext.android.defconfig.testInstrumentationRunner.androidx
 
         // To deal with:
         // java.lang.RuntimeException:
@@ -73,7 +73,7 @@ android {
 
 dependencies {
 
-    testImplementation project.ext.dependencies.test.junit
+    testImplementation project.ext.dependencies.test.junit.junit
     androidTestImplementation project.ext.androidx.test.extjunit
     androidTestImplementation project.ext.androidx.test.espressocore
 
