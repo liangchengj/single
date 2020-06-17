@@ -29,11 +29,9 @@ ext {
                     ]
             ],
             junit   : [
-                    junit: 4.13
-            ],
-            gson    : '2020.6.13.1011',
-            opcvd   : '2020.6.16.2317',
-            aconst  : '2020.6.17.1332'
+                    junit  : 4.13,
+                    jupiter: '5.7.0-M1'
+            ]
     ]
 
     android = [
@@ -78,11 +76,9 @@ ext {
     dependencies = [
             test  : [
                     junit: [
-                            junit: "junit:junit:$versions.junit.junit"
+                            junit  : "junit:junit:$versions.junit.junit",
+                            jupiter: "org.junit.jupiter:junit-jupiter:$versions.junit.jupiter"
                     ]
-            ],
-            gson  : "com.github.meyoustu:gson$versions.gson",
-            opcvd : "com.github.meyoustu:opcvd$versions.opcvd",
-            aconst: "com.github.meyoustu:aconst$versions.aconst"
+            ]
     ]
 }
