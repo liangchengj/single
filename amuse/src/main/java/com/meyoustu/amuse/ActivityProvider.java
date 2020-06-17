@@ -10,13 +10,24 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.LayoutRes;
+
+import com.meyoustu.amuse.annotation.ContentView;
 import com.meyoustu.amuse.listen.ClickListener;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.N_MR1;
+import static android.os.Build.VERSION_CODES.O;
+import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created at 2020/6/17 17:28.
@@ -37,29 +48,88 @@ abstract class ActivityProvider implements StandardProvider {
   }
 
   @Override
-  public int initView() {
-    return 0;
+  public @LayoutRes int initView() {
+    @LayoutRes int contentViewVal = getClassAnnotatedValue(ContentView.class, int.class);
+    if (contentViewVal != -1) {
+      activity.setContentView(contentViewVal);
+    }
+    return -1;
   }
 
   @Override
-  public void setDecorViewRadius(int radius) {}
+  public void setDecorViewRadius(int radius) {
+    App.setViewRadius(radius, getDecorView());
+  }
 
   @Override
-  public void setViewRadius(int radius, int... ids) {}
+  public void setViewRadius(int radius, int... ids) {
+    if (null != ids) {
+      if (ids.length != 0) {
+        View[] views = new View[ids.length];
+        for (int i = 0; i < views.length; i++) {
+          views[i] = activity.findViewById(ids[i]);
+        }
+        App.setViewRadius(radius, views);
+      }
+    }
+  }
 
   @Override
-  public void setViewOval(int... ids) {}
+  public void setViewOval(int... ids) {
+    if (null != ids) {
+      if (ids.length != 0) {
+        View[] views = new View[ids.length];
+        for (int i = 0; i < views.length; i++) {
+          views[i] = activity.findViewById(ids[i]);
+        }
+        App.setViewOval(views);
+      }
+    }
+  }
 
   @Override
-  public void effectClick(View v, ClickListener clickListener) {}
+  public void effectClick(View v, ClickListener clickListener) {
+    v.setOnTouchListener(
+        new View.OnTouchListener() {
+          private long touchDown;
+
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+              clickListener.onTouchDown(v, event);
+              touchDown = currentTimeMillis();
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+              clickListener.onTouchUp(v, event);
+              if (currentTimeMillis() - touchDown <= RESP_TIME_MILLLIS) {
+                clickListener.onClick(v);
+              }
+            }
+            return false;
+          }
+        });
+  }
 
   @Override
   public ShortcutManager getShortCutManager() {
-    return null;
+    return SDK_INT >= N_MR1 ? activity.getSystemService(ShortcutManager.class) : null;
   }
 
   @Override
-  public void setShortCuts(ShortcutInfo... shortcutInfo) {}
+  public void setShortCuts(ShortcutInfo... shortcutInfo) {
+    ShortcutManager shortcutManager = getShortCutManager();
+    if (shortcutManager != null) {
+      if (SDK_INT >= O && shortcutInfo != null) {
+        for (ShortcutInfo info : shortcutInfo) {
+          shortcutManager.addDynamicShortcuts(Arrays.asList(info));
+        }
+      }
+    }
+  }
+
+  @Override
+  public float getDisplayDensity() {
+    return 0;
+  }
 
   @Override
   public int getResColor(int id) {
