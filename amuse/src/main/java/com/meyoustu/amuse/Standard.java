@@ -54,14 +54,6 @@ import static android.os.Build.VERSION_CODES.N;
 import static android.os.Build.VERSION_CODES.N_MR1;
 import static android.os.Build.VERSION_CODES.O;
 import static android.provider.SyncStateContract.Columns.DATA;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_ARRAY;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_COLOR;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_DIMEN;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_DRAWABLE;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_LAYOUT;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_STRING;
-import static com.meyoustu.amuse.Activity.IDENTIFIER_XML;
-import static com.meyoustu.amuse.Activity.PKG_ANDROID;
 import static com.meyoustu.amuse.App.getAnimId;
 import static com.meyoustu.amuse.App.getResId;
 import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
@@ -76,7 +68,7 @@ import static java.lang.System.currentTimeMillis;
  * @author Liangcheng Juves
  */
 @RequiresApi(N)
-public interface Standard {
+public interface Standard extends StandardProvider {
 
   default View getDecorView() {
     return ((Activity) this).getWindow().getDecorView();
@@ -118,8 +110,8 @@ public interface Standard {
     }
   }
 
-  /* Used for the view press effect and contains the click event of the view. */
-  default void effectClick(View v, final ClickListener clickListener) {
+  /** Used for the view press effect and contains the click event of the view. */
+  default void effectClick(View v, ClickListener clickListener) {
     v.setOnTouchListener(
         new View.OnTouchListener() {
           private long touchDown;
@@ -145,7 +137,7 @@ public interface Standard {
     return SDK_INT >= N_MR1 ? ((Activity) this).getSystemService(ShortcutManager.class) : null;
   }
 
-  /* Android 8.0 or above can set the desktop icon menu. */
+  /** Android 8.0 or above can set the desktop icon menu. */
   default void setShortCuts(ShortcutInfo... shortcutInfo) {
     ShortcutManager shortcutManager = getShortCutManager();
     if (shortcutManager != null) {
@@ -157,12 +149,12 @@ public interface Standard {
     }
   }
 
-  /* Used to obtain the screen pixel density. */
+  /** Used to obtain the screen pixel density. */
   default float getDisplayDensity() {
     return ((Activity) this).getResources().getDisplayMetrics().density;
   }
 
-  /* Get the color from the resource file. */
+  /** Get the color from the resource file. */
   default @ColorInt int getResColor(@ColorRes int id) {
     return App.getResColor(((Activity) this), id);
   }

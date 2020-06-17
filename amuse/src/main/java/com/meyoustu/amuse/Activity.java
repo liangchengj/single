@@ -78,19 +78,9 @@ import static java.lang.System.currentTimeMillis;
  *
  * @author Liangcheng Juves
  */
-public abstract class Activity extends FragmentActivity {
+public abstract class Activity extends FragmentActivity implements ActivityProvider.Impl {
 
-  public static final String IDENTIFIER_DRAWABLE = "drawable";
-  public static final String IDENTIFIER_ID = "id";
-  public static final String IDENTIFIER_STRING = "string";
-  public static final String IDENTIFIER_ARRAY = "array";
-  public static final String IDENTIFIER_DIMEN = "dimen";
-  public static final String IDENTIFIER_COLOR = "color";
-  public static final String IDENTIFIER_LAYOUT = "layout";
-  public static final String IDENTIFIER_ANIMATION = "anim";
-  public static final String IDENTIFIER_XML = "xml";
 
-  public static final String PKG_ANDROID = "android";
 
   /* Construction method.
   Load the dynamic link library by detecting whether it is annotated with "@Native". */

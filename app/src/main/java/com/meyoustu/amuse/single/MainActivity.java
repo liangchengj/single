@@ -12,17 +12,18 @@ import com.meyoustu.amuse.annotation.res.AColor;
 import com.meyoustu.amuse.annotation.res.AString;
 import com.meyoustu.amuse.annotation.sysbar.NavigationBarColor;
 import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
-import com.meyoustu.amuse.content.SharedPreferences;
+import com.meyoustu.amuse.content.SharedPrefs;
 import com.meyoustu.amuse.view.InitWithGone;
 
-/** @author Liangcheng Juves Created at 2020/6/1 14:37 */
-
-/* The default value is {@code Color.WHITE}. */
+/**
+ * Created at 2020/6/1 14:37.
+ *
+ * @author Liangcheng Juves
+ */
+/** The default value is {@code Color.WHITE}. */
 @StatusBarColor
-
 /** The default value is {@code Color.WHITE}. */
 @NavigationBarColor
-
 /** Use this annotation to assign a value to a member by judging its name. */
 @IntelliRes
 @Native({"amuse", "main"})
@@ -34,7 +35,7 @@ import com.meyoustu.amuse.view.InitWithGone;
 @Keep
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
-  /* After using this annotation to initialize the View, it will be made invisible. */
+  /** After using this annotation to initialize the View, it will be made invisible. */
   @InitWithGone TextView helloText;
 
   Animation androidFadeIn;
@@ -45,7 +46,7 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
   @AString(R.string.app_name)
   String appName;
 
-  /* Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
+  /** Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
   @Override
   public int initView() {
     return R.layout.activity_main;
@@ -77,9 +78,9 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
           }
         });
 
-    SharedPreferences sharedPreferences = SharedPreferences.initialize(ctx);
-    sharedPreferences.putNumber("Test", 1);
-    helloText.setText(String.valueOf(sharedPreferences.getInt("Test", 1)));
+    SharedPrefs sharedPrefs = SharedPrefs.initialize(ctx);
+    sharedPrefs.putNumber("Test", 1);
+    helloText.setText(String.valueOf(sharedPrefs.getInt("Test", 1)));
 
     //        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
     //        dialog.show();
