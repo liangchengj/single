@@ -12,11 +12,11 @@ public class Color extends android.graphics.Color {
 
   public static final int VALUE_MONOCHROME_MAXIMUM = 255;
 
-  public static int valueOf(int alphaVal, int grayVal) {
-    return Color.argb(alphaVal, grayVal, grayVal, grayVal);
+  public static @ColorInt int valueOf(int alpha, int pixel) {
+    return Color.argb(alpha, pixel, pixel, pixel);
   }
 
-  public static int valOf(int value) {
+  public static @ColorInt int initWith(int value) {
     return valueOf(VALUE_MONOCHROME_MAXIMUM, value);
   }
 

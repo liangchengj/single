@@ -35,7 +35,7 @@ import static com.meyoustu.amuse.graphics.Color.BLACK;
 import static com.meyoustu.amuse.graphics.Color.TRANSPARENT;
 import static com.meyoustu.amuse.graphics.Color.VALUE_MONOCHROME_MAXIMUM;
 import static com.meyoustu.amuse.graphics.Color.WHITE;
-import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
+import static com.meyoustu.amuse.listen.EffectClickListener.RESP_TIME_MILLLIS;
 import static java.lang.System.currentTimeMillis;
 
 /**

@@ -3,6 +3,8 @@ package com.meyoustu.amuse.listen;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.IdRes;
+
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 import static java.lang.System.currentTimeMillis;
@@ -17,7 +19,7 @@ public abstract class EffectClickListener implements ClickListener, View.OnTouch
   private long touchDown;
 
   @Override
-  public void initialize(View v, int vId) {
+  public void initialize(View v, @IdRes int vId) {
     // Do nothing.
   }
 

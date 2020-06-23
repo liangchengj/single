@@ -137,7 +137,7 @@ public class App extends MultiDexApp {
       if (classOfT == boolean.class) {
         return (T) new Boolean(false);
       } else if (classOfT == char.class) {
-        return (T) new Character(' ');
+        return (T) new Character('\0');
       } else if (classOfT == byte.class
           || classOfT == short.class
           || classOfT == int.class
