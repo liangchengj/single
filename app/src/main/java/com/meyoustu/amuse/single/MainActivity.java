@@ -13,53 +13,50 @@ import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
 import com.meyoustu.amuse.view.Dialog;
 import com.meyoustu.amuse.view.InitWithGone;
 
-/**
- * @author Liangcheng Juves
- * Created at 2020/6/1 14:37
- */
+/** @author Liangcheng Juves Created at 2020/6/1 14:37 */
 @StatusBarColor(android.R.color.white)
 @NavigationBarColor(android.R.color.white)
 @IntelliRes
 @Native({"amuse", "main"})
 public class MainActivity extends com.meyoustu.amuse.Activity {
 
-    @InitWithGone
-    TextView helloText;
+  @InitWithGone TextView helloText;
 
-    Animation androidFadeIn;
+  Animation androidFadeIn;
 
-    @AColor(R.color.accent_color)
-    int accentColor;
+  @AColor(R.color.accent_color)
+  int accentColor;
 
-    @AString(R.string.app_name)
-    String appName;
+  @AString(R.string.app_name)
+  String appName;
 
+  @Override
+  protected int initView() {
+    return R.layout.activity_main;
+  }
 
-    @Override
-    protected int initView() {
-        return R.layout.activity_main;
-    }
+  @Override
+  protected void onResume() {
+    super.onResume();
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    helloText.setText("hello,amuse");
+    helloText.setTextColor(accentColor);
+    helloText.setText(appName);
+    helloText.setText(stringFromJNI());
 
-        helloText.setText("hello,amuse");
-        helloText.setTextColor(accentColor);
-        helloText.setText(appName);
-        helloText.setText(stringFromJNI());
+    helloText.postDelayed(
+        new Runnable() {
+          @Override
+          public void run() {
+            helloText.setVisibility(View.VISIBLE);
+            helloText.startAnimation(androidFadeIn);
+          }
+        },
+        500);
 
-        helloText.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                helloText.setVisibility(View.VISIBLE);
-                helloText.startAnimation(androidFadeIn);
-            }
-        }, 500);
+    Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
+    dialog.show();
+  }
 
-        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
-        dialog.show();
-    }
-
-    native private String stringFromJNI();
+  private native String stringFromJNI();
 }
