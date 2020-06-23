@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -47,6 +46,7 @@ import com.meyoustu.amuse.annotation.sysbar.StatusBarColor;
 import com.meyoustu.amuse.annotation.sysbar.WindowFullScreen;
 import com.meyoustu.amuse.graphics.Color;
 import com.meyoustu.amuse.listen.ClickListener;
+import com.meyoustu.amuse.listen.EffectClickListener;
 import com.meyoustu.amuse.util.Toast;
 
 import java.lang.annotation.Annotation;
@@ -70,15 +70,13 @@ import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static com.meyoustu.amuse.App.getAnimId;
 import static com.meyoustu.amuse.App.getResId;
 import static com.meyoustu.amuse.annotation.DecorViewConfig.HIDE_SYS_BARS;
-import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
-import static java.lang.System.currentTimeMillis;
 
 /**
  * Created at 2020/6/14 10:16.
  *
  * @author Liangcheng Juves
  */
-public abstract class Activity extends FragmentActivity implements AbstractActivityImpl {
+public abstract class Activity extends FragmentActivity implements ActivityWrapperImpl {
 
   /* Construction method.
   Load the dynamic link library by detecting whether it is annotated with "@Native". */
@@ -210,22 +208,22 @@ public abstract class Activity extends FragmentActivity implements AbstractActiv
 
   /* Used for the view press effect and contains the click event of the view. */
   public final void effectClick(View v, final ClickListener clickListener) {
+    clickListener.initialize(v, v.getId());
     v.setOnTouchListener(
-        new View.OnTouchListener() {
-          private long touchDown;
+        new EffectClickListener() {
+          @Override
+          public void onTouchDown(View v, int vId) {
+            clickListener.onTouchDown(v, vId);
+          }
 
           @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-              clickListener.onTouchDown(v, event);
-              touchDown = currentTimeMillis();
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-              clickListener.onTouchUp(v, event);
-              if (currentTimeMillis() - touchDown <= RESP_TIME_MILLLIS) {
-                clickListener.onClick(v);
-              }
-            }
-            return false;
+          public void onTouchUp(View v, int vId) {
+            clickListener.onTouchUp(v, vId);
+          }
+
+          @Override
+          public void onClick(View v, int vId) {
+            clickListener.onClick(v, vId);
           }
         });
   }

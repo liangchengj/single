@@ -2,16 +2,18 @@ package com.meyoustu.amuse;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.AnimRes;
@@ -28,26 +30,33 @@ import androidx.annotation.XmlRes;
 
 import com.meyoustu.amuse.annotation.ContentView;
 import com.meyoustu.amuse.listen.ClickListener;
+import com.meyoustu.amuse.listen.EffectClickListener;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
+import static android.content.Context.CONNECTIVITY_SERVICE;
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.content.Context.TELEPHONY_SERVICE;
+import static android.content.Context.WIFI_SERVICE;
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.N_MR1;
 import static android.os.Build.VERSION_CODES.O;
-import static com.meyoustu.amuse.listen.ClickListener.RESP_TIME_MILLLIS;
-import static java.lang.System.currentTimeMillis;
+import static com.meyoustu.amuse.App.getResId;
 
 /**
  * Created at 2020/6/17 17:28.
  *
  * @author Liangcheng Juves
  */
-abstract class AbstractActivity implements AbstractActivityImpl {
+abstract class ActivityWrapper implements ActivityWrapperImpl {
 
   private Activity activity;
 
-  AbstractActivity(Activity activity) {
+  ActivityWrapper(Activity activity) {
     this.activity = activity;
   }
 
@@ -71,7 +80,7 @@ abstract class AbstractActivity implements AbstractActivityImpl {
   }
 
   @Override
-  public void setViewRadius(int radius, int... ids) {
+  public void setViewRadius(int radius, @IdRes int... ids) {
     if (null != ids) {
       if (ids.length != 0) {
         View[] views = new View[ids.length];
@@ -84,7 +93,7 @@ abstract class AbstractActivity implements AbstractActivityImpl {
   }
 
   @Override
-  public void setViewOval(int... ids) {
+  public void setViewOval(@IdRes int... ids) {
     if (null != ids) {
       if (ids.length != 0) {
         View[] views = new View[ids.length];
@@ -98,22 +107,22 @@ abstract class AbstractActivity implements AbstractActivityImpl {
 
   @Override
   public void effectClick(View v, final ClickListener clickListener) {
+    clickListener.initialize(v, v.getId());
     v.setOnTouchListener(
-        new View.OnTouchListener() {
-          private long touchDown;
+        new EffectClickListener() {
+          @Override
+          public void onTouchDown(View v, int vId) {
+            clickListener.onTouchDown(v, vId);
+          }
 
           @Override
-          public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-              clickListener.onTouchDown(v, event);
-              touchDown = currentTimeMillis();
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-              clickListener.onTouchUp(v, event);
-              if (currentTimeMillis() - touchDown <= RESP_TIME_MILLLIS) {
-                clickListener.onClick(v);
-              }
-            }
-            return false;
+          public void onTouchUp(View v, int vId) {
+            clickListener.onTouchUp(v, vId);
+          }
+
+          @Override
+          public void onClick(View v, int vId) {
+            clickListener.onClick(v, vId);
           }
         });
   }
@@ -125,11 +134,15 @@ abstract class AbstractActivity implements AbstractActivityImpl {
 
   @Override
   public void setShortCuts(ShortcutInfo... shortcutInfo) {
-    ShortcutManager shortcutManager = getShortCutManager();
-    if (shortcutManager != null) {
-      if (SDK_INT >= O && shortcutInfo != null) {
-        for (ShortcutInfo info : shortcutInfo) {
-          shortcutManager.addDynamicShortcuts(Arrays.asList(info));
+    if (null != shortcutInfo) {
+      ShortcutManager shortcutManager = getShortCutManager();
+      if (null != shortcutManager) {
+        if (SDK_INT >= O) {
+          for (ShortcutInfo info : shortcutInfo) {
+            if (null != info) {
+              shortcutManager.addDynamicShortcuts(Arrays.asList(info));
+            }
+          }
         }
       }
     }
@@ -137,107 +150,115 @@ abstract class AbstractActivity implements AbstractActivityImpl {
 
   @Override
   public float getDisplayDensity() {
-    return 0;
+    return activity.getResources().getDisplayMetrics().density;
   }
 
   @Override
-  public int getResColor(int id) {
-    return 0;
+  public @ColorRes int getResColor(@IdRes int id) {
+    return App.getResColor(activity, id);
   }
 
   @Override
   public <T> T getClassAnnotatedValue(Class<? extends Annotation> annotation, Class<T> classOfT) {
-    return null;
+    return App.getClassAnnotatedValue(activity, annotation, classOfT);
   }
 
   @Override
-  public int getDimensionPixelSize(int id) {
-    return 0;
+  public @Dimension int getDimensionPixelSize(@DimenRes int id) {
+    return activity.getResources().getDimensionPixelSize(id);
   }
 
   @Override
   public int getOrientation() {
-    return 0;
+    return activity.getResources().getConfiguration().orientation;
   }
 
   @Override
   public boolean orientationIsPortrait() {
-    return false;
+    return getOrientation() == ORIENTATION_PORTRAIT;
   }
 
   @Override
   public boolean orientationIsLandScape() {
-    return false;
+    return getOrientation() == ORIENTATION_LANDSCAPE;
   }
 
   @Override
-  public int getStatusBarHeight() {
-    return 0;
+  public @Dimension int getStatusBarHeight() {
+    String name = "status_bar_height";
+    return orientationIsPortrait()
+        ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+        : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
   }
 
   @Override
-  public int getNavigationBarHeight() {
-    return 0;
+  public @Dimension int getNavigationBarHeight() {
+    String name = "navigation_bar_height";
+    return orientationIsPortrait()
+        ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+        : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
   }
 
   @Override
   public ConnectivityManager getConnectivityManager() {
-    return null;
+    return ((ConnectivityManager) activity.getSystemService(CONNECTIVITY_SERVICE));
   }
 
   @Override
   public NotificationManager getNotificationManager() {
-    return null;
+    return ((NotificationManager) activity.getSystemService(NOTIFICATION_SERVICE));
   }
 
   @Override
   public InputMethodManager getInputMethodManager() {
-    return null;
+    return ((InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE));
   }
 
   @Override
   public TelephonyManager getTelephonyManager() {
-    return null;
+    return ((TelephonyManager) activity.getSystemService(TELEPHONY_SERVICE));
   }
 
   @Override
   public WifiManager getWifiManager() {
-    return null;
+    return ((WifiManager) ((Context) activity).getSystemService(WIFI_SERVICE));
   }
 
   @Override
   public int pxToDp(int px) {
-    return 0;
+    return (int) (px / getDisplayDensity() + 0.5f);
   }
 
   @Override
-  public int dpToPx(float dp) {
-    return 0;
+  public int dpToPx(@Dimension float dp) {
+    return (int) (dp * getDisplayDensity() + 0.5f);
   }
 
   @Override
-  public Animation loadAnimation(int id) {
-    return null;
+  public Animation loadAnimation(@AnimRes int id) {
+    return AnimationUtils.loadAnimation(activity, id);
   }
 
   @Override
   public boolean isInputMethodShowing() {
-    return false;
+    Rect rect = new Rect();
+    getDecorView().getWindowVisibleDisplayFrame(rect);
+    return getDecorView().getHeight() - rect.bottom > getNavigationBarHeight();
   }
 
   @Override
   public int getIdentifier(String name, String defType, String defPackage) {
-    return 0;
+    return activity.getResources().getIdentifier(name, defType, defPackage);
   }
 
   @Override
-  public int getId(String name, String defPkgName) {
-    return 0;
+  public @IdRes int getId(String name, String defPkgName) {
+    return getResId(activity, name, defPkgName);
   }
 
   @Override
   public int getId(String name) {
-    return 0;
+    return getId(name, activity.getPackageName());
   }
 
   @Override
@@ -426,7 +447,7 @@ abstract class AbstractActivity implements AbstractActivityImpl {
   public void toastLong(int id) {}
 }
 
-interface AbstractActivityImpl {
+interface ActivityWrapperImpl {
   String IDENTIFIER_DRAWABLE = "drawable";
   String IDENTIFIER_ID = "id";
   String IDENTIFIER_STRING = "string";

@@ -3,17 +3,22 @@ package com.meyoustu.amuse.listen;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.IdRes;
+
 /**
  * Created at 2020/6/14 10:16.
  *
  * @author Liangcheng Juves
  */
 public interface ClickListener {
-  void onTouchDown(View v, MotionEvent event);
 
-  void onTouchUp(View v, MotionEvent event);
+  void initialize(View v, @IdRes int vId);
 
-  void onClick(View v);
+  void onTouchDown(View v, @IdRes int vId);
 
-  int RESP_TIME_MILLLIS = 500;
+  void onTouchUp(View v, @IdRes int vId);
+
+  void onClick(View v, @IdRes int vId);
+
+
 }

@@ -7,4 +7,4 @@ package com.meyoustu.amuse;
  *
  * @author Liangcheng Juves
  */
-public abstract class StandardActivity extends android.app.Activity implements Standard {}
+public abstract class StandardActivity extends android.app.Activity {}
