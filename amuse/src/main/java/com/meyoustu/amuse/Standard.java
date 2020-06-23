@@ -68,7 +68,7 @@ import static java.lang.System.currentTimeMillis;
  * @author Liangcheng Juves
  */
 @RequiresApi(N)
-public interface Standard extends StandardProvider {
+public interface Standard extends AbstractActivityImpl {
 
   default View getDecorView() {
     return ((Activity) this).getWindow().getDecorView();

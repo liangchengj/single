@@ -78,9 +78,7 @@ import static java.lang.System.currentTimeMillis;
  *
  * @author Liangcheng Juves
  */
-public abstract class Activity extends FragmentActivity implements ActivityProvider.Impl {
-
-
+public abstract class Activity extends FragmentActivity implements AbstractActivityImpl {
 
   /* Construction method.
   Load the dynamic link library by detecting whether it is annotated with "@Native". */
@@ -106,9 +104,9 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
   private View decorView;
 
   /* Get the context of the current Activity. */
-  protected final Context ctx = this;
+  public final Context ctx = this;
 
-  protected final View getDecorView() {
+  public final View getDecorView() {
     return decorView;
   }
 
@@ -118,7 +116,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
   }
 
   /* Set the Activity window to full screen display. */
-  protected final void setWindowFullScreen() {
+  public final void setWindowFullScreen() {
     if (SDK_INT <= KITKAT) {
       getWindow()
           .setFlags(
@@ -152,7 +150,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
     }
   }
 
-  protected @LayoutRes int initView() {
+  public @LayoutRes int initView() {
     @LayoutRes int contentViewVal = getClassAnnotatedValue(ContentView.class, int.class);
     if (contentViewVal != -1) {
       setContentView(contentViewVal);
@@ -182,11 +180,11 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
     }
   }
 
-  protected final void setDecorViewRadius(int radius) {
+  public final void setDecorViewRadius(int radius) {
     App.setViewRadius(radius, decorView);
   }
 
-  protected final void setViewRadius(int radius, @IdRes int... ids) {
+  public final void setViewRadius(int radius, @IdRes int... ids) {
     if (null != ids) {
       if (ids.length != 0) {
         View[] views = new View[ids.length];
@@ -198,7 +196,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
     }
   }
 
-  protected final void setViewOval(@IdRes int... ids) {
+  public final void setViewOval(@IdRes int... ids) {
     if (null != ids) {
       if (ids.length != 0) {
         View[] views = new View[ids.length];
@@ -211,7 +209,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
   }
 
   /* Used for the view press effect and contains the click event of the view. */
-  protected final void effectClick(View v, final ClickListener clickListener) {
+  public final void effectClick(View v, final ClickListener clickListener) {
     v.setOnTouchListener(
         new View.OnTouchListener() {
           private long touchDown;
@@ -233,12 +231,12 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
   }
 
   /** @return ShortcutManager -> Used to manage desktop shortcuts. */
-  protected final ShortcutManager getShortCutManager() {
+  public final ShortcutManager getShortCutManager() {
     return SDK_INT >= N_MR1 ? getSystemService(ShortcutManager.class) : null;
   }
 
   /* Android 8.0 or above can set the desktop icon menu. */
-  protected final void setShortCuts(ShortcutInfo... shortcutInfo) {
+  public final void setShortCuts(ShortcutInfo... shortcutInfo) {
     ShortcutManager shortcutManager = getShortCutManager();
     if (shortcutManager != null) {
       if (SDK_INT >= O && shortcutInfo != null) {
@@ -253,7 +251,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
    * @param color The value of the color.
    * @return "true" means the color is bright.
    */
-  protected final boolean isLightColor(@ColorInt int color) {
+  public final boolean isLightColor(@ColorInt int color) {
     return ColorUtils.calculateLuminance(color) >= 0.5;
   }
 
@@ -320,202 +318,202 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
   }
 
   /* Used to obtain the screen pixel density. */
-  protected final float getDisplayDensity() {
+  public final float getDisplayDensity() {
     return getResources().getDisplayMetrics().density;
   }
 
   /* Get the color from the resource file. */
-  protected final @ColorInt int getResColor(@ColorRes int id) {
+  public final @ColorInt int getResColor(@ColorRes int id) {
     return App.getResColor(this, id);
   }
 
-  protected final <T> T getClassAnnotatedValue(
+  public final <T> T getClassAnnotatedValue(
       Class<? extends Annotation> annotation, Class<T> classOfT) {
     return App.getClassAnnotatedValue(this, annotation, classOfT);
   }
 
-  protected final @Dimension int getDimensionPixelSize(@DimenRes int id) {
+  public final @Dimension int getDimensionPixelSize(@DimenRes int id) {
     return getResources().getDimensionPixelSize(id);
   }
 
-  protected final int getOrientation() {
+  public final int getOrientation() {
     return getResources().getConfiguration().orientation;
   }
 
-  protected final boolean orientationIsPortrait() {
+  public final boolean orientationIsPortrait() {
     return getOrientation() == ORIENTATION_PORTRAIT;
   }
 
-  protected final boolean orientationIsLandScape() {
+  public final boolean orientationIsLandScape() {
     return getOrientation() == ORIENTATION_LANDSCAPE;
   }
 
-  protected final @Dimension int getStatusBarHeight() {
+  public final @Dimension int getStatusBarHeight() {
     String name = "status_bar_height";
     return orientationIsPortrait()
         ? getDimensionPixelSize(getDimenIdFromAndroid(name))
         : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
   }
 
-  protected final @Dimension int getNavigationBarHeight() {
+  public final @Dimension int getNavigationBarHeight() {
     String name = "navigation_bar_height";
     return orientationIsPortrait()
         ? getDimensionPixelSize(getDimenIdFromAndroid(name))
         : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
   }
 
-  protected final ConnectivityManager getConnectivityManager() {
+  public final ConnectivityManager getConnectivityManager() {
     return ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE));
   }
 
-  protected final NotificationManager getNotificationManager() {
+  public final NotificationManager getNotificationManager() {
     return ((NotificationManager) getSystemService(NOTIFICATION_SERVICE));
   }
 
-  protected final InputMethodManager getInputMethodManager() {
+  public final InputMethodManager getInputMethodManager() {
     return ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE));
   }
 
-  protected final TelephonyManager getTelephonyManager() {
+  public final TelephonyManager getTelephonyManager() {
     return ((TelephonyManager) getSystemService(TELEPHONY_SERVICE));
   }
 
-  protected final WifiManager getWifiManager() {
+  public final WifiManager getWifiManager() {
     return ((WifiManager) ((Context) this).getSystemService(WIFI_SERVICE));
   }
 
-  protected final int pxToDp(int px) {
+  public final int pxToDp(int px) {
     return (int) (px / getDisplayDensity() + 0.5f);
   }
 
-  protected final int dpToPx(float dp) {
+  public final int dpToPx(float dp) {
     return (int) (dp * getDisplayDensity() + 0.5f);
   }
 
-  protected final Animation loadAnimation(@AnimRes int id) {
+  public final Animation loadAnimation(@AnimRes int id) {
     return AnimationUtils.loadAnimation(this, id);
   }
 
   /** Check whether the input method is displayed. */
-  protected final boolean isInputMethodShowing() {
+  public final boolean isInputMethodShowing() {
     Rect rect = new Rect();
     decorView.getWindowVisibleDisplayFrame(rect);
     return decorView.getHeight() - rect.bottom > getNavigationBarHeight();
   }
 
-  protected final int getIdentifier(String name, String defType, String defPackage) {
+  public final int getIdentifier(String name, String defType, String defPackage) {
     return getResources().getIdentifier(name, defType, defPackage);
   }
 
-  protected final @IdRes int getId(String name, String defPkgName) {
+  public final @IdRes int getId(String name, String defPkgName) {
     return getResId(this, name, defPkgName);
   }
 
-  protected final @IdRes int getId(String name) {
+  public final @IdRes int getId(String name) {
     return getId(name, getPackageName());
   }
 
-  protected final @IdRes int getIdFromAndroid(String name) {
+  public final @IdRes int getIdFromAndroid(String name) {
     return getId(name, PKG_ANDROID);
   }
 
-  protected final @LayoutRes int getLayoutId(String name, String defPkgName) {
+  public final @LayoutRes int getLayoutId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_LAYOUT, defPkgName);
   }
 
-  protected final @LayoutRes int getLayoutId(String name) {
+  public final @LayoutRes int getLayoutId(String name) {
     return getLayoutId(name, getPackageName());
   }
 
-  protected final @LayoutRes int getLayoutIdFromAndroid(String name) {
+  public final @LayoutRes int getLayoutIdFromAndroid(String name) {
     return getLayoutId(name, PKG_ANDROID);
   }
 
-  protected final @ArrayRes int getArrayId(String name, String defPkgName) {
+  public final @ArrayRes int getArrayId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_ARRAY, defPkgName);
   }
 
-  protected final @ArrayRes int getArrayId(String name) {
+  public final @ArrayRes int getArrayId(String name) {
     return getArrayId(name, getPackageName());
   }
 
-  protected final @ArrayRes int getArrayIdFromAndroid(String name) {
+  public final @ArrayRes int getArrayIdFromAndroid(String name) {
     return getArrayId(name, PKG_ANDROID);
   }
 
-  protected final @StringRes int getStringId(String name, String defPkgName) {
+  public final @StringRes int getStringId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_STRING, defPkgName);
   }
 
-  protected final @StringRes int getStringId(String name) {
+  public final @StringRes int getStringId(String name) {
     return getStringId(name, getPackageName());
   }
 
-  protected final @StringRes int getStringIdFromAndroid(String name) {
+  public final @StringRes int getStringIdFromAndroid(String name) {
     return getStringId(name, PKG_ANDROID);
   }
 
-  protected final @DimenRes int getDimenId(String name, String defPkgName) {
+  public final @DimenRes int getDimenId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_DIMEN, defPkgName);
   }
 
-  protected final @DimenRes int getDimenId(String name) {
+  public final @DimenRes int getDimenId(String name) {
     return getDimenId(name, getPackageName());
   }
 
-  protected final @DimenRes int getDimenIdFromAndroid(String name) {
+  public final @DimenRes int getDimenIdFromAndroid(String name) {
     return getDimenId(name, PKG_ANDROID);
   }
 
-  protected final @ColorRes int getColorId(String name, String defPkgName) {
+  public final @ColorRes int getColorId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_COLOR, defPkgName);
   }
 
-  protected final @ColorRes int getColorId(String name) {
+  public final @ColorRes int getColorId(String name) {
     return getColorId(name, getPackageName());
   }
 
-  protected final @ColorRes int getColorIdFromAndroid(String name) {
+  public final @ColorRes int getColorIdFromAndroid(String name) {
     return getColorId(name, PKG_ANDROID);
   }
 
-  protected final @DrawableRes int getDrawableId(String name, String defPkgName) {
+  public final @DrawableRes int getDrawableId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_DRAWABLE, defPkgName);
   }
 
-  protected final @DrawableRes int getDrawableId(String name) {
+  public final @DrawableRes int getDrawableId(String name) {
     return getDrawableId(name, getPackageName());
   }
 
-  protected final @DrawableRes int getDrawableIdFromAndroid(String name) {
+  public final @DrawableRes int getDrawableIdFromAndroid(String name) {
     return getDrawableId(name, PKG_ANDROID);
   }
 
-  protected final @AnimRes int getAnimationId(String name, String defPkgName) {
+  public final @AnimRes int getAnimationId(String name, String defPkgName) {
     return getAnimId(this, name, defPkgName);
   }
 
-  protected final @AnimRes int getAnimationId(String name) {
+  public final @AnimRes int getAnimationId(String name) {
     return getAnimationId(name, getPackageName());
   }
 
-  protected final @AnimRes int getAnimationIdFromAndroid(String name) {
+  public final @AnimRes int getAnimationIdFromAndroid(String name) {
     return getAnimationId(name, PKG_ANDROID);
   }
 
-  protected final @XmlRes int getXmlId(String name, String defPkgName) {
+  public final @XmlRes int getXmlId(String name, String defPkgName) {
     return getIdentifier(name, IDENTIFIER_XML, defPkgName);
   }
 
-  protected final @XmlRes int getXmlId(String name) {
+  public final @XmlRes int getXmlId(String name) {
     return getXmlId(name, getPackageName());
   }
 
-  protected final @XmlRes int getXmlIdFromAndroid(String name) {
+  public final @XmlRes int getXmlIdFromAndroid(String name) {
     return getXmlId(name, PKG_ANDROID);
   }
 
-  protected final String getImgPathFromURI(Uri uri) {
+  public final String getImgPathFromURI(Uri uri) {
     String result;
     Cursor cursor = null;
 
@@ -536,7 +534,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
     return result;
   }
 
-  protected final Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+  public final Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
     Matrix matrix = new Matrix();
     matrix.postRotate(degrees);
 
@@ -555,7 +553,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
    * @param reqCode Request code for permission.
    * @param permissions java.lang.String[] -> The name used to store one or more permissions.
    */
-  protected final void chkAndApplyPermissions(int reqCode, String... permissions) {
+  public final void chkAndApplyPermissions(int reqCode, String... permissions) {
     App.chkAndApplyPermissions(this, reqCode, permissions);
   }
 
@@ -573,7 +571,7 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
    * @param versionName It is usually the version number obtained from the server.
    * @return "true" indicates that there is a new version of the application and it can be updated.
    */
-  protected final boolean appHasNewVersion(String versionName) {
+  public final boolean appHasNewVersion(String versionName) {
     try {
       PackageInfo pkgInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
       if (null == pkgInfo) {
@@ -588,59 +586,59 @@ public abstract class Activity extends FragmentActivity implements ActivityProvi
     }
   }
 
-  protected final void verboseLog(Object msg) {
+  public final void verboseLog(Object msg) {
     App.verboseLog(this, msg);
   }
 
-  protected final void verboseLog(Object msg, Throwable t) {
+  public final void verboseLog(Object msg, Throwable t) {
     App.verboseLog(this, msg, t);
   }
 
-  protected final void debugLog(Object msg) {
+  public final void debugLog(Object msg) {
     App.debugLog(this, msg);
   }
 
-  protected final void debugLog(Object msg, Throwable t) {
+  public final void debugLog(Object msg, Throwable t) {
     App.debugLog(this, msg, t);
   }
 
-  protected final void infoLog(Object msg) {
+  public final void infoLog(Object msg) {
     App.infoLog(this, msg);
   }
 
-  protected final void infoLog(Object msg, Throwable t) {
+  public final void infoLog(Object msg, Throwable t) {
     App.infoLog(this, msg, t);
   }
 
-  protected final void warnLog(Object msg) {
+  public final void warnLog(Object msg) {
     App.warnLog(this, msg);
   }
 
-  protected final void warnLog(Object msg, Throwable t) {
+  public final void warnLog(Object msg, Throwable t) {
     App.warnLog(this, msg, t);
   }
 
-  protected final void errorLog(Object msg) {
+  public final void errorLog(Object msg) {
     App.errorLog(this, msg);
   }
 
-  protected final void errorLog(Object msg, Throwable t) {
+  public final void errorLog(Object msg, Throwable t) {
     App.errorLog(this, msg, t);
   }
 
-  protected final void toastShort(Object msg) {
+  public final void toastShort(Object msg) {
     Toast.showShort(this, msg);
   }
 
-  protected final void toastShort(@StringRes int id) {
+  public final void toastShort(@StringRes int id) {
     Toast.showShort(this, id);
   }
 
-  protected final void toastLong(Object msg) {
+  public final void toastLong(Object msg) {
     Toast.showLong(this, msg);
   }
 
-  protected final void toastLong(@StringRes int id) {
+  public final void toastLong(@StringRes int id) {
     Toast.showLong(this, id);
   }
 }
