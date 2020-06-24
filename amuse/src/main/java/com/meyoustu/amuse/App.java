@@ -45,6 +45,9 @@ import com.meyoustu.amuse.multidex.MultiDexApp;
 import com.meyoustu.amuse.util.Toast;
 import com.meyoustu.amuse.view.InitWithGone;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -669,6 +672,35 @@ public class App extends MultiDexApp {
    */
   public static final void openApp(@NonNull Context ctx, @NonNull String pkgName) {
     ctx.startActivity(ctx.getPackageManager().getLaunchIntentForPackage(pkgName));
+  }
+
+  /**
+   * Get the process name corresponding to the process number.
+   *
+   * @param pid Process number.
+   * @return java.lang.String -> Process name.
+   */
+  public static final String getProcName(int pid) {
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+      String procName = reader.readLine();
+      if (!procName.isEmpty()) {
+        procName = procName.trim();
+      }
+      return procName;
+    } catch (Throwable t) {
+      t.printStackTrace();
+    } finally {
+      try {
+        if (null != reader) {
+          reader.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
   }
 
   // ====== Log Util
