@@ -48,7 +48,7 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
 
   /** Or use the class annotation "@ContentView(R.layout.activity_main)" to initialize the view. */
   @Override
-  public int initView() {
+  protected int initView() {
     return R.layout.activity_main;
   }
 

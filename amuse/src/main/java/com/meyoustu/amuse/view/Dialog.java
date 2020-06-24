@@ -45,7 +45,7 @@ import static java.lang.System.currentTimeMillis;
  */
 public final class Dialog extends android.app.Dialog {
 
-  private static final int COLOR_NIGHT = Color.valOf(52);
+  private static final int COLOR_NIGHT = Color.initWith(52);
 
   private View view = null;
 
@@ -254,7 +254,7 @@ public final class Dialog extends android.app.Dialog {
       setOnTouchListener(this);
 
       if (isNight()) {
-        textRightColor = Color.valOf(220);
+        textRightColor = Color.initWith(220);
       } else {
         textRightColor = BLACK;
       }
@@ -312,7 +312,7 @@ public final class Dialog extends android.app.Dialog {
       }
 
       if (isNight()) {
-        paint.setColor(Color.valOf(220));
+        paint.setColor(Color.initWith(220));
       } else {
         paint.setColor(BLACK);
       }
@@ -354,7 +354,7 @@ public final class Dialog extends android.app.Dialog {
       canvas.drawRect(main.right - radius, line, main.right, line + radius, paint);
 
       if (isNight()) {
-        paint.setColor(Color.valOf(120));
+        paint.setColor(Color.initWith(120));
       } else {
         paint.setColor(highLightColor);
       }
@@ -463,7 +463,7 @@ public final class Dialog extends android.app.Dialog {
 
           bacRightColor = TRANSPARENT;
           if (isNight()) {
-            textRightColor = Color.valOf(220);
+            textRightColor = Color.initWith(220);
           } else {
             textRightColor = BLACK;
           }
@@ -473,7 +473,7 @@ public final class Dialog extends android.app.Dialog {
       } else if (event.getAction() == ACTION_UP) {
         bacRightColor = TRANSPARENT;
         if (isNight()) {
-          textRightColor = Color.valOf(220);
+          textRightColor = Color.initWith(220);
         } else {
           textRightColor = BLACK;
         }

@@ -97,8 +97,6 @@ abstract class ActivityWrapper {
 
   private ActivityWrapper(Activity activity) {
     this.activity = activity;
-    this.window = activity.getWindow();
-    this.decorView = activity.getWindow().getDecorView();
   }
 
   static ActivityWrapper newInstance(Activity activity) {
@@ -189,7 +187,9 @@ abstract class ActivityWrapper {
   }
 
   void onDecorViewConfig(View decorView
-      /*The current class is not used and is provided to "activity"'s subclasses.*/ ) {
+      /* The current class is not used and is provided to "activity"'s subclasses. */ ) {
+    window = activity.getWindow();
+    this.decorView = window.getDecorView();
     setDecorViewSystemUiVisibility(SYSTEM_UI_FLAG_LAYOUT_STABLE);
     int decorViewConfigVal = getClassAnnotatedValue(DecorViewConfig.class, int.class);
     if (decorViewConfigVal != -1) {

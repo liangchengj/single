@@ -8,7 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.meyoustu.amuse.content.SharedPrefs;
 import com.meyoustu.amuse.util.Toast;
 
-/** @author Liangcheng Juves Created at 2020/6/10 17:03 */
+/**
+ * Created at 2020/6/10 17:03.
+ *
+ * @author Liangcheng Juves
+ */
 public class TestActivity extends AppCompatActivity {
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {

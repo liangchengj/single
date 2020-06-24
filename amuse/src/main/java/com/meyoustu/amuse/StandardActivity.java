@@ -43,11 +43,12 @@ import java.lang.annotation.Annotation;
  *
  * @author Liangcheng Juves
  */
-public abstract class StandardActivity extends android.app.Activity {
+public abstract class StandardActivity extends android.app.Activity implements ActivityConstants {
 
   /* Construction method.
   Load the dynamic link library by detecting whether it is annotated with "@Native". */
   protected StandardActivity() {
+    activityWrapper = ActivityWrapper.newInstance(this);
     activityWrapper.loadJNILibByAnnotation();
   }
 
@@ -65,7 +66,6 @@ public abstract class StandardActivity extends android.app.Activity {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    activityWrapper = ActivityWrapper.newInstance(this);
     onDecorViewConfig(activityWrapper.decorView);
     super.onCreate(savedInstanceState);
     if (layoutId != -1) {
@@ -106,270 +106,271 @@ public abstract class StandardActivity extends android.app.Activity {
   }
 
   @LayoutRes
-  int initView() {
+  protected int initView() {
     return activityWrapper.initView();
   }
 
-  void onDecorViewConfig(View decorView
-      /*The current class is not used and is provided to subclasses.*/ ) {
+  protected void onDecorViewConfig(View decorView
+      /* The current class is not used and is provided to subclasses. */ ) {
     activityWrapper.onDecorViewConfig(decorView);
   }
 
-  void setDecorViewRadius(int radius) {
+  protected final void setDecorViewRadius(int radius) {
     activityWrapper.setDecorViewRadius(radius);
   }
 
   /* Set the Activity window to full screen display. */
-  void setWindowFullScreen() {
+  protected final void setWindowFullScreen() {
     activityWrapper.setWindowFullScreen();
   }
 
-  void setViewRadius(int radius, @IdRes int... ids) {
+  protected final void setViewRadius(int radius, @IdRes int... ids) {
     activityWrapper.setViewRadius(radius, ids);
   }
 
-  void setViewOval(@IdRes int... ids) {
+  protected final void setViewOval(@IdRes int... ids) {
     activityWrapper.setViewOval(ids);
   }
 
   /** Used for the view press effect and contains the click event of the view. */
-  void effectClick(View v, final ClickListener clickListener) {
+  protected final void effectClick(View v, final ClickListener clickListener) {
     activityWrapper.effectClick(v, clickListener);
   }
 
   /** @return ShortcutManager -> Used to manage desktop shortcuts. */
-  ShortcutManager getShortCutManager() {
+  protected final ShortcutManager getShortCutManager() {
     return activityWrapper.getShortCutManager();
   }
 
   /** Android 8.0 or above can set the desktop icon menu. */
-  void setShortCuts(ShortcutInfo... shortcutInfo) {
+  protected final void setShortCuts(ShortcutInfo... shortcutInfo) {
     activityWrapper.setShortCuts(shortcutInfo);
   }
 
   /** Used to obtain the screen pixel density. */
-  float getDisplayDensity() {
+  protected final float getDisplayDensity() {
     return activityWrapper.getDisplayDensity();
   }
 
   /** Get the color from the resource file. */
   @ColorInt
-  int getResColor(@ColorRes int id) {
+  protected final int getResColor(@ColorRes int id) {
     return activityWrapper.getResColor(id);
   }
 
-  <T> T getClassAnnotatedValue(Class<? extends Annotation> annotation, Class<T> classOfT) {
+  protected final <T> T getClassAnnotatedValue(
+      Class<? extends Annotation> annotation, Class<T> classOfT) {
     return activityWrapper.getClassAnnotatedValue(annotation, classOfT);
   }
 
   @Dimension
-  int getDimensionPixelSize(@DimenRes int id) {
+  protected final int getDimensionPixelSize(@DimenRes int id) {
     return activityWrapper.getDimensionPixelSize(id);
   }
 
-  int getOrientation() {
+  protected final int getOrientation() {
     return activityWrapper.getOrientation();
   }
 
-  boolean orientationIsPortrait() {
+  protected final boolean orientationIsPortrait() {
     return activityWrapper.orientationIsPortrait();
   }
 
-  boolean orientationIsLandScape() {
+  protected final boolean orientationIsLandScape() {
     return activityWrapper.orientationIsPortrait();
   }
 
   @Dimension
-  int getStatusBarHeight() {
+  protected final int getStatusBarHeight() {
     return activityWrapper.getStatusBarHeight();
   }
 
   @Dimension
-  int getNavigationBarHeight() {
+  protected final int getNavigationBarHeight() {
     return activityWrapper.getNavigationBarHeight();
   }
 
-  ConnectivityManager getConnectivityManager() {
+  protected final ConnectivityManager getConnectivityManager() {
     return activityWrapper.getConnectivityManager();
   }
 
-  NotificationManager getNotificationManager() {
+  protected final NotificationManager getNotificationManager() {
     return activityWrapper.getNotificationManager();
   }
 
-  InputMethodManager getInputMethodManager() {
+  protected final InputMethodManager getInputMethodManager() {
     return activityWrapper.getInputMethodManager();
   }
 
-  TelephonyManager getTelephonyManager() {
+  protected final TelephonyManager getTelephonyManager() {
     return activityWrapper.getTelephonyManager();
   }
 
-  WifiManager getWifiManager() {
+  protected final WifiManager getWifiManager() {
     return activityWrapper.getWifiManager();
   }
 
-  int pxToDp(int px) {
+  protected final int pxToDp(int px) {
     return activityWrapper.pxToDp(px);
   }
 
-  int dpToPx(@Dimension float dp) {
+  protected final int dpToPx(@Dimension float dp) {
     return activityWrapper.dpToPx(dp);
   }
 
-  Animation loadAnimation(@AnimRes int id) {
+  protected final Animation loadAnimation(@AnimRes int id) {
     return activityWrapper.loadAnimation(id);
   }
 
   /** Check whether the input method is displayed. */
-  boolean isInputMethodShowing() {
+  protected final boolean isInputMethodShowing() {
     return activityWrapper.isInputMethodShowing();
   }
 
-  int getIdentifier(String name, String defType, String defPackage) {
+  protected final int getIdentifier(String name, String defType, String defPackage) {
     return activityWrapper.getIdentifier(name, defType, defPackage);
   }
 
   @IdRes
-  int getId(String name, String defPkgName) {
+  protected final int getId(String name, String defPkgName) {
     return activityWrapper.getId(name, defPkgName);
   }
 
   @IdRes
-  int getId(String name) {
+  protected final int getId(String name) {
     return activityWrapper.getId(name);
   }
 
   @IdRes
-  int getIdFromAndroid(String name) {
+  protected final int getIdFromAndroid(String name) {
     return activityWrapper.getIdFromAndroid(name);
   }
 
   @LayoutRes
-  int getLayoutId(String name, String defPkgName) {
+  protected final int getLayoutId(String name, String defPkgName) {
     return activityWrapper.getLayoutId(name, defPkgName);
   }
 
   @LayoutRes
-  int getLayoutId(String name) {
+  protected final int getLayoutId(String name) {
     return activityWrapper.getLayoutId(name);
   }
 
   @LayoutRes
-  int getLayoutIdFromAndroid(String name) {
+  protected final int getLayoutIdFromAndroid(String name) {
     return activityWrapper.getLayoutIdFromAndroid(name);
   }
 
   @ArrayRes
-  int getArrayId(String name, String defPkgName) {
+  protected final int getArrayId(String name, String defPkgName) {
     return activityWrapper.getArrayId(name, defPkgName);
   }
 
   @ArrayRes
-  int getArrayId(String name) {
+  protected final int getArrayId(String name) {
     return activityWrapper.getArrayId(name);
   }
 
   @ArrayRes
-  int getArrayIdFromAndroid(String name) {
+  protected final int getArrayIdFromAndroid(String name) {
     return activityWrapper.getArrayIdFromAndroid(name);
   }
 
   @StringRes
-  int getStringId(String name, String defPkgName) {
+  protected final int getStringId(String name, String defPkgName) {
     return activityWrapper.getStringId(name, defPkgName);
   }
 
   @StringRes
-  int getStringId(String name) {
+  protected final int getStringId(String name) {
     return activityWrapper.getStringId(name);
   }
 
   @StringRes
-  int getStringIdFromAndroid(String name) {
+  protected final int getStringIdFromAndroid(String name) {
     return activityWrapper.getStringIdFromAndroid(name);
   }
 
   @DimenRes
-  int getDimenId(String name, String defPkgName) {
+  protected final int getDimenId(String name, String defPkgName) {
     return activityWrapper.getDimenId(name, defPkgName);
   }
 
   @DimenRes
-  int getDimenId(String name) {
+  protected final int getDimenId(String name) {
     return activityWrapper.getDimenId(name);
   }
 
   @DimenRes
-  int getDimenIdFromAndroid(String name) {
+  protected final int getDimenIdFromAndroid(String name) {
     return activityWrapper.getDimenIdFromAndroid(name);
   }
 
   @ColorRes
-  int getColorId(String name, String defPkgName) {
+  protected final int getColorId(String name, String defPkgName) {
     return activityWrapper.getColorId(name, defPkgName);
   }
 
   @ColorRes
-  int getColorId(String name) {
+  protected final int getColorId(String name) {
     return activityWrapper.getColorId(name);
   }
 
   @ColorRes
-  int getColorIdFromAndroid(String name) {
+  protected final int getColorIdFromAndroid(String name) {
     return activityWrapper.getColorIdFromAndroid(name);
   }
 
   @DrawableRes
-  int getDrawableId(String name, String defPkgName) {
+  protected final int getDrawableId(String name, String defPkgName) {
     return activityWrapper.getDrawableId(name, defPkgName);
   }
 
   @DrawableRes
-  int getDrawableId(String name) {
+  protected final int getDrawableId(String name) {
     return activityWrapper.getDrawableId(name);
   }
 
   @DrawableRes
-  int getDrawableIdFromAndroid(String name) {
+  protected final int getDrawableIdFromAndroid(String name) {
     return activityWrapper.getDrawableIdFromAndroid(name);
   }
 
   @AnimRes
-  int getAnimationId(String name, String defPkgName) {
+  protected final int getAnimationId(String name, String defPkgName) {
     return activityWrapper.getAnimationId(name, defPkgName);
   }
 
   @AnimRes
-  int getAnimationId(String name) {
+  protected final int getAnimationId(String name) {
     return activityWrapper.getAnimationId(name);
   }
 
   @AnimRes
-  int getAnimationIdFromAndroid(String name) {
+  protected final int getAnimationIdFromAndroid(String name) {
     return activityWrapper.getAnimationIdFromAndroid(name);
   }
 
   @XmlRes
-  int getXmlId(String name, String defPkgName) {
+  protected final int getXmlId(String name, String defPkgName) {
     return activityWrapper.getXmlId(name, defPkgName);
   }
 
   @XmlRes
-  int getXmlId(String name) {
+  protected final int getXmlId(String name) {
     return activityWrapper.getXmlId(name);
   }
 
   @XmlRes
-  int getXmlIdFromAndroid(String name) {
+  protected final int getXmlIdFromAndroid(String name) {
     return activityWrapper.getXmlIdFromAndroid(name);
   }
 
-  String getImgPathFromURI(Uri uri) {
+  protected final String getImgPathFromURI(Uri uri) {
     return activityWrapper.getImgPathFromURI(uri);
   }
 
-  Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+  protected final Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
     return activityWrapper.rotateBitmap(bitmap, degrees);
   }
 
@@ -380,7 +381,7 @@ public abstract class StandardActivity extends android.app.Activity {
    * @param reqCode Request code for permission.
    * @param permissions java.lang.String[] -> The name used to store one or more permissions.
    */
-  void chkAndApplyPermissions(int reqCode, String... permissions) {
+  protected final void chkAndApplyPermissions(int reqCode, String... permissions) {
     activityWrapper.chkAndApplyPermissions(reqCode, permissions);
   }
 
@@ -390,7 +391,7 @@ public abstract class StandardActivity extends android.app.Activity {
    * @param versionName It is usually the version number obtained from the server.
    * @return "true" indicates that there is a new version of the application and it can be updated.
    */
-  boolean appHasNewVersion(String versionName) {
+  protected final boolean appHasNewVersion(String versionName) {
     return activityWrapper.appHasNewVersion(versionName);
   }
 
@@ -410,7 +411,7 @@ public abstract class StandardActivity extends android.app.Activity {
    * @param remoteViews Can be used to customize the view of notification content.
    * @param pendingIntent The intent delivery object included in the notification.
    */
-  synchronized void sendNotification(
+  protected final synchronized void sendNotification(
       int id,
       int importance,
       NotificationCompat.Style style,
@@ -434,59 +435,59 @@ public abstract class StandardActivity extends android.app.Activity {
         pendingIntent);
   }
 
-  void verboseLog(Object msg) {
+  protected final void verboseLog(Object msg) {
     activityWrapper.verboseLog(msg);
   }
 
-  void verboseLog(Object msg, Throwable t) {
+  protected final void verboseLog(Object msg, Throwable t) {
     activityWrapper.verboseLog(msg, t);
   }
 
-  void debugLog(Object msg) {
+  protected final void debugLog(Object msg) {
     activityWrapper.debugLog(msg);
   }
 
-  void debugLog(Object msg, Throwable t) {
+  protected final void debugLog(Object msg, Throwable t) {
     activityWrapper.debugLog(msg, t);
   }
 
-  void infoLog(Object msg) {
+  protected final void infoLog(Object msg) {
     activityWrapper.infoLog(msg);
   }
 
-  void infoLog(Object msg, Throwable t) {
+  protected final void infoLog(Object msg, Throwable t) {
     activityWrapper.infoLog(msg, t);
   }
 
-  void warnLog(Object msg) {
+  protected final void warnLog(Object msg) {
     activityWrapper.warnLog(msg);
   }
 
-  void warnLog(Object msg, Throwable t) {
+  protected final void warnLog(Object msg, Throwable t) {
     activityWrapper.warnLog(msg, t);
   }
 
-  void errorLog(Object msg) {
+  protected final void errorLog(Object msg) {
     activityWrapper.errorLog(msg);
   }
 
-  void errorLog(Object msg, Throwable t) {
+  protected final void errorLog(Object msg, Throwable t) {
     activityWrapper.errorLog(msg, t);
   }
 
-  void toastShort(Object msg) {
+  protected final void toastShort(Object msg) {
     activityWrapper.toastShort(msg);
   }
 
-  void toastShort(@StringRes int id) {
+  protected final void toastShort(@StringRes int id) {
     activityWrapper.toastShort(id);
   }
 
-  void toastLong(Object msg) {
+  protected final void toastLong(Object msg) {
     activityWrapper.toastLong(msg);
   }
 
-  void toastLong(@StringRes int id) {
+  protected final void toastLong(@StringRes int id) {
     activityWrapper.toastLong(id);
   }
 }

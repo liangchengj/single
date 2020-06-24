@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.meyoustu.amuse.Fragment;
 
-/** @author Liangcheng Juves Created at 2020/6/10 15:49 */
-public class MainFragment extends Fragment<AppCompatActivity> {
+/**
+ * Created at 2020/6/10 15:49.
+ *
+ * @author Liangcheng Juves
+ */
+public class MainFragment extends Fragment {
 
   @Nullable
   @Override

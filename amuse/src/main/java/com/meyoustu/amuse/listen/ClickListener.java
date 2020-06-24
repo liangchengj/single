@@ -1,6 +1,5 @@
 package com.meyoustu.amuse.listen;
 
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.IdRes;
@@ -19,6 +18,4 @@ public interface ClickListener {
   void onTouchUp(View v, @IdRes int vId);
 
   void onClick(View v, @IdRes int vId);
-
-
 }
