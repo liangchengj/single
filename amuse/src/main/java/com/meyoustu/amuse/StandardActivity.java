@@ -3,15 +3,10 @@ package com.meyoustu.amuse;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -19,7 +14,6 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RemoteViews;
 
@@ -39,24 +33,8 @@ import androidx.annotation.XmlRes;
 import androidx.core.app.NotificationCompat;
 
 import com.meyoustu.amuse.listen.ClickListener;
-import com.meyoustu.amuse.util.Toast;
 
 import java.lang.annotation.Annotation;
-
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
-import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
-import static android.graphics.Bitmap.createBitmap;
-import static android.provider.SyncStateContract.Columns.DATA;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_ARRAY;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_COLOR;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_DIMEN;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_DRAWABLE;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_LAYOUT;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_STRING;
-import static com.meyoustu.amuse.ActivityConstants.IDENTIFIER_XML;
-import static com.meyoustu.amuse.ActivityConstants.PKG_ANDROID;
-import static com.meyoustu.amuse.App.getAnimId;
-import static com.meyoustu.amuse.App.getResId;
 
 /**
  * Created at 2020/6/14 10:16.
@@ -339,85 +317,60 @@ public abstract class StandardActivity extends android.app.Activity {
 
   @ColorRes
   int getColorIdFromAndroid(String name) {
-    return getColorId(name, PKG_ANDROID);
+    return activityWrapper.getColorIdFromAndroid(name);
   }
 
   @DrawableRes
   int getDrawableId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_DRAWABLE, defPkgName);
+    return activityWrapper.getDrawableId(name, defPkgName);
   }
 
   @DrawableRes
   int getDrawableId(String name) {
-    return getDrawableId(name, activity.getPackageName());
+    return activityWrapper.getDrawableId(name);
   }
 
   @DrawableRes
   int getDrawableIdFromAndroid(String name) {
-    return getDrawableId(name, PKG_ANDROID);
+    return activityWrapper.getDrawableIdFromAndroid(name);
   }
 
   @AnimRes
   int getAnimationId(String name, String defPkgName) {
-    return getAnimId(activity, name, defPkgName);
+    return activityWrapper.getAnimationId(name, defPkgName);
   }
 
   @AnimRes
   int getAnimationId(String name) {
-    return getAnimationId(name, activity.getPackageName());
+    return activityWrapper.getAnimationId(name);
   }
 
   @AnimRes
   int getAnimationIdFromAndroid(String name) {
-    return getAnimationId(name, PKG_ANDROID);
+    return activityWrapper.getAnimationIdFromAndroid(name);
   }
 
   @XmlRes
   int getXmlId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_XML, defPkgName);
+    return activityWrapper.getXmlId(name, defPkgName);
   }
 
   @XmlRes
   int getXmlId(String name) {
-    return getXmlId(name, activity.getPackageName());
+    return activityWrapper.getXmlId(name);
   }
 
   @XmlRes
   int getXmlIdFromAndroid(String name) {
-    return getXmlId(name, PKG_ANDROID);
+    return activityWrapper.getXmlIdFromAndroid(name);
   }
 
   String getImgPathFromURI(Uri uri) {
-    String result;
-    Cursor cursor = null;
-
-    try {
-      cursor = activity.getContentResolver().query(uri, null, null, null, null);
-    } catch (Throwable t) {
-      errorLog("getImgPathFromURI", t);
-    }
-
-    if (null == cursor) {
-      result = uri.getPath();
-    } else {
-      cursor.moveToFirst();
-      result = cursor.getString(cursor.getColumnIndex(DATA));
-      cursor.close();
-    }
-
-    return result;
+    return activityWrapper.getImgPathFromURI(uri);
   }
 
   Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
-    Matrix matrix = new Matrix();
-    matrix.postRotate(degrees);
-
-    Bitmap flag = createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-    if (!flag.isRecycled() && degrees != 0) {
-      flag.recycle();
-    }
-    return flag;
+    return activityWrapper.rotateBitmap(bitmap, degrees);
   }
 
   /**
@@ -428,7 +381,7 @@ public abstract class StandardActivity extends android.app.Activity {
    * @param permissions java.lang.String[] -> The name used to store one or more permissions.
    */
   void chkAndApplyPermissions(int reqCode, String... permissions) {
-    App.chkAndApplyPermissions(activity, reqCode, permissions);
+    activityWrapper.chkAndApplyPermissions(reqCode, permissions);
   }
 
   /**
@@ -438,19 +391,7 @@ public abstract class StandardActivity extends android.app.Activity {
    * @return "true" indicates that there is a new version of the application and it can be updated.
    */
   boolean appHasNewVersion(String versionName) {
-    try {
-      PackageInfo pkgInfo =
-          activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-      if (null == pkgInfo) {
-        return false;
-      }
-      long versionNow = parseVersion(pkgInfo.versionName);
-      long version = parseVersion(versionName);
-      return version > versionNow;
-    } catch (PackageManager.NameNotFoundException | NumberFormatException e) {
-      errorLog("appHasNewVersion", e);
-      return false;
-    }
+    return activityWrapper.appHasNewVersion(versionName);
   }
 
   /**
@@ -480,8 +421,7 @@ public abstract class StandardActivity extends android.app.Activity {
       @IdRes int largeIcon,
       RemoteViews remoteViews,
       PendingIntent pendingIntent) {
-    App.sendNotification(
-        activity,
+    activityWrapper.sendNotification(
         id,
         importance,
         style,
@@ -495,58 +435,58 @@ public abstract class StandardActivity extends android.app.Activity {
   }
 
   void verboseLog(Object msg) {
-    App.verboseLog(activity, msg);
+    activityWrapper.verboseLog(msg);
   }
 
   void verboseLog(Object msg, Throwable t) {
-    App.verboseLog(activity, msg, t);
+    activityWrapper.verboseLog(msg, t);
   }
 
   void debugLog(Object msg) {
-    App.debugLog(activity, msg);
+    activityWrapper.debugLog(msg);
   }
 
   void debugLog(Object msg, Throwable t) {
-    App.debugLog(activity, msg, t);
+    activityWrapper.debugLog(msg, t);
   }
 
   void infoLog(Object msg) {
-    App.infoLog(activity, msg);
+    activityWrapper.infoLog(msg);
   }
 
   void infoLog(Object msg, Throwable t) {
-    App.infoLog(activity, msg, t);
+    activityWrapper.infoLog(msg, t);
   }
 
   void warnLog(Object msg) {
-    App.warnLog(activity, msg);
+    activityWrapper.warnLog(msg);
   }
 
   void warnLog(Object msg, Throwable t) {
-    App.warnLog(activity, msg, t);
+    activityWrapper.warnLog(msg, t);
   }
 
   void errorLog(Object msg) {
-    App.errorLog(activity, msg);
+    activityWrapper.errorLog(msg);
   }
 
   void errorLog(Object msg, Throwable t) {
-    App.errorLog(activity, msg, t);
+    activityWrapper.errorLog(msg, t);
   }
 
   void toastShort(Object msg) {
-    Toast.showShort(activity, msg);
+    activityWrapper.toastShort(msg);
   }
 
   void toastShort(@StringRes int id) {
-    Toast.showShort(activity, id);
+    activityWrapper.toastShort(id);
   }
 
   void toastLong(Object msg) {
-    Toast.showLong(activity, msg);
+    activityWrapper.toastLong(msg);
   }
 
   void toastLong(@StringRes int id) {
-    Toast.showLong(activity, id);
+    activityWrapper.toastLong(id);
   }
 }
