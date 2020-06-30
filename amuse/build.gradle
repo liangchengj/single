@@ -6,23 +6,23 @@ android {
     buildToolsVersion project.ext.android.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion project.ext.android.defconfig.minSdkVersion
-        targetSdkVersion project.ext.android.defconfig.targetSdkVersion
+        minSdkVersion project.ext.android.defConf.minSdkVersion
+        targetSdkVersion project.ext.android.defConf.targetSdkVersion
 
-        versionCode project.ext.android.defconfig.versionCode
-        versionName project.ext.android.defconfig.versionName
+        versionCode project.ext.android.defConf.versionCode
+        versionName project.ext.android.defConf.versionName
 
-        testInstrumentationRunner project.ext.android.defconfig.testInstrumentationRunner.androidx
+        testInstrumentationRunner project.ext.android.defConf.testInstrumentationRunner.androidx
 
         // To deal with:
         // java.lang.RuntimeException:
         // Unable to get provider android.support.v4.content.FileProvider:
         // java.lang.ClassNotFoundException: android.support.v4.content.FileProvider
-        multiDexEnabled project.ext.android.defconfig.multiDexEnabled
+        multiDexEnabled project.ext.android.defConf.multiDexEnabled
 
 
         // version "16.1.4479499" -> may be
-        ndk project.ext.android.defconfig.ndk
+        ndk project.ext.android.ndk
 
         externalNativeBuild {
             cmake {
@@ -62,6 +62,7 @@ android {
             path "CMakeLists.txt"
         }
     }
+    ndkVersion project.ext.android.ndkVersion
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
