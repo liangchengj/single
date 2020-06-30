@@ -210,7 +210,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
     return activityWrapper.getWifiManager();
   }
 
-  protected final int pxToDp(int px) {
+  protected final @Dimension int pxToDp(int px) {
     return activityWrapper.pxToDp(px);
   }
 

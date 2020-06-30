@@ -363,6 +363,7 @@ abstract class ActivityWrapper {
     return ((WifiManager) ((Context) activity).getSystemService(WIFI_SERVICE));
   }
 
+  @Dimension
   int pxToDp(int px) {
     return (int) (px / getDisplayDensity() + 0.5f);
   }

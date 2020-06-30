@@ -210,7 +210,7 @@ public abstract class StandardActivity extends android.app.Activity implements A
     return activityWrapper.getWifiManager();
   }
 
-  protected final int pxToDp(int px) {
+  protected final @Dimension int pxToDp(int px) {
     return activityWrapper.pxToDp(px);
   }
 

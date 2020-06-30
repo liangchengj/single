@@ -209,7 +209,7 @@ public abstract class Activity extends FragmentActivity implements ActivityConst
     return activityWrapper.getWifiManager();
   }
 
-  protected final int pxToDp(int px) {
+  protected final @Dimension int pxToDp(int px) {
     return activityWrapper.pxToDp(px);
   }
 

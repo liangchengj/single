@@ -22,19 +22,22 @@ public final class SharedPrefs {
 
   private static final String FILE_NAME = SharedPrefs.class.getName();
 
-  private static SharedPrefs sharedPrefs;
+  private static volatile SharedPrefs sharedPrefs;
 
   private SharedPreferences sharedPreferences;
 
   public static final SharedPrefs initialize(Context ctx) {
-    if (sharedPrefs == null) {
+    SharedPrefs tmp = sharedPrefs;
+    if (null == tmp) {
       synchronized (SharedPrefs.class) {
-        sharedPrefs =
-            (sharedPrefs == null)
-                ? new SharedPrefs(ctx.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE))
-                : sharedPrefs;
+        tmp = sharedPrefs;
+        if (null == tmp) {
+          tmp = new SharedPrefs(ctx.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE));
+          sharedPrefs = tmp;
+        }
       }
     }
+
     return sharedPrefs;
   }
 
@@ -88,7 +91,7 @@ public final class SharedPrefs {
 
   public SharedPrefs putNumber(String key, @NonNull Number value) {
     if (null == value) {
-      edit().putString(key, String.valueOf((Object) null));
+      edit().putString(key, "null").apply();
     } else if (value.getClass() == int.class || value.getClass() == Integer.class) {
       edit().putInt(key, value.intValue()).apply();
     } else if (value.getClass() == long.class || value.getClass() == Long.class) {
