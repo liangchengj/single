@@ -732,8 +732,10 @@ public class App extends MultiDexApp {
   public static final String getSysProp(String key) {
     try {
       Class sysProps = getSystemPropertiesClass();
-      Method get = sysProps.getDeclaredMethod("get", String.class);
-      return (String) get.invoke(sysProps, key);
+      if (null != sysProps) {
+        Method get = sysProps.getDeclaredMethod("get", String.class);
+        return (String) get.invoke(sysProps, key);
+      }
     } catch (ClassNotFoundException e) {
       errorLog(ctx, e.getMessage(), e);
     } catch (NoSuchMethodException e) {
@@ -754,8 +756,10 @@ public class App extends MultiDexApp {
   public static final String getSysProp(String key, String def) {
     try {
       Class sysProps = getSystemPropertiesClass();
-      Method get = sysProps.getDeclaredMethod("get", String.class, String.class);
-      return (String) get.invoke(sysProps, key, def);
+      if (null != sysProps) {
+        Method get = sysProps.getDeclaredMethod("get", String.class, String.class);
+        return (String) get.invoke(sysProps, key, def);
+      }
     } catch (ClassNotFoundException e) {
       errorLog(ctx, e.getMessage(), e);
     } catch (NoSuchMethodException e) {
