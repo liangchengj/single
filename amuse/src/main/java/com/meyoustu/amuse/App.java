@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -46,14 +47,18 @@ import com.meyoustu.amuse.util.Toast;
 import com.meyoustu.amuse.view.InitWithGone;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.content.Intent.ACTION_VIEW;
@@ -84,6 +89,18 @@ import static java.lang.System.currentTimeMillis;
  * @author Liangcheng Juves
  */
 public class App extends MultiDexApp {
+
+  static {
+    System.loadLibrary("amuse");
+  }
+
+  private static Context ctx;
+
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    ctx = base;
+  }
 
   /**
    * Only valid in debug mode and without confusion.
@@ -697,15 +714,47 @@ public class App extends MultiDexApp {
           reader.close();
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        errorLog(ctx, "getProcName", e);
       }
     }
     return null;
   }
 
+  public static final Properties getBuildPropsFromSys() {
+    InputStream is = null;
+    try {
+      errorLog(ctx, Environment.getRootDirectory());
+      is = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
+      if (null != is) {
+        Properties props = new Properties();
+        props.load(is);
+        return props;
+      }
+    } catch (IOException e) {
+      errorLog(ctx, "getBuildPropsFromSys", e);
+    } finally {
+      try {
+        if (null != is) {
+          is.close();
+        }
+      } catch (IOException e) {
+        errorLog(ctx, "getBuildPropsFromSys", e);
+      }
+    }
+    return null;
+  }
+
+  public static final StackTraceElement[] getCurrentThreadStackTrace() {
+    return Thread.currentThread().getStackTrace();
+  }
+
+  public static final String getCurrentMethodName() {
+    return getCurrentThreadStackTrace()[2].getMethodName();
+  }
+
   // ====== Log Util
   private static String dealMsg(@NonNull Object msg) {
-    StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+    StackTraceElement[] stackTraceElements = getCurrentThreadStackTrace();
     String methodName = stackTraceElements[4].getMethodName();
     String end = "\n" + msg;
     if ("errorLog".equals(methodName)) {

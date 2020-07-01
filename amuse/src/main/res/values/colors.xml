@@ -3,27 +3,27 @@
     <color name="accent_color">#55C578</color>
     <color name="widget_def_bac_color">#f0f0f0</color>
 
-    <color name="safe_mode_text">@android:color/safe_mode_text</color>
+    <!--<color name="safe_mode_text">@android:color/safe_mode_text</color>-->
     <!-- The color white, equivalent to 0xffffffff -->
     <color name="white">@android:color/white</color>
     <!-- The color black, equivalent to 0xff000000 -->
     <color name="black">@android:color/black</color>
-    <color name="red">@android:color/red</color>
+    <color name="red">#ffff0000</color><!--@android:color/red-->
     <!-- Fully transparent, equivalent to 0x00000000 -->
     <color name="transparent">@android:color/transparent</color>
     <!-- Equivalent to 0xff000000 -->
     <color name="background_dark">@android:color/background_dark</color>
     <!-- Equivalent to 0xffffffff -->
     <color name="background_light">@android:color/background_light</color>
-    <color name="bright_foreground_dark">@android:color/bright_foreground_dark</color>
-    <color name="bright_foreground_light">@android:color/bright_foreground_light</color>
-    <color name="bright_foreground_dark_disabled">@android:color/bright_foreground_dark_disabled
-    </color>
-    <color name="bright_foreground_light_disabled">@android:color/bright_foreground_light_disabled
-    </color>
-    <color name="bright_foreground_dark_inverse">@android:color/bright_foreground_dark_inverse
-    </color>
-    <color name="bright_foreground_light_inverse">@android:color/bright_foreground_light_inverse
+    <!--<color name="bright_foreground_dark">@android:color/bright_foreground_dark</color>-->
+    <!--<color name="bright_foreground_light">@android:color/bright_foreground_light</color>-->
+    <!--<color name="bright_foreground_dark_disabled">@android:color/bright_foreground_dark_disabled
+    </color>-->
+    <!--<color name="bright_foreground_light_disabled">@android:color/bright_foreground_light_disabled
+    </color>-->
+    <!--<color name="bright_foreground_dark_inverse">@android:color/bright_foreground_dark_inverse
+    </color>-->
+    <!--<color name="bright_foreground_light_inverse">@android:color/bright_foreground_light_inverse
     </color>
     <color name="dim_foreground_dark">@android:color/dim_foreground_dark</color>
     <color name="dim_foreground_dark_disabled">@android:color/dim_foreground_dark_disabled</color>
@@ -46,56 +46,56 @@
     <color name="suggestion_highlight_text">@android:color/suggestion_highlight_text</color>
 
     <color name="decor_view_status_guard">@android:color/decor_view_status_guard</color>
-    <color name="decor_view_status_guard_light">@android:color/decor_view_status_guard_light</color>
+    <color name="decor_view_status_guard_light">@android:color/decor_view_status_guard_light</color>-->
 
     <!-- For settings framework -->
-    <color name="lighter_gray">@android:color/lighter_gray</color>
+    <color name="lighter_gray">#ddd</color><!--@android:color/lighter_gray-->
     <!-- A dark gray, equivalent to 0xffaaaaaa -->
-    <color name="darker_gray">@android:color/darker_gray</color>
+    <color name="darker_gray">#aaa</color><!--@android:color/darker_gray-->
 
     <!-- For security permissions -->
-    <color name="perms_dangerous_grp_color">@android:color/perms_dangerous_grp_color</color>
-    <color name="perms_dangerous_perm_color">@android:color/perms_dangerous_perm_color</color>
-    <color name="shadow">@android:color/shadow</color>
+    <!--<color name="perms_dangerous_grp_color">@android:color/perms_dangerous_grp_color</color>
+    <color name="perms_dangerous_perm_color">@android:color/perms_dangerous_perm_color</color>-->
+    <!--<color name="shadow">@android:color/shadow</color>-->
 
     <!-- For search-related UIs -->
-    <color name="search_url_text_normal">@android:color/search_url_text_normal</color>
+    <!--<color name="search_url_text_normal">@android:color/search_url_text_normal</color>
     <color name="search_url_text_selected">@android:color/search_url_text_selected</color>
     <color name="search_url_text_pressed">@android:color/search_url_text_pressed</color>
     <color name="search_widget_corpus_item_background">
         @android:color/search_widget_corpus_item_background
-    </color>
+    </color>-->
 
     <!-- SlidingTab -->
-    <color name="sliding_tab_text_color_active">@android:color/sliding_tab_text_color_active</color>
-    <color name="sliding_tab_text_color_shadow">@android:color/sliding_tab_text_color_shadow</color>
+    <!--<color name="sliding_tab_text_color_active">@android:color/sliding_tab_text_color_active</color>
+    <color name="sliding_tab_text_color_shadow">@android:color/sliding_tab_text_color_shadow</color>-->
 
     <!-- keyguard tab -->
-    <color name="keyguard_text_color_normal">@android:color/keyguard_text_color_normal</color>
+    <!--<color name="keyguard_text_color_normal">@android:color/keyguard_text_color_normal</color>
     <color name="keyguard_text_color_unlock">@android:color/keyguard_text_color_unlock</color>
     <color name="keyguard_text_color_soundoff">@android:color/keyguard_text_color_soundoff</color>
     <color name="keyguard_text_color_soundon">@android:color/keyguard_text_color_soundon</color>
-    <color name="keyguard_text_color_decline">@android:color/keyguard_text_color_decline</color>
+    <color name="keyguard_text_color_decline">@android:color/keyguard_text_color_decline</color>-->
 
     <!-- keyguard clock -->
-    <color name="lockscreen_clock_background">@android:color/lockscreen_clock_background</color>
+    <!--<color name="lockscreen_clock_background">@android:color/lockscreen_clock_background</color>
     <color name="lockscreen_clock_foreground">@android:color/lockscreen_clock_foreground</color>
     <color name="lockscreen_clock_am_pm">@android:color/lockscreen_clock_am_pm</color>
-    <color name="lockscreen_owner_info">@android:color/lockscreen_owner_info</color>
+    <color name="lockscreen_owner_info">@android:color/lockscreen_owner_info</color>-->
 
     <!-- keyguard overscroll widget pager -->
-    <color name="kg_multi_user_text_active">@android:color/kg_multi_user_text_active</color>
+    <!--<color name="kg_multi_user_text_active">@android:color/kg_multi_user_text_active</color>
     <color name="kg_multi_user_text_inactive">@android:color/kg_multi_user_text_inactive</color>
-    <color name="kg_widget_pager_gradient">@android:color/kg_widget_pager_gradient</color>
+    <color name="kg_widget_pager_gradient">@android:color/kg_widget_pager_gradient</color>-->
 
     <!-- LockPatternView -->
-    <color name="lock_pattern_view_regular_color">@android:color/lock_pattern_view_regular_color
+    <!--<color name="lock_pattern_view_regular_color">@android:color/lock_pattern_view_regular_color
     </color>
     <color name="lock_pattern_view_success_color">@android:color/lock_pattern_view_success_color
-    </color>
+    </color>-->
 
     <!-- FaceLock -->
-    <color name="facelock_spotlight_mask">@android:color/facelock_spotlight_mask</color>
+    <!--<color name="facelock_spotlight_mask">@android:color/facelock_spotlight_mask</color>
 
     <color name="micro_text_light">@android:color/micro_text_light</color>
 
@@ -119,12 +119,12 @@
 
     <color name="notification_material_background_color">
         @android:color/notification_material_background_color
-    </color>
+    </color>-->
 
-    <color name="notification_default_color">@android:color/notification_default_color
-    </color> <!-- Gray 600 -->
+    <!--<color name="notification_default_color">@android:color/notification_default_color
+    </color>--><!-- Gray 600 -->
 
-    <color name="notification_action_button_text_color">
+    <!--<color name="notification_action_button_text_color">
         @android:color/notification_action_button_text_color
     </color>
 
@@ -138,7 +138,7 @@
         @android:color/notification_action_list_background_color
     </color>
 
-    <!-- Keyguard colors -->
+    &lt;!&ndash; Keyguard colors &ndash;&gt;
     <color name="keyguard_avatar_frame_color">@android:color/keyguard_avatar_frame_color</color>
     <color name="keyguard_avatar_frame_shadow_color">
         @android:color/keyguard_avatar_frame_shadow_color
@@ -146,37 +146,38 @@
     <color name="keyguard_avatar_nick_color">@android:color/keyguard_avatar_nick_color</color>
     <color name="keyguard_avatar_frame_pressed_color">
         @android:color/keyguard_avatar_frame_pressed_color
-    </color>
+    </color>-->
 
-    <color name="accessibility_focus_highlight">@android:color/accessibility_focus_highlight</color>
-    <color name="autofilled_highlight">@android:color/autofilled_highlight</color>
+    <!--<color name="accessibility_focus_highlight">@android:color/accessibility_focus_highlight</color>-->
+    <!--<color name="autofilled_highlight">@android:color/autofilled_highlight</color>-->
 
-    <color name="system_notification_accent_color">@android:color/system_notification_accent_color
-    </color>
+    <!--<color name="system_notification_accent_color">@android:color/system_notification_accent_color
+    </color>-->
 
     <!-- Default user icon colors -->
-    <color name="user_icon_1">@android:color/user_icon_1</color><!-- cyan 500 -->
-    <color name="user_icon_2">@android:color/user_icon_2</color><!-- indigo 500 -->
-    <color name="user_icon_3">@android:color/user_icon_3</color><!-- blue 500 -->
-    <color name="user_icon_4">@android:color/user_icon_4</color><!-- pink 500 -->
-    <color name="user_icon_5">@android:color/user_icon_5</color><!-- green 500 -->
-    <color name="user_icon_6">@android:color/user_icon_6</color><!-- light green 500 -->
-    <color name="user_icon_7">@android:color/user_icon_7</color><!-- orange 500 -->
-    <color name="user_icon_8">@android:color/user_icon_8</color><!-- deep orange 500 -->
-    <color name="user_icon_default_gray">@android:color/user_icon_default_gray
-    </color><!-- gray 500 -->
-    <color name="user_icon_default_white">@android:color/user_icon_default_white
-    </color><!-- white -->
+    <!--<color name="user_icon_1">@android:color/user_icon_1</color>--><!-- cyan 500 -->
+    <!--<color name="user_icon_2">@android:color/user_icon_2</color>--><!-- indigo 500 -->
+    <!--<color name="user_icon_3">@android:color/user_icon_3</color>--><!-- blue 500 -->
+    <!--<color name="user_icon_4">@android:color/user_icon_4</color>--><!-- pink 500 -->
+    <!--<color name="user_icon_5">@android:color/user_icon_5</color>--><!-- green 500 -->
+    <!--<color name="user_icon_6">@android:color/user_icon_6</color>--><!-- light green 500 -->
+    <!--<color name="user_icon_7">@android:color/user_icon_7</color>--><!-- orange 500 -->
+    <!--<color name="user_icon_8">@android:color/user_icon_8</color>--><!-- deep orange 500 -->
+    <!--<color name="user_icon_default_gray">@android:color/user_icon_default_gray
+    </color>--><!-- gray 500 -->
+    <!--<color name="user_icon_default_white">@android:color/user_icon_default_white
+    </color>--><!-- white -->
 
     <!-- Default profile badge colors -->
-    <color name="profile_badge_1">@android:color/profile_badge_1</color><!-- Blue -->
-    <color name="profile_badge_2">@android:color/profile_badge_2</color><!-- Orange -->
-    <color name="profile_badge_3">@android:color/profile_badge_3</color><!-- Green -->
+    <!--<color name="profile_badge_1">@android:color/profile_badge_1</color>--><!-- Blue -->
+    <!--<color name="profile_badge_2">@android:color/profile_badge_2</color>--><!-- Orange -->
+    <!--<color name="profile_badge_3">@android:color/profile_badge_3</color>--><!-- Green -->
 
     <!-- Default instant app badge color -->
-    <color name="instant_app_badge">@android:color/instant_app_badge</color><!-- Grey -->
+    <!--<color name="instant_app_badge">@android:color/instant_app_badge</color>--><!-- Grey -->
 
     <!-- Multi-sim sim colors -->
+    <!--
     <color name="Teal_700">@android:color/Teal_700</color>
     <color name="Teal_800">@android:color/Teal_800</color>
     <color name="Blue_700">@android:color/Blue_700</color>
@@ -189,34 +190,35 @@
     <color name="Pink_800">@android:color/Pink_800</color>
     <color name="Red_700">@android:color/Red_700</color>
     <color name="Red_800">@android:color/Red_800</color>
+    -->
 
     <!-- Status bar color for semi transparent mode. -->
-    <color name="system_bar_background_semi_transparent">
+    <!--<color name="system_bar_background_semi_transparent">
         @android:color/system_bar_background_semi_transparent
-    </color> <!-- 40% black -->
+    </color>--><!-- 40% black -->
 
-    <color name="resize_shadow_start_color">@android:color/resize_shadow_start_color</color>
+    <!--<color name="resize_shadow_start_color">@android:color/resize_shadow_start_color</color>
     <color name="resize_shadow_end_color">@android:color/resize_shadow_end_color</color>
 
     <color name="tooltip_background_dark">@android:color/tooltip_background_dark</color>
-    <color name="tooltip_background_light">@android:color/tooltip_background_light</color>
+    <color name="tooltip_background_light">@android:color/tooltip_background_light</color>-->
 
     <!-- FloatingToolbar -->
-    <color name="floating_popup_divider_dark">@android:color/floating_popup_divider_dark</color>
-    <color name="floating_popup_divider_light">@android:color/floating_popup_divider_light</color>
+    <!--<color name="floating_popup_divider_dark">@android:color/floating_popup_divider_dark</color>
+    <color name="floating_popup_divider_light">@android:color/floating_popup_divider_light</color>-->
 
     <!-- Magnifier -->
-    <color name="default_magnifier_color_overlay">@android:color/default_magnifier_color_overlay
+    <!--<color name="default_magnifier_color_overlay">@android:color/default_magnifier_color_overlay
     </color>
 
     <color name="chooser_row_divider">@android:color/chooser_row_divider</color>
     <color name="chooser_gradient_background">@android:color/chooser_gradient_background</color>
-    <color name="chooser_gradient_highlight">@android:color/chooser_gradient_highlight</color>
+    <color name="chooser_gradient_highlight">@android:color/chooser_gradient_highlight</color>-->
 
-    <color name="GM2_grey_800">@android:color/GM2_grey_800</color>
+    <!--<color name="GM2_grey_800">@android:color/GM2_grey_800</color>-->
 
     <!-- Resolver/Chooser -->
-    <color name="resolver_text_color_secondary_dark">
+    <!--<color name="resolver_text_color_secondary_dark">
         @android:color/resolver_text_color_secondary_dark
-    </color>
+    </color>-->
 </resources><!-- @author Liangcheng Juves --><!-- Created at 2020/6/2 17:50 -->

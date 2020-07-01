@@ -1,166 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- The width that is used when creating thumbnails of applications. -->
-    <dimen name="thumbnail_width">@android:dimen/thumbnail_width</dimen>
+    <!--<dimen name="thumbnail_width">@android:dimen/thumbnail_width</dimen>-->
     <!-- The height that is used when creating thumbnails of applications. -->
-    <dimen name="thumbnail_height">@android:dimen/thumbnail_height</dimen>
+    <!--<dimen name="thumbnail_height">@android:dimen/thumbnail_height</dimen>-->
 
     <!-- The standard size (both width and height) of an application icon that
          will be displayed in the app launcher and elsewhere. -->
     <dimen name="app_icon_size">@android:dimen/app_icon_size</dimen>
 
-    <dimen name="toast_y_offset">@android:dimen/toast_y_offset</dimen>
+    <!--<dimen name="toast_y_offset">@android:dimen/toast_y_offset</dimen>-->
     <!-- Height of the status bar -->
-    <dimen name="status_bar_height">@android:dimen/status_bar_height</dimen>
+    <!--<dimen name="status_bar_height">@android:dimen/status_bar_height</dimen>-->
     <!-- Height of the status bar in portrait -->
-    <dimen name="status_bar_height_portrait">@android:dimen/status_bar_height_portrait</dimen>
+    <!--<dimen name="status_bar_height_portrait">@android:dimen/status_bar_height_portrait</dimen>-->
     <!-- Height of the status bar in landscape -->
-    <dimen name="status_bar_height_landscape">@android:dimen/status_bar_height_landscape</dimen>
+    <!--<dimen name="status_bar_height_landscape">@android:dimen/status_bar_height_landscape</dimen>-->
     <!-- Height of area above QQS where battery/time go -->
-    <dimen name="quick_qs_offset_height">@android:dimen/quick_qs_offset_height</dimen>
+    <!--<dimen name="quick_qs_offset_height">@android:dimen/quick_qs_offset_height</dimen>-->
     <!-- Total height of QQS (quick_qs_offset_height + 128) -->
-    <dimen name="quick_qs_total_height">@android:dimen/quick_qs_total_height</dimen>
+    <!--<dimen name="quick_qs_total_height">@android:dimen/quick_qs_total_height</dimen>-->
     <!-- Height of the bottom navigation / system bar. -->
-    <dimen name="navigation_bar_height">@android:dimen/navigation_bar_height</dimen>
+    <!--<dimen name="navigation_bar_height">@android:dimen/navigation_bar_height</dimen>-->
     <!-- Height of the bottom navigation bar in portrait; often the same as @dimen/navigation_bar_height -->
-    <dimen name="navigation_bar_height_landscape">@android:dimen/navigation_bar_height_landscape
-    </dimen>
+    <!--<dimen name="navigation_bar_height_landscape">@android:dimen/navigation_bar_height_landscape
+    </dimen>-->
     <!-- Width of the navigation bar when it is placed vertically on the screen -->
-    <dimen name="navigation_bar_width">@android:dimen/navigation_bar_width</dimen>
+    <!--<dimen name="navigation_bar_width">@android:dimen/navigation_bar_width</dimen>-->
     <!-- How much we expand the touchable region of the status bar below the notch to catch touches
          that just start below the notch. -->
-    <dimen name="display_cutout_touchable_region_size">
+    <!--<dimen name="display_cutout_touchable_region_size">
         @android:dimen/display_cutout_touchable_region_size
-    </dimen>
+    </dimen>-->
 
     <!-- Height of the bottom navigation bar frame; this is different than navigation_bar_height
          where that is the height reported to all the other windows to resize themselves around the
          navigation bar window but navigation_bar_frame_height is reported to SystemUI navigation
          bar view's window -->
-    <dimen name="navigation_bar_frame_height">@android:dimen/navigation_bar_frame_height</dimen>
+    <!--<dimen name="navigation_bar_frame_height">@android:dimen/navigation_bar_frame_height</dimen>-->
     <!-- Height of the bottom navigation bar frame in landscape -->
-    <dimen name="navigation_bar_frame_height_landscape">
+    <!--<dimen name="navigation_bar_frame_height_landscape">
         @android:dimen/navigation_bar_frame_height_landscape
-    </dimen>
+    </dimen>-->
 
     <!-- The height of the navigation gesture area if the gesture is starting from the bottom. -->
-    <dimen name="navigation_bar_gesture_height">@android:dimen/navigation_bar_gesture_height</dimen>
+    <!--<dimen name="navigation_bar_gesture_height">@android:dimen/navigation_bar_gesture_height</dimen>-->
 
     <!-- Height of the bottom navigation / system bar in car mode. -->
-    <dimen name="navigation_bar_height_car_mode">@android:dimen/navigation_bar_height_car_mode
-    </dimen>
+    <!--<dimen name="navigation_bar_height_car_mode">@android:dimen/navigation_bar_height_car_mode
+    </dimen>-->
     <!-- Height of the bottom navigation bar in portrait; often the same as
          @dimen/navigation_bar_height_car_mode -->
-    <dimen name="navigation_bar_height_landscape_car_mode">
+    <!--<dimen name="navigation_bar_height_landscape_car_mode">
         @android:dimen/navigation_bar_height_landscape_car_mode
-    </dimen>
+    </dimen>-->
     <!-- Width of the navigation bar when it is placed vertically on the screen in car mode -->
-    <dimen name="navigation_bar_width_car_mode">@android:dimen/navigation_bar_width_car_mode</dimen>
+    <!--<dimen name="navigation_bar_width_car_mode">@android:dimen/navigation_bar_width_car_mode</dimen>-->
     <!-- Height of notification icons in the status bar -->
-    <dimen name="status_bar_icon_size">@android:dimen/status_bar_icon_size</dimen>
+    <!--<dimen name="status_bar_icon_size">@android:dimen/status_bar_icon_size</dimen>-->
     <!-- Desired size of system icons in status bar. -->
-    <dimen name="status_bar_system_icon_size">@android:dimen/status_bar_system_icon_size</dimen>
+    <!--<dimen name="status_bar_system_icon_size">@android:dimen/status_bar_system_icon_size</dimen>-->
     <!-- Intrinsic size of most system icons in status bar. This is the default value that
          is used if a Drawable reports an intrinsic size of 0. -->
-    <dimen name="status_bar_system_icon_intrinsic_size">
+    <!--<dimen name="status_bar_system_icon_intrinsic_size">
         @android:dimen/status_bar_system_icon_intrinsic_size
-    </dimen>
+    </dimen>-->
     <!-- Size of the giant number (unread count) in the notifications -->
-    <dimen name="status_bar_content_number_size">@android:dimen/status_bar_content_number_size
-    </dimen>
+    <!--<dimen name="status_bar_content_number_size">@android:dimen/status_bar_content_number_size
+    </dimen>-->
     <!-- Margin at the edge of the screen to ignore touch events for in the windowshade. -->
-    <dimen name="status_bar_edge_ignore">@android:dimen/status_bar_edge_ignore</dimen>
+    <!--<dimen name="status_bar_edge_ignore">@android:dimen/status_bar_edge_ignore</dimen>-->
 
     <!-- Default radius of the software rounded corners. -->
-    <dimen name="rounded_corner_radius">@android:dimen/rounded_corner_radius</dimen>
+    <!--<dimen name="rounded_corner_radius">@android:dimen/rounded_corner_radius</dimen>-->
     <!-- Radius of the software rounded corners at the top of the display in its natural
         orientation. If zero, the value of rounded_corner_radius is used. -->
-    <dimen name="rounded_corner_radius_top">@android:dimen/rounded_corner_radius_top</dimen>
+    <!--<dimen name="rounded_corner_radius_top">@android:dimen/rounded_corner_radius_top</dimen>-->
     <!-- Radius of the software rounded corners at the bottom of the display in its natural
         orientation. If zero, the value of rounded_corner_radius is used. -->
-    <dimen name="rounded_corner_radius_bottom">@android:dimen/rounded_corner_radius_bottom</dimen>
+    <!--<dimen name="rounded_corner_radius_bottom">@android:dimen/rounded_corner_radius_bottom</dimen>-->
 
     <!-- Width of the window of the divider bar used to resize docked stacks. -->
-    <dimen name="docked_stack_divider_thickness">@android:dimen/docked_stack_divider_thickness
-    </dimen>
+    <!--<dimen name="docked_stack_divider_thickness">@android:dimen/docked_stack_divider_thickness
+    </dimen>-->
 
     <!-- How much the content in the divider is inset from the window bounds when resting. Used to
          calculate the bounds of the stacks-->
-    <dimen name="docked_stack_divider_insets">@android:dimen/docked_stack_divider_insets</dimen>
+    <!--<dimen name="docked_stack_divider_insets">@android:dimen/docked_stack_divider_insets</dimen>-->
 
     <!-- To how much the docked stack gets reduced when we decide to minimize the docked stack, i.e.
          when the user opens homescreen. -->
-    <dimen name="docked_stack_minimize_thickness">@android:dimen/docked_stack_minimize_thickness
-    </dimen>
+    <!--<dimen name="docked_stack_minimize_thickness">@android:dimen/docked_stack_minimize_thickness
+    </dimen>-->
 
     <!-- The amount to leave on-screen when the PIP is minimized. -->
-    <dimen name="pip_minimized_visible_size">@android:dimen/pip_minimized_visible_size</dimen>
+    <!--<dimen name="pip_minimized_visible_size">@android:dimen/pip_minimized_visible_size</dimen>-->
 
     <!-- The the PIP decelerates at while moving from a fling. -->
-    <dimen name="pip_fling_deceleration">@android:dimen/pip_fling_deceleration</dimen>
+    <!--<dimen name="pip_fling_deceleration">@android:dimen/pip_fling_deceleration</dimen>-->
 
     <!-- Min width for a tablet device -->
-    <dimen name="min_xlarge_screen_width">@android:dimen/min_xlarge_screen_width</dimen>
+    <!--<dimen name="min_xlarge_screen_width">@android:dimen/min_xlarge_screen_width</dimen>-->
 
     <!-- Default height of a key in the password keyboard for alpha (used by keyguard) -->
-    <dimen name="password_keyboard_key_height_alpha">
+    <!--<dimen name="password_keyboard_key_height_alpha">
         @android:dimen/password_keyboard_key_height_alpha
-    </dimen>
+    </dimen>-->
     <!-- Default height of a key in the password keyboard for numeric (used by keyguard) -->
-    <dimen name="password_keyboard_key_height_numeric">
+    <!--<dimen name="password_keyboard_key_height_numeric">
         @android:dimen/password_keyboard_key_height_numeric
-    </dimen>
+    </dimen>-->
     <!-- Default correction for the space key in the password keyboard  (used by keyguard) -->
-    <dimen name="password_keyboard_spacebar_vertical_correction">
+    <!--<dimen name="password_keyboard_spacebar_vertical_correction">
         @android:dimen/password_keyboard_spacebar_vertical_correction
-    </dimen>
+    </dimen>-->
     <!-- Default horizontal gap between keys in the password keyboard (used by keyguard) -->
-    <dimen name="password_keyboard_horizontalGap">@android:dimen/password_keyboard_horizontalGap
-    </dimen>
+    <!--<dimen name="password_keyboard_horizontalGap">@android:dimen/password_keyboard_horizontalGap
+    </dimen>-->
     <!-- Default vertical gap between keys in the password keyboard (used by keyguard) -->
-    <dimen name="password_keyboard_verticalGap">@android:dimen/password_keyboard_verticalGap</dimen>
+    <!--<dimen name="password_keyboard_verticalGap">@android:dimen/password_keyboard_verticalGap</dimen>-->
 
     <!-- Size of lockscreen outerring on unsecure unlock LockScreen -->
-    <dimen name="keyguard_lockscreen_outerring_diameter">
+    <!--<dimen name="keyguard_lockscreen_outerring_diameter">
         @android:dimen/keyguard_lockscreen_outerring_diameter
-    </dimen>
+    </dimen>-->
 
     <!-- Preference activity side margins -->
-    <dimen name="preference_screen_side_margin">@android:dimen/preference_screen_side_margin</dimen>
+    <!--<dimen name="preference_screen_side_margin">@android:dimen/preference_screen_side_margin</dimen>-->
     <!-- Preference activity side margins negative-->
-    <dimen name="preference_screen_side_margin_negative">
+    <!--<dimen name="preference_screen_side_margin_negative">
         @android:dimen/preference_screen_side_margin_negative
-    </dimen>
+    </dimen>-->
     <!-- Preference activity top margin -->
-    <dimen name="preference_screen_top_margin">@android:dimen/preference_screen_top_margin</dimen>
+    <!--<dimen name="preference_screen_top_margin">@android:dimen/preference_screen_top_margin</dimen>-->
     <!-- Preference activity bottom margin -->
-    <dimen name="preference_screen_bottom_margin">@android:dimen/preference_screen_bottom_margin
-    </dimen>
+    <!--<dimen name="preference_screen_bottom_margin">@android:dimen/preference_screen_bottom_margin
+    </dimen>-->
     <!-- Preference widget area width (to the left of the text) -->
-    <dimen name="preference_widget_width">@android:dimen/preference_widget_width</dimen>
+    <!--<dimen name="preference_widget_width">@android:dimen/preference_widget_width</dimen>-->
     <!-- Preference fragment padding, bottom -->
-    <dimen name="preference_fragment_padding_bottom">
+    <!--<dimen name="preference_fragment_padding_bottom">
         @android:dimen/preference_fragment_padding_bottom
-    </dimen>
+    </dimen>-->
     <!-- Preference fragment padding, sides -->
-    <dimen name="preference_fragment_padding_side">@android:dimen/preference_fragment_padding_side
-    </dimen>
+    <!--<dimen name="preference_fragment_padding_side">@android:dimen/preference_fragment_padding_side
+    </dimen>-->
 
     <!-- Padding to the left of the preference panel breadcrumb -->
-    <dimen name="preference_breadcrumb_paddingLeft">
+    <!--<dimen name="preference_breadcrumb_paddingLeft">
         @android:dimen/preference_breadcrumb_paddingLeft
-    </dimen>
+    </dimen>-->
     <!-- Padding to the right of the preference panel breadcrumb -->
-    <dimen name="preference_breadcrumb_paddingRight">
+    <!--<dimen name="preference_breadcrumb_paddingRight">
         @android:dimen/preference_breadcrumb_paddingRight
-    </dimen>
+    </dimen>-->
     <!-- Minimum space to allocate to the left of a preference item for an icon.
         This helps in aligning titles when some items have icons and some don't. When space is
         at a premium, we don't pre-allocate any space. -->
-    <dimen name="preference_icon_minWidth">@android:dimen/preference_icon_minWidth</dimen>
+    <!--<dimen name="preference_icon_minWidth">@android:dimen/preference_icon_minWidth</dimen>-->
 
     <!-- Preference activity, vertical padding for the header list -->
-    <dimen name="preference_screen_header_vertical_padding">
+    <!--<dimen name="preference_screen_header_vertical_padding">
         @android:dimen/preference_screen_header_vertical_padding
     </dimen>
 
@@ -170,277 +170,277 @@
 
     <dimen name="preference_item_padding_side">@android:dimen/preference_item_padding_side</dimen>
     <dimen name="preference_item_padding_inner">@android:dimen/preference_item_padding_inner</dimen>
-    <dimen name="preference_child_padding_side">@android:dimen/preference_child_padding_side</dimen>
+    <dimen name="preference_child_padding_side">@android:dimen/preference_child_padding_side</dimen>-->
 
     <!-- Default padding for dialogs. -->
-    <dimen name="dialog_padding">@android:dimen/dialog_padding</dimen>
+    <!--<dimen name="dialog_padding">@android:dimen/dialog_padding</dimen>-->
 
     <!-- The margin on the start of the content view -->
-    <dimen name="notification_content_margin_start">
+    <!--<dimen name="notification_content_margin_start">
         @android:dimen/notification_content_margin_start
-    </dimen>
+    </dimen>-->
 
     <!-- The margin on the end of the content view. -->
-    <dimen name="notification_content_margin_end">@android:dimen/notification_content_margin_end
-    </dimen>
+    <!--<dimen name="notification_content_margin_end">@android:dimen/notification_content_margin_end
+    </dimen>-->
 
     <!-- The inset of the reply icon. -->
-    <dimen name="notification_reply_inset">@android:dimen/notification_reply_inset</dimen>
+    <!--<dimen name="notification_reply_inset">@android:dimen/notification_reply_inset</dimen>-->
 
     <!-- The margin for text at the end of the image view for media notifications -->
-    <dimen name="notification_media_image_margin_end">
+    <!--<dimen name="notification_media_image_margin_end">
         @android:dimen/notification_media_image_margin_end
-    </dimen>
+    </dimen>-->
 
     <!-- The height of the notification action list -->
-    <dimen name="notification_action_list_height">@android:dimen/notification_action_list_height
-    </dimen>
+    <!--<dimen name="notification_action_list_height">@android:dimen/notification_action_list_height
+    </dimen>-->
 
     <!-- The margin of the notification action list at the top -->
-    <dimen name="notification_action_list_margin_top">
+    <!--<dimen name="notification_action_list_margin_top">
         @android:dimen/notification_action_list_margin_top
-    </dimen>
+    </dimen>-->
 
     <!-- The height of the notification action list -->
-    <dimen name="notification_action_emphasized_height">
+    <!--<dimen name="notification_action_emphasized_height">
         @android:dimen/notification_action_emphasized_height
-    </dimen>
+    </dimen>-->
 
     <!-- Size of the stroke with for the emphasized notification button style -->
-    <dimen name="emphasized_button_stroke_width">@android:dimen/emphasized_button_stroke_width
-    </dimen>
+    <!--<dimen name="emphasized_button_stroke_width">@android:dimen/emphasized_button_stroke_width
+    </dimen>-->
 
     <!-- height of the content margin to accomodate for the header -->
-    <dimen name="notification_content_margin_top">@android:dimen/notification_content_margin_top
-    </dimen>
+    <!--<dimen name="notification_content_margin_top">@android:dimen/notification_content_margin_top
+    </dimen>-->
 
     <!-- height of the content margin that is applied at the end of the notification content -->
-    <dimen name="notification_content_margin">@android:dimen/notification_content_margin</dimen>
+    <!--<dimen name="notification_content_margin">@android:dimen/notification_content_margin</dimen>-->
 
     <!-- The height of the progress bar. -->
-    <dimen name="notification_progress_bar_height">@android:dimen/notification_progress_bar_height
-    </dimen>
+    <!--<dimen name="notification_progress_bar_height">@android:dimen/notification_progress_bar_height
+    </dimen>-->
 
     <!-- The top margin before the notification progress bar. -->
-    <dimen name="notification_progress_margin_top">@android:dimen/notification_progress_margin_top
-    </dimen>
+    <!--<dimen name="notification_progress_margin_top">@android:dimen/notification_progress_margin_top
+    </dimen>-->
 
     <!-- height of the notification header (for icon and package name) -->
-    <dimen name="notification_header_height">@android:dimen/notification_header_height</dimen>
+    <!--<dimen name="notification_header_height">@android:dimen/notification_header_height</dimen>-->
 
     <!-- The height of the background for a notification header on a group -->
-    <dimen name="notification_header_background_height">
+    <!--<dimen name="notification_header_background_height">
         @android:dimen/notification_header_background_height
-    </dimen>
+    </dimen>-->
 
     <!-- The top padding for the notification header -->
-    <dimen name="notification_header_padding_top">@android:dimen/notification_header_padding_top
-    </dimen>
+    <!--<dimen name="notification_header_padding_top">@android:dimen/notification_header_padding_top
+    </dimen>-->
 
     <!-- The bottom padding for the notification header -->
-    <dimen name="notification_header_padding_bottom">
+    <!--<dimen name="notification_header_padding_bottom">
         @android:dimen/notification_header_padding_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- The margin at the bottom of the notification header. -->
-    <dimen name="notification_header_margin_bottom">
+    <!--<dimen name="notification_header_margin_bottom">
         @android:dimen/notification_header_margin_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- The end margin after the application icon in the notification header -->
-    <dimen name="notification_header_icon_margin_end">
+    <!--<dimen name="notification_header_icon_margin_end">
         @android:dimen/notification_header_icon_margin_end
-    </dimen>
+    </dimen>-->
 
     <!-- size (width and height) of the icon in the notification header -->
-    <dimen name="notification_header_icon_size">@android:dimen/notification_header_icon_size</dimen>
+    <!--<dimen name="notification_header_icon_size">@android:dimen/notification_header_icon_size</dimen>-->
 
     <!-- size (width and height) of the icon in the notification header -->
-    <dimen name="notification_header_icon_size_ambient">
+    <!--<dimen name="notification_header_icon_size_ambient">
         @android:dimen/notification_header_icon_size_ambient
-    </dimen>
+    </dimen>-->
 
     <!-- The margin before the start of the app name in the header. -->
-    <dimen name="notification_header_app_name_margin_start">
+    <!--<dimen name="notification_header_app_name_margin_start">
         @android:dimen/notification_header_app_name_margin_start
-    </dimen>
+    </dimen>-->
 
     <!-- The margin before and after each of the items in the notification header. -->
-    <dimen name="notification_header_separating_margin">
+    <!--<dimen name="notification_header_separating_margin">
         @android:dimen/notification_header_separating_margin
-    </dimen>
+    </dimen>-->
 
     <!-- The absolute size of the notification expand icon. -2 for wrap_content. -->
-    <dimen name="notification_header_expand_icon_size">
+    <!--<dimen name="notification_header_expand_icon_size">
         @android:dimen/notification_header_expand_icon_size
-    </dimen>
+    </dimen>-->
 
     <!-- The top padding for the notification expand button. -->
-    <dimen name="notification_expand_button_padding_top">
+    <!--<dimen name="notification_expand_button_padding_top">
         @android:dimen/notification_expand_button_padding_top
-    </dimen>
+    </dimen>-->
 
     <!-- Height of a small notification in the status bar -->
-    <dimen name="notification_min_height">@android:dimen/notification_min_height</dimen>
+    <!--<dimen name="notification_min_height">@android:dimen/notification_min_height</dimen>-->
 
     <!-- The width of the big icons in notifications. -->
-    <dimen name="notification_large_icon_width">@android:dimen/notification_large_icon_width</dimen>
+    <!--<dimen name="notification_large_icon_width">@android:dimen/notification_large_icon_width</dimen>-->
 
     <!-- The width of the big icons in notifications. -->
-    <dimen name="notification_large_icon_height">@android:dimen/notification_large_icon_height
-    </dimen>
+    <!--<dimen name="notification_large_icon_height">@android:dimen/notification_large_icon_height
+    </dimen>-->
 
     <!-- The minimum width of the app name in the header if it shrinks -->
-    <dimen name="notification_header_shrink_min_width">
+    <!--<dimen name="notification_header_shrink_min_width">
         @android:dimen/notification_header_shrink_min_width
-    </dimen>
+    </dimen>-->
 
     <!-- The minimum height of the content if there are at least two lines or a picture-->
-    <dimen name="notification_min_content_height">@android:dimen/notification_min_content_height
-    </dimen>
+    <!--<dimen name="notification_min_content_height">@android:dimen/notification_min_content_height
+    </dimen>-->
 
     <!-- The size of the media actions in the media notification. -->
-    <dimen name="media_notification_action_button_size">
+    <!--<dimen name="media_notification_action_button_size">
         @android:dimen/media_notification_action_button_size
-    </dimen>
+    </dimen>-->
 
     <!-- The bottom padding for the media actions container. -->
-    <dimen name="media_notification_actions_padding_bottom">
+    <!--<dimen name="media_notification_actions_padding_bottom">
         @android:dimen/media_notification_actions_padding_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- The maximum size of the image in the expanded media notification -->
-    <dimen name="media_notification_expanded_image_max_size">
+    <!--<dimen name="media_notification_expanded_image_max_size">
         @android:dimen/media_notification_expanded_image_max_size
-    </dimen>
+    </dimen>-->
 
     <!-- The maximum size of the image in the expanded media notification -->
-    <dimen name="media_notification_expanded_image_margin_bottom">
+    <!--<dimen name="media_notification_expanded_image_margin_bottom">
         @android:dimen/media_notification_expanded_image_margin_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- The absolute height for the header in a media notification. -->
-    <dimen name="media_notification_header_height">@android:dimen/media_notification_header_height
-    </dimen>
+    <!--<dimen name="media_notification_header_height">@android:dimen/media_notification_header_height
+    </dimen>-->
 
     <!-- The margin of the content to an image-->
-    <dimen name="notification_content_image_margin_end">
+    <!--<dimen name="notification_content_image_margin_end">
         @android:dimen/notification_content_image_margin_end
-    </dimen>
+    </dimen>-->
 
     <!-- The spacing between messages in Notification.MessagingStyle -->
-    <dimen name="notification_messaging_spacing">@android:dimen/notification_messaging_spacing
-    </dimen>
+    <!--<dimen name="notification_messaging_spacing">@android:dimen/notification_messaging_spacing
+    </dimen>-->
 
     <!-- The rounding for messaging images -->
-    <dimen name="messaging_image_rounding">@android:dimen/messaging_image_rounding</dimen>
+    <!--<dimen name="messaging_image_rounding">@android:dimen/messaging_image_rounding</dimen>-->
 
     <!-- The minimum size for any image in messaging style in order to be displayed -->
-    <dimen name="messaging_image_min_size">@android:dimen/messaging_image_min_size</dimen>
+    <!--<dimen name="messaging_image_min_size">@android:dimen/messaging_image_min_size</dimen>-->
 
     <!-- The maximum size for any image in messaging style in order to be displayed -->
-    <dimen name="messaging_image_max_height">@android:dimen/messaging_image_max_height</dimen>
+    <!--<dimen name="messaging_image_max_height">@android:dimen/messaging_image_max_height</dimen>-->
 
     <!-- Extra spacing before and after images in messaging style -->
-    <dimen name="messaging_image_extra_spacing">@android:dimen/messaging_image_extra_spacing</dimen>
+    <!--<dimen name="messaging_image_extra_spacing">@android:dimen/messaging_image_extra_spacing</dimen>-->
 
     <!-- Preferred width and height of the search view. -->
-    <dimen name="search_view_preferred_width">@android:dimen/search_view_preferred_width</dimen>
-    <dimen name="search_view_preferred_height">@android:dimen/search_view_preferred_height</dimen>
+    <!--<dimen name="search_view_preferred_width">@android:dimen/search_view_preferred_width</dimen>
+    <dimen name="search_view_preferred_height">@android:dimen/search_view_preferred_height</dimen>-->
 
     <!-- Dialog padding for round display -->
-    <dimen name="alert_dialog_round_padding">@android:dimen/alert_dialog_round_padding</dimen>
+    <!--<dimen name="alert_dialog_round_padding">@android:dimen/alert_dialog_round_padding</dimen>-->
     <!-- Dialog title height -->
-    <dimen name="alert_dialog_title_height">@android:dimen/alert_dialog_title_height</dimen>
+    <!--<dimen name="alert_dialog_title_height">@android:dimen/alert_dialog_title_height</dimen>-->
     <!-- Dialog button bar width -->
-    <dimen name="alert_dialog_button_bar_width">@android:dimen/alert_dialog_button_bar_width</dimen>
+    <!--<dimen name="alert_dialog_button_bar_width">@android:dimen/alert_dialog_button_bar_width</dimen>-->
     <!-- Dialog button bar height -->
-    <dimen name="alert_dialog_button_bar_height">@android:dimen/alert_dialog_button_bar_height
-    </dimen>
+    <!--<dimen name="alert_dialog_button_bar_height">@android:dimen/alert_dialog_button_bar_height
+    </dimen>-->
     <!-- Leanback dialog vertical margin -->
-    <dimen name="leanback_alert_dialog_vertical_margin">
+    <!--<dimen name="leanback_alert_dialog_vertical_margin">
         @android:dimen/leanback_alert_dialog_vertical_margin
-    </dimen>
+    </dimen>-->
     <!-- Leanback dialog horizontal margin -->
-    <dimen name="leanback_alert_dialog_horizontal_margin">
+    <!--<dimen name="leanback_alert_dialog_horizontal_margin">
         @android:dimen/leanback_alert_dialog_horizontal_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Default height of an action bar. -->
-    <dimen name="action_bar_default_height">@android:dimen/action_bar_default_height</dimen>
+    <!--<dimen name="action_bar_default_height">@android:dimen/action_bar_default_height</dimen>-->
     <!-- Vertical padding around action bar icons. -->
-    <dimen name="action_bar_icon_vertical_padding">@android:dimen/action_bar_icon_vertical_padding
-    </dimen>
+    <!--<dimen name="action_bar_icon_vertical_padding">@android:dimen/action_bar_icon_vertical_padding
+    </dimen>-->
     <!-- Text size for action bar titles -->
-    <dimen name="action_bar_title_text_size">@android:dimen/action_bar_title_text_size</dimen>
+    <!--<dimen name="action_bar_title_text_size">@android:dimen/action_bar_title_text_size</dimen>-->
     <!-- Text size for action bar subtitles -->
-    <dimen name="action_bar_subtitle_text_size">@android:dimen/action_bar_subtitle_text_size</dimen>
+    <!--<dimen name="action_bar_subtitle_text_size">@android:dimen/action_bar_subtitle_text_size</dimen>-->
     <!-- Top margin for action bar subtitles -->
-    <dimen name="action_bar_subtitle_top_margin">@android:dimen/action_bar_subtitle_top_margin
-    </dimen>
+    <!--<dimen name="action_bar_subtitle_top_margin">@android:dimen/action_bar_subtitle_top_margin
+    </dimen>-->
     <!-- Bottom margin for action bar subtitles -->
-    <dimen name="action_bar_subtitle_bottom_margin">
+    <!--<dimen name="action_bar_subtitle_bottom_margin">
         @android:dimen/action_bar_subtitle_bottom_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Size of clock font in LockScreen on Unsecure unlock screen. -->
-    <dimen name="keyguard_lockscreen_clock_font_size">
+    <!--<dimen name="keyguard_lockscreen_clock_font_size">
         @android:dimen/keyguard_lockscreen_clock_font_size
-    </dimen>
+    </dimen>-->
 
     <!-- Size of status line font on Unsecure unlock LockScreen. -->
-    <dimen name="keyguard_lockscreen_status_line_font_size">
+    <!--<dimen name="keyguard_lockscreen_status_line_font_size">
         @android:dimen/keyguard_lockscreen_status_line_font_size
-    </dimen>
+    </dimen>-->
 
     <!-- Size of right margin on Unsecure unlock LockScreen -->
-    <dimen name="keyguard_lockscreen_status_line_font_right_margin">
+    <!--<dimen name="keyguard_lockscreen_status_line_font_right_margin">
         @android:dimen/keyguard_lockscreen_status_line_font_right_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Size of top margin on Clock font to edge on unlock LockScreen -->
-    <dimen name="keyguard_lockscreen_status_line_clockfont_top_margin">
+    <!--<dimen name="keyguard_lockscreen_status_line_clockfont_top_margin">
         @android:dimen/keyguard_lockscreen_status_line_clockfont_top_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Size of top margin on Clock font to edge on unlock LockScreen -->
-    <dimen name="keyguard_lockscreen_status_line_clockfont_bottom_margin">
+    <!--<dimen name="keyguard_lockscreen_status_line_clockfont_bottom_margin">
         @android:dimen/keyguard_lockscreen_status_line_clockfont_bottom_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Padding on left margin of PIN text entry field to center it when del button is showing -->
-    <dimen name="keyguard_lockscreen_pin_margin_left">
+    <!--<dimen name="keyguard_lockscreen_pin_margin_left">
         @android:dimen/keyguard_lockscreen_pin_margin_left
-    </dimen>
+    </dimen>-->
 
     <!-- Height of FaceUnlock view in keyguard -->
-    <dimen name="face_unlock_height">@android:dimen/face_unlock_height</dimen>
+    <!--<dimen name="face_unlock_height">@android:dimen/face_unlock_height</dimen>-->
 
     <!-- Minimum popup width for selecting an activity in ActivityChooserDialog/ActivityChooserView. -->
-    <dimen name="activity_chooser_popup_min_width">@android:dimen/activity_chooser_popup_min_width
-    </dimen>
+    <!--<dimen name="activity_chooser_popup_min_width">@android:dimen/activity_chooser_popup_min_width
+    </dimen>-->
 
     <!-- The default gap between components in a layout. -->
-    <dimen name="default_gap">@android:dimen/default_gap</dimen>
+    <!--<dimen name="default_gap">@android:dimen/default_gap</dimen>-->
 
     <!-- Text padding for dropdown items -->
-    <dimen name="dropdownitem_text_padding_left">@android:dimen/dropdownitem_text_padding_left
-    </dimen>
+    <!--<dimen name="dropdownitem_text_padding_left">@android:dimen/dropdownitem_text_padding_left
+    </dimen>-->
 
     <!-- Text padding for dropdown items -->
-    <dimen name="dropdownitem_text_padding_right">@android:dimen/dropdownitem_text_padding_right
-    </dimen>
+    <!--<dimen name="dropdownitem_text_padding_right">@android:dimen/dropdownitem_text_padding_right
+    </dimen>-->
 
     <!-- Width of the icon in a dropdown list -->
-    <dimen name="dropdownitem_icon_width">@android:dimen/dropdownitem_icon_width</dimen>
+    <!--<dimen name="dropdownitem_icon_width">@android:dimen/dropdownitem_icon_width</dimen>-->
 
     <!-- Default width for a textview error popup -->
-    <dimen name="textview_error_popup_default_width">
+    <!--<dimen name="textview_error_popup_default_width">
         @android:dimen/textview_error_popup_default_width
-    </dimen>
+    </dimen>-->
 
     <!-- Default padding to apply to AppWidgetHostViews containing widgets targeting API level 14 and up. -->
-    <dimen name="default_app_widget_padding_left">@android:dimen/default_app_widget_padding_left
+    <!--<dimen name="default_app_widget_padding_left">@android:dimen/default_app_widget_padding_left
     </dimen>
     <dimen name="default_app_widget_padding_top">@android:dimen/default_app_widget_padding_top
     </dimen>
@@ -448,192 +448,192 @@
     </dimen>
     <dimen name="default_app_widget_padding_bottom">
         @android:dimen/default_app_widget_padding_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- Minimum width for an action button in the menu area of an action bar -->
-    <dimen name="action_button_min_width">@android:dimen/action_button_min_width</dimen>
+    <!--<dimen name="action_button_min_width">@android:dimen/action_button_min_width</dimen>-->
 
     <!-- Maximum height for a stacked tab bar as part of an action bar -->
-    <dimen name="action_bar_stacked_max_height">@android:dimen/action_bar_stacked_max_height</dimen>
+    <!--<dimen name="action_bar_stacked_max_height">@android:dimen/action_bar_stacked_max_height</dimen>-->
 
     <!-- Maximum width for a stacked action bar tab. This prevents
          action bar tabs from becoming too wide on a wide screen when only
          a few are present. -->
-    <dimen name="action_bar_stacked_tab_max_width">@android:dimen/action_bar_stacked_tab_max_width
-    </dimen>
+    <!--<dimen name="action_bar_stacked_tab_max_width">@android:dimen/action_bar_stacked_tab_max_width
+    </dimen>-->
 
     <!-- Size of notification text (see TextAppearance.StatusBar.EventContent) -->
-    <dimen name="notification_text_size">@android:dimen/notification_text_size</dimen>
+    <!--<dimen name="notification_text_size">@android:dimen/notification_text_size</dimen>-->
     <!-- Size of notification text titles (see TextAppearance.StatusBar.EventContent.Title) -->
-    <dimen name="notification_title_text_size">@android:dimen/notification_title_text_size</dimen>
+    <!--<dimen name="notification_title_text_size">@android:dimen/notification_title_text_size</dimen>-->
     <!-- Size of smaller notification text (see TextAppearance.StatusBar.EventContent.Line2, Info, Time) -->
-    <dimen name="notification_subtext_size">@android:dimen/notification_subtext_size</dimen>
+    <!--<dimen name="notification_subtext_size">@android:dimen/notification_subtext_size</dimen>-->
     <!-- Top padding for notifications in the standard layout. -->
-    <dimen name="notification_top_pad">@android:dimen/notification_top_pad</dimen>
+    <!--<dimen name="notification_top_pad">@android:dimen/notification_top_pad</dimen>-->
 
     <!-- Top padding for notifications when narrow (i.e. it has 3 lines) -->
-    <dimen name="notification_top_pad_narrow">@android:dimen/notification_top_pad_narrow</dimen>
+    <!--<dimen name="notification_top_pad_narrow">@android:dimen/notification_top_pad_narrow</dimen>-->
 
     <!-- Top padding for notification when text is large -->
-    <dimen name="notification_top_pad_large_text">@android:dimen/notification_top_pad_large_text
-    </dimen>
+    <!--<dimen name="notification_top_pad_large_text">@android:dimen/notification_top_pad_large_text
+    </dimen>-->
 
     <!-- Top padding for notification when text is large and narrow (i.e. it has 3 lines -->
-    <dimen name="notification_top_pad_large_text_narrow">
+    <!--<dimen name="notification_top_pad_large_text_narrow">
         @android:dimen/notification_top_pad_large_text_narrow
-    </dimen>
+    </dimen>-->
 
     <!-- Padding for notification icon when drawn with circle around it -->
-    <dimen name="notification_large_icon_circle_padding">
+    <!--<dimen name="notification_large_icon_circle_padding">
         @android:dimen/notification_large_icon_circle_padding
-    </dimen>
+    </dimen>-->
 
     <!-- The margin on top of the text of the notification -->
-    <dimen name="notification_text_margin_top">@android:dimen/notification_text_margin_top</dimen>
+    <!--<dimen name="notification_text_margin_top">@android:dimen/notification_text_margin_top</dimen>-->
 
     <!-- The padding on top of inbox style elements -->
-    <dimen name="notification_inbox_item_top_padding">
+    <!--<dimen name="notification_inbox_item_top_padding">
         @android:dimen/notification_inbox_item_top_padding
-    </dimen>
+    </dimen>-->
 
     <!-- Size of the profile badge for notifications -->
-    <dimen name="notification_badge_size">@android:dimen/notification_badge_size</dimen>
+    <!--<dimen name="notification_badge_size">@android:dimen/notification_badge_size</dimen>-->
 
     <!-- Size of the alerted icon for notifications -->
-    <dimen name="notification_alerted_size">@android:dimen/notification_alerted_size</dimen>
+    <!--<dimen name="notification_alerted_size">@android:dimen/notification_alerted_size</dimen>-->
 
     <!-- Keyguard dimensions -->
     <!-- TEMP -->
-    <dimen name="kg_security_panel_height">@android:dimen/kg_security_panel_height</dimen>
+    <!--<dimen name="kg_security_panel_height">@android:dimen/kg_security_panel_height</dimen>-->
 
     <!-- Height of security view in keyguard. -->
-    <dimen name="kg_security_view_height">@android:dimen/kg_security_view_height</dimen>
+    <!--<dimen name="kg_security_view_height">@android:dimen/kg_security_view_height</dimen>-->
 
     <!-- Width of widget view in keyguard. -->
-    <dimen name="kg_widget_view_width">@android:dimen/kg_widget_view_width</dimen>
+    <!--<dimen name="kg_widget_view_width">@android:dimen/kg_widget_view_width</dimen>-->
 
     <!-- Height of widget view in keyguard. -->
-    <dimen name="kg_widget_view_height">@android:dimen/kg_widget_view_height</dimen>
+    <!--<dimen name="kg_widget_view_height">@android:dimen/kg_widget_view_height</dimen>-->
 
     <!-- Size of the clock font in keyguard's status view -->
-    <dimen name="kg_status_clock_font_size">@android:dimen/kg_status_clock_font_size</dimen>
+    <!--<dimen name="kg_status_clock_font_size">@android:dimen/kg_status_clock_font_size</dimen>-->
 
     <!-- Size of the date font in keyguard's status view  -->
-    <dimen name="kg_status_date_font_size">@android:dimen/kg_status_date_font_size</dimen>
+    <!--<dimen name="kg_status_date_font_size">@android:dimen/kg_status_date_font_size</dimen>-->
 
     <!-- Size of the generic status lines keyguard's status view  -->
-    <dimen name="kg_status_line_font_size">@android:dimen/kg_status_line_font_size</dimen>
+    <!--<dimen name="kg_status_line_font_size">@android:dimen/kg_status_line_font_size</dimen>-->
 
     <!-- Size of margin on the right of keyguard's status view -->
-    <dimen name="kg_status_line_font_right_margin">@android:dimen/kg_status_line_font_right_margin
-    </dimen>
+    <!--<dimen name="kg_status_line_font_right_margin">@android:dimen/kg_status_line_font_right_margin
+    </dimen>-->
 
     <!-- Top margin for the clock view -->
-    <dimen name="kg_clock_top_margin">@android:dimen/kg_clock_top_margin</dimen>
+    <!--<dimen name="kg_clock_top_margin">@android:dimen/kg_clock_top_margin</dimen>-->
 
     <!-- Horizontal gap between keys in PIN and SIM PIN numeric keyboards in keyguard -->
-    <dimen name="kg_key_horizontal_gap">@android:dimen/kg_key_horizontal_gap</dimen>
+    <!--<dimen name="kg_key_horizontal_gap">@android:dimen/kg_key_horizontal_gap</dimen>-->
 
     <!-- Horizontal gap between keys in PIN and SIM PIN numeric keyboards in keyguard -->
-    <dimen name="kg_key_vertical_gap">@android:dimen/kg_key_vertical_gap</dimen>
+    <!--<dimen name="kg_key_vertical_gap">@android:dimen/kg_key_vertical_gap</dimen>-->
 
     <!-- Horizontal gap between keys in PIN and SIM PIN numeric keyboards in keyguard -->
-    <dimen name="kg_pin_key_height">@android:dimen/kg_pin_key_height</dimen>
+    <!--<dimen name="kg_pin_key_height">@android:dimen/kg_pin_key_height</dimen>-->
 
     <!-- Space reserved at the bottom of secure views (pin/pattern/password/SIM pin/SIM puk) -->
-    <dimen name="kg_secure_padding_height">@android:dimen/kg_secure_padding_height</dimen>
+    <!--<dimen name="kg_secure_padding_height">@android:dimen/kg_secure_padding_height</dimen>-->
 
     <!-- The height of the runway lights strip -->
-    <dimen name="kg_runway_lights_height">@android:dimen/kg_runway_lights_height</dimen>
+    <!--<dimen name="kg_runway_lights_height">@android:dimen/kg_runway_lights_height</dimen>-->
 
     <!-- The height of the runway lights strip -->
-    <dimen name="kg_runway_lights_vertical_padding">
+    <!--<dimen name="kg_runway_lights_vertical_padding">
         @android:dimen/kg_runway_lights_vertical_padding
-    </dimen>
+    </dimen>-->
 
     <!-- Horizontal padding for the widget pager -->
-    <dimen name="kg_widget_pager_horizontal_padding">
+    <!--<dimen name="kg_widget_pager_horizontal_padding">
         @android:dimen/kg_widget_pager_horizontal_padding
-    </dimen>
+    </dimen>-->
 
     <!-- Top padding for the widget pager -->
-    <dimen name="kg_widget_pager_top_padding">@android:dimen/kg_widget_pager_top_padding</dimen>
+    <!--<dimen name="kg_widget_pager_top_padding">@android:dimen/kg_widget_pager_top_padding</dimen>-->
 
     <!-- Bottom padding for the widget pager -->
-    <dimen name="kg_widget_pager_bottom_padding">@android:dimen/kg_widget_pager_bottom_padding
-    </dimen>
+    <!--<dimen name="kg_widget_pager_bottom_padding">@android:dimen/kg_widget_pager_bottom_padding
+    </dimen>-->
 
     <!-- Top margin for the runway lights. We add a negative margin in large
         devices to account for the widget pager padding -->
-    <dimen name="kg_runway_lights_top_margin">@android:dimen/kg_runway_lights_top_margin</dimen>
+    <!--<dimen name="kg_runway_lights_top_margin">@android:dimen/kg_runway_lights_top_margin</dimen>-->
 
     <!-- Touch slop for the global toggle accessibility gesture -->
-    <dimen name="accessibility_touch_slop">@android:dimen/accessibility_touch_slop</dimen>
+    <!--<dimen name="accessibility_touch_slop">@android:dimen/accessibility_touch_slop</dimen>-->
 
     <!-- Width of the outline stroke used by the accessibility screen magnification indicator -->
-    <dimen name="accessibility_magnification_indicator_width">
+    <!--<dimen name="accessibility_magnification_indicator_width">
         @android:dimen/accessibility_magnification_indicator_width
-    </dimen>
+    </dimen>-->
 
     <!-- Margin around the various security views -->
-    <dimen name="keyguard_muliuser_selector_margin">
+    <!--<dimen name="keyguard_muliuser_selector_margin">
         @android:dimen/keyguard_muliuser_selector_margin
-    </dimen>
+    </dimen>-->
 
     <!-- Stroke width of the frame for the circular avatars. -->
-    <dimen name="keyguard_avatar_frame_stroke_width">
+    <!--<dimen name="keyguard_avatar_frame_stroke_width">
         @android:dimen/keyguard_avatar_frame_stroke_width
-    </dimen>
+    </dimen>-->
 
     <!-- Shadow radius under the frame for the circular avatars. -->
-    <dimen name="keyguard_avatar_frame_shadow_radius">
+    <!--<dimen name="keyguard_avatar_frame_shadow_radius">
         @android:dimen/keyguard_avatar_frame_shadow_radius
-    </dimen>
+    </dimen>-->
 
     <!-- Size of the avator on hte multiuser lockscreen. -->
-    <dimen name="keyguard_avatar_size">@android:dimen/keyguard_avatar_size</dimen>
+    <!--<dimen name="keyguard_avatar_size">@android:dimen/keyguard_avatar_size</dimen>-->
 
     <!-- Size of the text under the avator on the multiuser lockscreen. -->
-    <dimen name="keyguard_avatar_name_size">@android:dimen/keyguard_avatar_name_size</dimen>
+    <!--<dimen name="keyguard_avatar_name_size">@android:dimen/keyguard_avatar_name_size</dimen>-->
 
     <!-- Size of the region along the edge of the screen that will accept
          swipes to scroll the widget area. -->
-    <dimen name="kg_edge_swipe_region_size">@android:dimen/kg_edge_swipe_region_size</dimen>
+    <!--<dimen name="kg_edge_swipe_region_size">@android:dimen/kg_edge_swipe_region_size</dimen>-->
 
     <!-- If the height if keyguard drops below this threshold (most likely
     due to the appearance of the IME), then drop the multiuser selector. -->
-    <dimen name="kg_squashed_layout_threshold">@android:dimen/kg_squashed_layout_threshold</dimen>
+    <!--<dimen name="kg_squashed_layout_threshold">@android:dimen/kg_squashed_layout_threshold</dimen>-->
 
     <!-- The height of widgets which do not support vertical resizing. This is only
     used on tablets; on phones, this size is determined by the space left by the
     security mode. -->
-    <dimen name="kg_small_widget_height">@android:dimen/kg_small_widget_height</dimen>
+    <!--<dimen name="kg_small_widget_height">@android:dimen/kg_small_widget_height</dimen>-->
 
     <!-- Rounded corner radius for video subtitles. -->
-    <dimen name="subtitle_corner_radius">@android:dimen/subtitle_corner_radius</dimen>
+    <!--<dimen name="subtitle_corner_radius">@android:dimen/subtitle_corner_radius</dimen>-->
 
     <!-- Shadow radius for video subtitles. -->
-    <dimen name="subtitle_shadow_radius">@android:dimen/subtitle_shadow_radius</dimen>
+    <!--<dimen name="subtitle_shadow_radius">@android:dimen/subtitle_shadow_radius</dimen>-->
 
     <!-- Shadow offset for video subtitles. -->
-    <dimen name="subtitle_shadow_offset">@android:dimen/subtitle_shadow_offset</dimen>
+    <!--<dimen name="subtitle_shadow_offset">@android:dimen/subtitle_shadow_offset</dimen>-->
 
     <!-- Outline width for video subtitles. -->
-    <dimen name="subtitle_outline_width">@android:dimen/subtitle_outline_width</dimen>
+    <!--<dimen name="subtitle_outline_width">@android:dimen/subtitle_outline_width</dimen>-->
 
     <!-- Minimum size of the fast scroller thumb's touch target. -->
-    <dimen name="fast_scroller_minimum_touch_target">
+    <!--<dimen name="fast_scroller_minimum_touch_target">
         @android:dimen/fast_scroller_minimum_touch_target
-    </dimen>
+    </dimen>-->
 
     <!-- width of ImmersiveModeConfirmation (-1 for match_parent) -->
-    <dimen name="immersive_mode_cling_width">@android:dimen/immersive_mode_cling_width</dimen>
+    <!--<dimen name="immersive_mode_cling_width">@android:dimen/immersive_mode_cling_width</dimen>
 
-    <dimen name="resolver_max_width">@android:dimen/resolver_max_width</dimen>
+    <dimen name="resolver_max_width">@android:dimen/resolver_max_width</dimen>-->
 
     <!-- Amount to reduce the size of the circular mask by (to compensate for
          aliasing effects). This is only used on circular displays. -->
-    <dimen name="circular_display_mask_thickness">@android:dimen/circular_display_mask_thickness
+    <!--<dimen name="circular_display_mask_thickness">@android:dimen/circular_display_mask_thickness
     </dimen>
 
     <dimen name="lock_pattern_dot_line_width">@android:dimen/lock_pattern_dot_line_width</dimen>
@@ -641,15 +641,15 @@
     <dimen name="lock_pattern_dot_size_activated">@android:dimen/lock_pattern_dot_size_activated
     </dimen>
 
-    <dimen name="text_handle_min_size">@android:dimen/text_handle_min_size</dimen>
+    <dimen name="text_handle_min_size">@android:dimen/text_handle_min_size</dimen>-->
 
     <!-- Lighting and shadow properties -->
-    <dimen name="light_y">@android:dimen/light_y</dimen>
+    <!--<dimen name="light_y">@android:dimen/light_y</dimen>
     <dimen name="light_z">@android:dimen/light_z</dimen>
-    <dimen name="light_radius">@android:dimen/light_radius</dimen>
+    <dimen name="light_radius">@android:dimen/light_radius</dimen>-->
 
     <!-- Floating toolbar dimensions -->
-    <dimen name="floating_toolbar_height">@android:dimen/floating_toolbar_height</dimen>
+    <!--<dimen name="floating_toolbar_height">@android:dimen/floating_toolbar_height</dimen>
     <dimen name="floating_toolbar_menu_image_width">
         @android:dimen/floating_toolbar_menu_image_width
     </dimen>
@@ -690,10 +690,10 @@
     </dimen>
     <dimen name="floating_toolbar_icon_text_spacing">
         @android:dimen/floating_toolbar_icon_text_spacing
-    </dimen>
+    </dimen>-->
 
     <!-- Magnifier dimensions -->
-    <dimen name="default_magnifier_width">@android:dimen/default_magnifier_width</dimen>
+    <!--<dimen name="default_magnifier_width">@android:dimen/default_magnifier_width</dimen>
     <dimen name="default_magnifier_height">@android:dimen/default_magnifier_height</dimen>
     <dimen name="default_magnifier_elevation">@android:dimen/default_magnifier_elevation</dimen>
     <dimen name="default_magnifier_corner_radius">@android:dimen/default_magnifier_corner_radius
@@ -703,56 +703,56 @@
     </dimen>
     <dimen name="default_magnifier_horizontal_offset">
         @android:dimen/default_magnifier_horizontal_offset
-    </dimen>
+    </dimen>-->
 
     <!-- Spacing around the background change frome service to non-service -->
-    <dimen name="chooser_service_spacing">@android:dimen/chooser_service_spacing</dimen>
+    <!--<dimen name="chooser_service_spacing">@android:dimen/chooser_service_spacing</dimen>
 
-    <dimen name="resize_shadow_size">@android:dimen/resize_shadow_size</dimen>
+    <dimen name="resize_shadow_size">@android:dimen/resize_shadow_size</dimen>-->
 
     <!-- The default minimal size of a resizable task, in both dimensions. -->
-    <dimen name="default_minimal_size_resizable_task">
+    <!--<dimen name="default_minimal_size_resizable_task">
         @android:dimen/default_minimal_size_resizable_task
-    </dimen>
+    </dimen>-->
 
     <!-- The default minimal size of a PiP task, in both dimensions. -->
-    <dimen name="default_minimal_size_pip_resizable_task">
+    <!--<dimen name="default_minimal_size_pip_resizable_task">
         @android:dimen/default_minimal_size_pip_resizable_task
-    </dimen>
+    </dimen>-->
 
     <!-- Height of a task when in minimized mode from the top when launcher is resizable. -->
-    <dimen name="task_height_of_minimized_mode">@android:dimen/task_height_of_minimized_mode</dimen>
+    <!--<dimen name="task_height_of_minimized_mode">@android:dimen/task_height_of_minimized_mode</dimen>-->
 
     <!-- Minimum "smallest width" of the display for cascading menus to be enabled. -->
-    <dimen name="cascading_menus_min_smallest_width">
+    <!--<dimen name="cascading_menus_min_smallest_width">
         @android:dimen/cascading_menus_min_smallest_width
-    </dimen>
+    </dimen>-->
 
     <!-- Tooltip dimensions. -->
     <!-- Vertical offset from the edge of the anchor view for a touch-triggered tooltip. -->
-    <dimen name="tooltip_y_offset_touch">@android:dimen/tooltip_y_offset_touch</dimen>
+    <!--<dimen name="tooltip_y_offset_touch">@android:dimen/tooltip_y_offset_touch</dimen>-->
     <!-- Vertical offset from the edge of the anchor view for a non-touch-triggered tooltip. -->
-    <dimen name="tooltip_y_offset_non_touch">@android:dimen/tooltip_y_offset_non_touch</dimen>
+    <!--<dimen name="tooltip_y_offset_non_touch">@android:dimen/tooltip_y_offset_non_touch</dimen>-->
     <!-- The tooltip does not get closer than this to the window edge -->
-    <dimen name="tooltip_margin">@android:dimen/tooltip_margin</dimen>
+    <!--<dimen name="tooltip_margin">@android:dimen/tooltip_margin</dimen>-->
     <!-- Left/right padding of the tooltip text. -->
-    <dimen name="tooltip_horizontal_padding">@android:dimen/tooltip_horizontal_padding</dimen>
+    <!--<dimen name="tooltip_horizontal_padding">@android:dimen/tooltip_horizontal_padding</dimen>-->
     <!-- Top/bottom padding of the tooltip text. -->
-    <dimen name="tooltip_vertical_padding">@android:dimen/tooltip_vertical_padding</dimen>
+    <!--<dimen name="tooltip_vertical_padding">@android:dimen/tooltip_vertical_padding</dimen>-->
     <!-- Border corner radius of the tooltip window. -->
-    <dimen name="tooltip_corner_radius">@android:dimen/tooltip_corner_radius</dimen>
+    <!--<dimen name="tooltip_corner_radius">@android:dimen/tooltip_corner_radius</dimen>-->
     <!-- View with the height equal or above this threshold will have a tooltip anchored
     to the mouse/touch position -->
-    <dimen name="tooltip_precise_anchor_threshold">@android:dimen/tooltip_precise_anchor_threshold
-    </dimen>
+    <!--<dimen name="tooltip_precise_anchor_threshold">@android:dimen/tooltip_precise_anchor_threshold
+    </dimen>-->
     <!-- Extra tooltip offset used when anchoring to the mouse/touch position -->
-    <dimen name="tooltip_precise_anchor_extra_offset">
+    <!--<dimen name="tooltip_precise_anchor_extra_offset">
         @android:dimen/tooltip_precise_anchor_extra_offset
-    </dimen>
+    </dimen>-->
 
     <!-- The max amount of scroll ItemTouchHelper will trigger if dragged view is out of
          RecyclerView's bounds.-->
-    <dimen name="item_touch_helper_max_drag_scroll_per_frame">
+    <!--<dimen name="item_touch_helper_max_drag_scroll_per_frame">
         @android:dimen/item_touch_helper_max_drag_scroll_per_frame
     </dimen>
     <dimen name="item_touch_helper_swipe_escape_velocity">
@@ -760,61 +760,61 @@
     </dimen>
     <dimen name="item_touch_helper_swipe_escape_max_velocity">
         @android:dimen/item_touch_helper_swipe_escape_max_velocity
-    </dimen>
+    </dimen>-->
 
     <!-- The maximum height of any image in a remote view. This is applied to all images in custom remoteviews. This value is determined by the maximum notification height -->
-    <dimen name="notification_custom_view_max_image_height">
+    <!--<dimen name="notification_custom_view_max_image_height">
         @android:dimen/notification_custom_view_max_image_height
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of any image in a remote view. This is applied to all images in custom remoteviews. This value is determined a maximum notification width -->
-    <dimen name="notification_custom_view_max_image_width">
+    <!--<dimen name="notification_custom_view_max_image_width">
         @android:dimen/notification_custom_view_max_image_width
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of a big picture in a notification. The images will be reduced to that height in case they are bigger. This value is determined by the maximum notification height -->
-    <dimen name="notification_big_picture_max_height">
+    <!--<dimen name="notification_big_picture_max_height">
         @android:dimen/notification_big_picture_max_height
-    </dimen>
+    </dimen>-->
     <!-- The maximum width of a big picture in a notification. The images will be reduced to that width in case they are bigger. This value is determined by the standard panel size -->
-    <dimen name="notification_big_picture_max_width">
+    <!--<dimen name="notification_big_picture_max_width">
         @android:dimen/notification_big_picture_max_width
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of a image in a media notification. The images will be reduced to that height in case they are bigger. This value is determined by the expanded media template-->
-    <dimen name="notification_media_image_max_height">
+    <!--<dimen name="notification_media_image_max_height">
         @android:dimen/notification_media_image_max_height
-    </dimen>
+    </dimen>-->
     <!-- The maximum width of a image in a media notification. The images will be reduced to that width in case they are bigger.-->
-    <dimen name="notification_media_image_max_width">
+    <!--<dimen name="notification_media_image_max_width">
         @android:dimen/notification_media_image_max_width
-    </dimen>
+    </dimen>-->
     <!-- The size of the right icon -->
-    <dimen name="notification_right_icon_size">@android:dimen/notification_right_icon_size</dimen>
+    <!--<dimen name="notification_right_icon_size">@android:dimen/notification_right_icon_size</dimen>-->
 
     <!-- The maximum height of any image in a remote view. This is applied to all images in custom remoteviews. -->
-    <dimen name="notification_custom_view_max_image_height_low_ram">
+    <!--<dimen name="notification_custom_view_max_image_height_low_ram">
         @android:dimen/notification_custom_view_max_image_height_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of any image in a remote view. This is applied to all images in custom remoteviews. -->
-    <dimen name="notification_custom_view_max_image_width_low_ram">
+    <!--<dimen name="notification_custom_view_max_image_width_low_ram">
         @android:dimen/notification_custom_view_max_image_width_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of a big picture in a notification. The images will be reduced to that height in case they are bigger. -->
-    <dimen name="notification_big_picture_max_height_low_ram">
+    <!--<dimen name="notification_big_picture_max_height_low_ram">
         @android:dimen/notification_big_picture_max_height_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The maximum width of a big picture in a notification. The images will be reduced to that width in case they are bigger. -->
-    <dimen name="notification_big_picture_max_width_low_ram">
+    <!--<dimen name="notification_big_picture_max_width_low_ram">
         @android:dimen/notification_big_picture_max_width_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The maximum height of a image in a media notification. The images will be reduced to that height in case they are bigger. -->
-    <dimen name="notification_media_image_max_height_low_ram">
+    <!--<dimen name="notification_media_image_max_height_low_ram">
         @android:dimen/notification_media_image_max_height_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The maximum width of a image in a media notification. The images will be reduced to that width in case they are bigger.-->
-    <dimen name="notification_media_image_max_width_low_ram">
+    <!--<dimen name="notification_media_image_max_width_low_ram">
         @android:dimen/notification_media_image_max_width_low_ram
-    </dimen>
+    </dimen>-->
     <!-- The size of the right icon image when on low ram -->
-    <dimen name="notification_right_icon_size_low_ram">
+    <!--<dimen name="notification_right_icon_size_low_ram">
         @android:dimen/notification_right_icon_size_low_ram
     </dimen>
 
@@ -822,18 +822,18 @@
 
     <dimen name="messaging_group_sending_progress_size">
         @android:dimen/messaging_group_sending_progress_size
-    </dimen>
+    </dimen>-->
 
     <!-- Max width/height of the autofill data set picker as a fraction of the screen width/height -->
-    <dimen name="autofill_dataset_picker_max_width">
+    <!--<dimen name="autofill_dataset_picker_max_width">
         @android:dimen/autofill_dataset_picker_max_width
     </dimen>
     <dimen name="autofill_dataset_picker_max_height">
         @android:dimen/autofill_dataset_picker_max_height
-    </dimen>
+    </dimen>-->
 
     <!-- Autofill save dialog padding -->
-    <dimen name="autofill_save_outer_top_margin">@android:dimen/autofill_save_outer_top_margin
+    <!--<dimen name="autofill_save_outer_top_margin">@android:dimen/autofill_save_outer_top_margin
     </dimen>
     <dimen name="autofill_save_outer_top_padding">@android:dimen/autofill_save_outer_top_padding
     </dimen>
@@ -847,65 +847,65 @@
         @android:dimen/autofill_save_scroll_view_top_margin
     </dimen>
     <dimen name="autofill_save_button_bar_padding">@android:dimen/autofill_save_button_bar_padding
-    </dimen>
+    </dimen>-->
 
     <!-- Max height of the the autofill save custom subtitle as a fraction of the screen width/height -->
-    <dimen name="autofill_save_custom_subtitle_max_height">
+    <!--<dimen name="autofill_save_custom_subtitle_max_height">
         @android:dimen/autofill_save_custom_subtitle_max_height
-    </dimen>
+    </dimen>-->
 
     <!-- Max (absolute) dimensions (both width and height) of autofill service icon on autofill save affordance.
       NOTE: the actual displayed size might is actually smaller than this and is hardcoded in the
       autofill_save.xml layout; this dimension is just used to avoid a crash in the UI (if the icon provided
       by the autofill service metadata is bigger than these dimentionsit will not be displayed).
     -->
-    <dimen name="autofill_save_icon_max_size">@android:dimen/autofill_save_icon_max_size</dimen>
+    <!--<dimen name="autofill_save_icon_max_size">@android:dimen/autofill_save_icon_max_size</dimen>-->
 
     <!-- Size of a slice shortcut view -->
-    <dimen name="slice_shortcut_size">@android:dimen/slice_shortcut_size</dimen>
+    <!--<dimen name="slice_shortcut_size">@android:dimen/slice_shortcut_size</dimen>-->
     <!-- Size of action icons in a slice -->
-    <dimen name="slice_icon_size">@android:dimen/slice_icon_size</dimen>
+    <!--<dimen name="slice_icon_size">@android:dimen/slice_icon_size</dimen>-->
     <!-- Standard padding used in a slice view -->
-    <dimen name="slice_padding">@android:dimen/slice_padding</dimen>
+    <!--<dimen name="slice_padding">@android:dimen/slice_padding</dimen>-->
 
     <!-- Default dialog corner radius -->
-    <dimen name="dialog_corner_radius">@android:dimen/dialog_corner_radius</dimen>
+    <!--<dimen name="dialog_corner_radius">@android:dimen/dialog_corner_radius</dimen>-->
 
     <!-- Size of thumbnail used in the cross profile apps animation -->
-    <dimen name="cross_profile_apps_thumbnail_size">
+    <!--<dimen name="cross_profile_apps_thumbnail_size">
         @android:dimen/cross_profile_apps_thumbnail_size
-    </dimen>
+    </dimen>-->
 
     <!-- Padding between the title and content in the harmful app dialog -->
-    <dimen name="harmful_app_padding_top">@android:dimen/harmful_app_padding_top</dimen>
+    <!--<dimen name="harmful_app_padding_top">@android:dimen/harmful_app_padding_top</dimen>-->
     <!-- Bottom padding for the "app name" section of the harmful app dialog -->
-    <dimen name="harmful_app_name_padding_bottom">@android:dimen/harmful_app_name_padding_bottom
-    </dimen>
+    <!--<dimen name="harmful_app_name_padding_bottom">@android:dimen/harmful_app_name_padding_bottom
+    </dimen>-->
     <!-- Left padding for the "app name" section of the harmful app dialog -->
-    <dimen name="harmful_app_name_padding_left">@android:dimen/harmful_app_name_padding_left</dimen>
+    <!--<dimen name="harmful_app_name_padding_left">@android:dimen/harmful_app_name_padding_left</dimen>-->
     <!-- Right padding for the "app name" section of the harmful app dialog -->
-    <dimen name="harmful_app_name_padding_right">@android:dimen/harmful_app_name_padding_right
-    </dimen>
+    <!--<dimen name="harmful_app_name_padding_right">@android:dimen/harmful_app_name_padding_right
+    </dimen>-->
     <!-- Top padding for the "app name" section of the harmful app dialog -->
-    <dimen name="harmful_app_name_padding_top">@android:dimen/harmful_app_name_padding_top</dimen>
+    <!--<dimen name="harmful_app_name_padding_top">@android:dimen/harmful_app_name_padding_top</dimen>-->
     <!-- Padding between the icon and app name in the harmful app dialog -->
-    <dimen name="harmful_app_icon_name_padding">@android:dimen/harmful_app_icon_name_padding</dimen>
+    <!--<dimen name="harmful_app_icon_name_padding">@android:dimen/harmful_app_icon_name_padding</dimen>-->
     <!-- The size of the icon on the harmful app dialog -->
-    <dimen name="harmful_app_icon_size">@android:dimen/harmful_app_icon_size</dimen>
+    <!--<dimen name="harmful_app_icon_size">@android:dimen/harmful_app_icon_size</dimen>-->
     <!-- Left padding for the message section of the harmful app dialog -->
-    <dimen name="harmful_app_message_padding_left">@android:dimen/harmful_app_message_padding_left
-    </dimen>
+    <!--<dimen name="harmful_app_message_padding_left">@android:dimen/harmful_app_message_padding_left
+    </dimen>-->
     <!-- Right padding for the message section of the harmful app dialog -->
-    <dimen name="harmful_app_message_padding_right">
+    <!--<dimen name="harmful_app_message_padding_right">
         @android:dimen/harmful_app_message_padding_right
-    </dimen>
+    </dimen>-->
     <!-- Bottom padding for the message section of the harmful app dialog -->
-    <dimen name="harmful_app_message_padding_bottom">
+    <!--<dimen name="harmful_app_message_padding_bottom">
         @android:dimen/harmful_app_message_padding_bottom
-    </dimen>
+    </dimen>-->
 
     <!-- chooser (sharesheet) spacing -->
-    <dimen name="chooser_corner_radius">@android:dimen/chooser_corner_radius</dimen>
+    <!--<dimen name="chooser_corner_radius">@android:dimen/chooser_corner_radius</dimen>
     <dimen name="chooser_row_text_option_translate">
         @android:dimen/chooser_row_text_option_translate
     </dimen>
@@ -925,5 +925,5 @@
     <dimen name="chooser_max_collapsed_height">@android:dimen/chooser_max_collapsed_height</dimen>
     <dimen name="chooser_direct_share_label_placeholder_max_width">
         @android:dimen/chooser_direct_share_label_placeholder_max_width
-    </dimen>
+    </dimen>-->
 </resources>
