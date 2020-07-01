@@ -23,7 +23,7 @@ public class OptimizeService extends IntentService {
   public OptimizeService() {
     super("OptimizeService");
     Monitor monitor = Monitor.get();
-    if (monitor == null) {
+    if (null == monitor) {
       Monitor.init(null);
     }
     Monitor.get().logDebug("Starting OptimizeService");
@@ -84,7 +84,7 @@ public class OptimizeService extends IntentService {
 
     try {
       ApplicationInfo applicationInfo = this.getApplicationInfo();
-      if (applicationInfo == null) {
+      if (null == applicationInfo) {
         throw new RuntimeException(
             "No ApplicationInfo available,"
                 + " i.e. running on a test Context:"

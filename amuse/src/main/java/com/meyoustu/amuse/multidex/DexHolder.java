@@ -17,7 +17,7 @@ abstract class DexHolder {
   protected Object toDexListElement(DexLoader.ElementConstructor elementConstructor)
       throws Exception {
     Object dexFile = toDexFile();
-    return dexFile == null ? null : elementConstructor.newInstance(mFile, dexFile);
+    return null == dexFile ? null : elementConstructor.newInstance(mFile, dexFile);
   }
 
   abstract DexHolder toFasterHolder(SharedPreferences preferences);
@@ -159,7 +159,7 @@ abstract class DexHolder {
       try {
         return DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0);
       } catch (IOException e) {
-        Monitor.get().logError("Fail to load dex file");
+        Monitor.get().logError("Fail to load dex file.");
         throw new RuntimeException(e);
       }
     }
@@ -208,7 +208,7 @@ abstract class DexHolder {
       try {
         return DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0);
       } catch (IOException e1) {
-        Monitor.get().logError("Fail to load dex file first time", e1);
+        Monitor.get().logError("Fail to load dex file first time.", e1);
         try {
           if (mForceOpt) {
             return DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0);
@@ -216,7 +216,7 @@ abstract class DexHolder {
             return Native.loadDirectDex(mFile.getPath(), null);
           }
         } catch (IOException e2) {
-          Monitor.get().logError("Fail to load dex file", e2);
+          Monitor.get().logError("Fail to load dex file.", e2);
           throw new RuntimeException(e2);
         }
       }
@@ -276,12 +276,12 @@ abstract class DexHolder {
       try {
         if (!Native.isSupportFastLoad()
             || !Native.makeOptDexFile(mFile.getPath(), mOptFile.getPath())) {
-          Monitor.get().logWarning("Opt dex in origin way");
+          Monitor.get().logWarning("Opt dex in origin way.");
           DexFile.loadDex(mFile.getPath(), mOptFile.getPath(), 0).close();
         }
         return obtainValidDexOpt(preferences, mIndex, mFile, mOptFile);
       } catch (IOException e) {
-        Monitor.get().logError("Fail to opt dex finally", e);
+        Monitor.get().logError("Fail to opt dex finally.", e);
         return null;
       }
     }
@@ -335,7 +335,7 @@ abstract class DexHolder {
     public Object toDexListElement(DexLoader.ElementConstructor elementConstructor)
         throws Exception {
       Object dexFile = toDexFile();
-      if (dexFile == null) {
+      if (null == dexFile) {
         return null;
       }
       return elementConstructor.newInstance(null, dexFile);
@@ -347,7 +347,7 @@ abstract class DexHolder {
         try {
           return DexHolder.obtainValidDexBuffer(preferences, mIndex, mFile, mOptFile);
         } catch (IOException e) {
-          Monitor.get().logError("fail to get dex buffer", e);
+          Monitor.get().logError("fail to get dex buffer.", e);
           return null;
         }
       } else {
@@ -374,7 +374,7 @@ abstract class DexHolder {
           + ", size: "
           + mOptFile.length()
           + "], bytes len: "
-          + (mBytes == null ? null : mBytes.length);
+          + (null == mBytes ? null : mBytes.length);
     }
   }
 

@@ -77,11 +77,7 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
             //                MainFragment mainFragment = new MainFragment();
           }
         });
-
-
-    errorLog(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-//    toastShort(App.getBuildPropsFromSys().getProperty("dalvik.vm.lockprof.threshold"));
+    toastShort(App.getSysProp("dalvik.vm.lockprof.", "xxx"));
 
     //        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
     //        dialog.show();

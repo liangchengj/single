@@ -70,6 +70,18 @@ android {
 }
 
 
+/*def getLayoutLibPath() {
+    def rootDir = project.rootDir
+    def localProperties = new File(rootDir, "local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream { is -> properties.load(is) }
+        def sdkDir = properties.getProperty('sdk.dir')
+        return "$sdkDir/platforms/android-$android.compileSdkVersion/data/layoutlib.jar"
+    }
+    return rootDir
+}*/
+
 // from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 
 dependencies {
@@ -81,4 +93,6 @@ dependencies {
     // noinspection GradleCompatible
     // implementation project.ext.android.support.appcompat
     api project.ext.androidx.appcompat
+
+    /*compileOnly files(getLayoutLibPath())*/
 }

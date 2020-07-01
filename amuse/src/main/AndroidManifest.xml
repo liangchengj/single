@@ -13,6 +13,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AmuseAppTheme"
         android:usesCleartextTraffic="true">

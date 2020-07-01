@@ -38,14 +38,14 @@ final class MultiDex {
     Result result = Result.get();
     try {
       ApplicationInfo applicationInfo = context.getApplicationInfo();
-      if (applicationInfo == null) {
+      if (null == applicationInfo) {
         throw new RuntimeException("ApplicationInfo is NULL.");
       }
 
       File sourceDir = new File(applicationInfo.sourceDir);
 
       String processName = monitor.getProcessName();
-      if (processName == null) {
+      if (null == processName) {
         processName = Utility.getCurProcessName(context);
       }
       if (Utility.isOptimizeProcess(processName)) {

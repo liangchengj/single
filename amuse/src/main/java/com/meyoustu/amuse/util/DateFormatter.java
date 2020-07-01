@@ -45,7 +45,7 @@ public final class DateFormatter {
 
   @Override
   public String toString() {
-    return threadLocal != null
+    return null != threadLocal
         ? threadLocal.get().format(new Date())
         : simpleDateFormat.format(new Date());
   }

@@ -62,7 +62,7 @@ final class Utility {
     }
 
     File[] files = dir.listFiles();
-    if (files == null) {
+    if (null == files) {
       Monitor.get()
           .logWarning("Failed to list secondary dex dir" + " content (" + dir.getPath() + ").");
       return;
@@ -182,7 +182,7 @@ final class Utility {
   }
 
   static void closeQuietly(Closeable closeable) {
-    if (closeable == null) {
+    if (null == closeable) {
       return;
     }
 
@@ -200,7 +200,7 @@ final class Utility {
 
     if (!dir.isDirectory()) {
       File parent = dir.getParentFile();
-      if (parent == null) {
+      if (null == parent) {
         Monitor.get().logError("Failed to create dir " + dir.getPath() + ". Parent file is null.");
       } else {
         Monitor.get()

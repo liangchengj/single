@@ -66,15 +66,15 @@ abstract class DexLoader {
       DexHolder dexHolder = dexHolderList.get(i);
 
       Object element = dexHolder.toDexListElement(mElementConstructor);
-      while (element == null && dexHolder != null) {
+      while (null == element && dexHolder != null) {
         Monitor.get().logWarning("Load faster dex in holder " + dexHolder.toString());
         dexHolder = dexHolder.toFasterHolder(preferences);
-        if (dexHolder != null) {
+        if (null != dexHolder) {
           element = dexHolder.toDexListElement(mElementConstructor);
         }
       }
 
-      if (element != null) {
+      if (null != element) {
         Monitor.get().logInfo("Load dex in holder " + dexHolder.toString());
         dexHolderList.set(i, dexHolder);
         elements.add(element);
@@ -119,7 +119,7 @@ abstract class DexLoader {
       } catch (Exception ignored) {
       }
 
-      if (constructor == null) {
+      if (null == constructor) {
         try {
           constructor = new JBMR11ElementConstructor(elementClass);
         } catch (Exception ignored) {
@@ -127,7 +127,7 @@ abstract class DexLoader {
         }
       }
 
-      if (constructor == null) {
+      if (null == constructor) {
         try {
           constructor = new JBMR2ElementConstructor(elementClass);
         } catch (Exception ignored) {

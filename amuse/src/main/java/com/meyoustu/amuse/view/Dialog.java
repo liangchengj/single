@@ -63,7 +63,7 @@ public final class Dialog extends android.app.Dialog {
     super(context);
     this.context = context;
     highLightColor = /* rgb(146, 215, 90) */ Color.parseColor("#55C578");
-    if (view == null) {
+    if (null == view) {
       synchronized (View.class) {
         if (view != null) {
           dismiss();

@@ -11,7 +11,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -47,18 +46,15 @@ import com.meyoustu.amuse.util.Toast;
 import com.meyoustu.amuse.view.InitWithGone;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
-import java.util.Properties;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.content.Intent.ACTION_VIEW;
@@ -430,7 +426,7 @@ public class App extends MultiDexApp {
         if (SDK_INT >= LOLLIPOP) {
           drawable = activity.getDrawable(aDrawableVal);
         } else {
-          // In order to adapt to the old API.
+          /** @deprecated In order to adapt to the old API. */
           drawable = res.getDrawable(aDrawableVal);
         }
         field.set(activity, drawable);
@@ -458,7 +454,7 @@ public class App extends MultiDexApp {
     if (SDK_INT >= M) {
       return ctx.getResources().getColor(id, ctx.getTheme());
     } else {
-      // In order to adapt to the old API.
+      /** @deprecated In order to adapt to the old API. */
       return ctx.getResources().getColor(id);
     }
   }
@@ -592,7 +588,7 @@ public class App extends MultiDexApp {
         }
 
       } catch (Exception e) {
-        // In order to adapt to the old API.
+        /** @deprecated In order to adapt to the old API. */
         intent
             .setAction(ACTION_APPLICATION_DETAILS_SETTINGS)
             .setData(fromParts("package", pkgName, null));
@@ -629,7 +625,7 @@ public class App extends MultiDexApp {
         }
         return nc.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
       } else {
-        // In order to adapt to the old API.
+        /** @deprecated In order to adapt to the old API. */
         @Deprecated NetworkInfo ni = cm.getActiveNetworkInfo();
         if (null == ni) {
           return false;
@@ -707,38 +703,14 @@ public class App extends MultiDexApp {
       }
       return procName;
     } catch (Throwable t) {
-      t.printStackTrace();
+      errorLog(ctx, t.getMessage(), t);
     } finally {
       try {
         if (null != reader) {
           reader.close();
         }
       } catch (IOException e) {
-        errorLog(ctx, "getProcName", e);
-      }
-    }
-    return null;
-  }
-
-  public static final Properties getBuildPropsFromSys() {
-    InputStream is = null;
-    try {
-      errorLog(ctx, Environment.getRootDirectory());
-      is = new FileInputStream(new File(Environment.getRootDirectory(), "build.prop"));
-      if (null != is) {
-        Properties props = new Properties();
-        props.load(is);
-        return props;
-      }
-    } catch (IOException e) {
-      errorLog(ctx, "getBuildPropsFromSys", e);
-    } finally {
-      try {
-        if (null != is) {
-          is.close();
-        }
-      } catch (IOException e) {
-        errorLog(ctx, "getBuildPropsFromSys", e);
+        errorLog(ctx, e.getMessage(), e);
       }
     }
     return null;
@@ -748,19 +720,63 @@ public class App extends MultiDexApp {
     return Thread.currentThread().getStackTrace();
   }
 
-  public static final String getCurrentMethodName() {
-    return getCurrentThreadStackTrace()[2].getMethodName();
+  private static Class<?> getSystemPropertiesClass() throws ClassNotFoundException {
+    return Class.forName("android.os.SystemProperties");
+  }
+
+  /**
+   * Get the value for the given key.
+   *
+   * @return an empty string if the key isn't found.
+   */
+  public static final String getSysProp(String key) {
+    try {
+      Class sysProps = getSystemPropertiesClass();
+      Method get = sysProps.getDeclaredMethod("get", String.class);
+      return (String) get.invoke(sysProps, key);
+    } catch (ClassNotFoundException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (NoSuchMethodException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (IllegalAccessException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (InvocationTargetException e) {
+      errorLog(ctx, e.getMessage(), e);
+    }
+    return null;
+  }
+
+  /**
+   * Get the value for the given key.
+   *
+   * @return if the key isn't found, return def if it isn't null, or an empty string otherwise.
+   */
+  public static final String getSysProp(String key, String def) {
+    try {
+      Class sysProps = getSystemPropertiesClass();
+      Method get = sysProps.getDeclaredMethod("get", String.class, String.class);
+      return (String) get.invoke(sysProps, key, def);
+    } catch (ClassNotFoundException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (NoSuchMethodException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (IllegalAccessException e) {
+      errorLog(ctx, e.getMessage(), e);
+    } catch (InvocationTargetException e) {
+      errorLog(ctx, e.getMessage(), e);
+    }
+    return null;
   }
 
   // ====== Log Util
   private static String dealMsg(@NonNull Object msg) {
     StackTraceElement[] stackTraceElements = getCurrentThreadStackTrace();
-    String methodName = stackTraceElements[4].getMethodName();
+    String methodName = stackTraceElements[6].getMethodName();
     String end = "\n" + msg;
     if ("errorLog".equals(methodName)) {
-      return stackTraceElements[5].getMethodName() + end;
+      return stackTraceElements[7].getMethodName() + end;
     } else {
-      return methodName + end;
+      return stackTraceElements[5].getMethodName() + end;
     }
   }
 
