@@ -31,5 +31,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/external_file_paths" />
         </provider>
+
+        <activity
+            android:name=".Activity"
+            android:configChanges="uiMode|screenSize|keyboard|keyboardHidden"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".StandardActivity"
+            android:configChanges="uiMode|screenSize|keyboard|keyboardHidden"
+            android:launchMode="singleTask" />
     </application>
 </manifest>

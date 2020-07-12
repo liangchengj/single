@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -109,7 +110,7 @@ abstract class ActivityWrapper {
   }
 
   /** Load the dynamic link library by detecting whether it is annotated with "@Native". */
-  final void loadJNILibByAnnotation() {
+  void loadJNILibByAnnotation() {
     String[] nativeLibNames = getClassAnnotatedValue(Native.class, String[].class);
     if (null != nativeLibNames) {
       for (String nativeLibName : nativeLibNames) {
@@ -129,26 +130,28 @@ abstract class ActivityWrapper {
 
   // In order to adaptively initialize the System Bar.
   private void initSysBar() {
-    if (SDK_INT >= LOLLIPOP) {
-      @ColorInt int statusBarColor = window.getStatusBarColor();
-      @ColorInt int navigationBarColor = window.getNavigationBarColor();
+    if (!isDarkTheme()) {
+      if (SDK_INT >= LOLLIPOP) {
+        @ColorInt int statusBarColor = window.getStatusBarColor();
+        @ColorInt int navigationBarColor = window.getNavigationBarColor();
 
-      @ColorInt int oldApiBarColor = Color.initWith(222);
+        @ColorInt int oldApiBarColor = Color.initWith(222);
 
-      if (isLightColor(statusBarColor) || statusBarColor == Color.TRANSPARENT) {
-        if (SDK_INT >= M) {
-          setDecorViewSystemUiVisibility(
-              SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        } else {
-          window.setStatusBarColor(oldApiBarColor);
+        if (isLightColor(statusBarColor) || statusBarColor == Color.TRANSPARENT) {
+          if (SDK_INT >= M) {
+            setDecorViewSystemUiVisibility(
+                SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
+          } else {
+            window.setStatusBarColor(oldApiBarColor);
+          }
         }
-      }
-      if (isLightColor(navigationBarColor) || navigationBarColor == Color.TRANSPARENT) {
-        if (SDK_INT >= N) {
-          setDecorViewSystemUiVisibility(
-              SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        } else {
-          window.setNavigationBarColor(oldApiBarColor);
+        if (isLightColor(navigationBarColor) || navigationBarColor == Color.TRANSPARENT) {
+          if (SDK_INT >= N) {
+            setDecorViewSystemUiVisibility(
+                SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
+          } else {
+            window.setNavigationBarColor(oldApiBarColor);
+          }
         }
       }
     }
@@ -158,14 +161,16 @@ abstract class ActivityWrapper {
   }
 
   private void initSysBarByAnnotation() {
-    @ColorRes int statusVal = getClassAnnotatedValue(StatusBarColor.class, int.class);
-    if (statusVal != -1 && SDK_INT >= LOLLIPOP) {
-      window.setStatusBarColor(getResColor(statusVal));
-    }
+    if (!isDarkTheme()) {
+      @ColorRes int statusVal = getClassAnnotatedValue(StatusBarColor.class, int.class);
+      if (statusVal != -1 && SDK_INT >= LOLLIPOP) {
+        window.setStatusBarColor(getResColor(statusVal));
+      }
 
-    @ColorRes int navigationVal = getClassAnnotatedValue(NavigationBarColor.class, int.class);
-    if (navigationVal != -1 && SDK_INT >= LOLLIPOP) {
-      window.setNavigationBarColor(getResColor(navigationVal));
+      @ColorRes int navigationVal = getClassAnnotatedValue(NavigationBarColor.class, int.class);
+      if (navigationVal != -1 && SDK_INT >= LOLLIPOP) {
+        window.setNavigationBarColor(getResColor(navigationVal));
+      }
     }
   }
 
@@ -226,6 +231,12 @@ abstract class ActivityWrapper {
           1500);
     }
     decorView.setSystemUiVisibility(HIDE_SYS_BARS);
+  }
+
+  /** Determine whether the system opens the dark theme. */
+  boolean isDarkTheme() {
+    return (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+        == Configuration.UI_MODE_NIGHT_YES;
   }
 
   void setViewRadius(int radius, @IdRes int... ids) {

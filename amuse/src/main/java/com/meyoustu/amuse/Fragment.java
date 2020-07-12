@@ -124,6 +124,11 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
     activityWrapper.setWindowFullScreen();
   }
 
+  /** Determine whether the system opens the dark theme. */
+  protected final boolean isDarkTheme() {
+    return activityWrapper.isDarkTheme();
+  }
+
   protected final void setViewRadius(int radius, @IdRes int... ids) {
     activityWrapper.setViewRadius(radius, ids);
   }

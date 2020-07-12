@@ -78,6 +78,7 @@ public class MainActivity extends com.meyoustu.amuse.Activity {
           }
         });
     toastShort(App.getSysProp("dalvik.vm.lockprof.", "xxx"));
+    toastShort(R.string.app_name);
 
     //        Dialog dialog = new Dialog(this).setMessage(stringFromJNI());
     //        dialog.show();

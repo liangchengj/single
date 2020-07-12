@@ -124,6 +124,11 @@ public abstract class StandardActivity extends android.app.Activity implements A
     activityWrapper.setWindowFullScreen();
   }
 
+  /** Determine whether the system opens the dark theme. */
+  protected final boolean isDarkTheme() {
+    return activityWrapper.isDarkTheme();
+  }
+
   protected final void setViewRadius(int radius, @IdRes int... ids) {
     activityWrapper.setViewRadius(radius, ids);
   }

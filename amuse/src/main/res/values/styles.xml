@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/accent_color</item>
         <item name="colorAccent">@color/accent_color</item>
         <item name="android:colorAccent" tools:ignore="NewApi">@color/accent_color</item>
+        <item name="android:forceDarkAllowed">true</item>
     </style>
 
     <style name="AmuseBtnTheme" parent="Widget.AppCompat.Button.Borderless">
