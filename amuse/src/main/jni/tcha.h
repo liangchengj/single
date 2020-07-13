@@ -17,9 +17,14 @@ extern "C"
 //#include <jni.h>
 #include "../../../../../../AppData/Local/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/jni.h"
 
+JNIEnv *__JNIEnv__;
 
-void ienv__(JNIEnv *env,jobject thiz);
+void __jnienv(JNIEnv *env, jobject thiz);
+jclass jnigoc(jobject jobj);
 
+void __jnienv(JNIEnv *env, jobject thiz) {
+    __JNIEnv__ = env;
+}
 
 #ifdef __cplusplus
 }
