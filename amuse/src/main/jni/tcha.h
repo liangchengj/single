@@ -26,6 +26,10 @@ void __jnienv(JNIEnv *env, jobject thiz) {
     __JNIEnv__ = env;
 }
 
+jclass jnigoc(jobject jobj){
+    return (jclass)(*__JNIEnv__).GetObjectClass(__JNIEnv__,jobj);
+}
+
 #ifdef __cplusplus
 }
 #endif
