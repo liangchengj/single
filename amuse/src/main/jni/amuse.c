@@ -43,19 +43,34 @@ extern "C"
 
     // void toast_show_res(JNIEnv *env, jobject ctx, jint resid, jint duration);
 
-#define VLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_VERBOSE, __TAG__, fmt, __VA_ARGS__)
-#define DLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, __TAG__, fmt, __VA_ARGS__)
-#define ILOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_INFO, __TAG__, fmt, __VA_ARGS__)
-#define WLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_WARN, __TAG__, fmt, __VA_ARGS__)
-#define ELOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_ERROR, __TAG__, fmt, __VA_ARGS__)
-
+#ifndef DEF_LOG_FMT
 #define DEF_LOG_FMT "%s"
+#endif
 
+#ifndef VLOG
+#define VLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_VERBOSE, __TAG__, fmt, __VA_ARGS__)
 #define VLOG(__TAG__, ...) __android_log_print(ANDROID_LOG_VERBOSE, __TAG__, DEF_LOG_FMT, __VA_ARGS__)
+#endif
+
+#ifndef DLOG
+#define DLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, __TAG__, fmt, __VA_ARGS__)
 #define DLOG(__TAG__, ...) __android_log_print(ANDROID_LOG_DEBUG, __TAG__, DEF_LOG_FMT, __VA_ARGS__)
+#endif
+
+#ifndef ILOG
+#define ILOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_INFO, __TAG__, fmt, __VA_ARGS__)
 #define ILOG(__TAG__, ...) __android_log_print(ANDROID_LOG_INFO, __TAG__, DEF_LOG_FMT, __VA_ARGS__)
+#endif
+
+#ifndef WLOG
+#define WLOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_WARN, __TAG__, fmt, __VA_ARGS__)
 #define WLOG(__TAG__, ...) __android_log_print(ANDROID_LOG_WARN, __TAG__, DEF_LOG_FMT, __VA_ARGS__)
+#endif
+
+#ifndef ELOG
+#define ELOG(__TAG__, fmt, ...) __android_log_print(ANDROID_LOG_ERROR, __TAG__, fmt, __VA_ARGS__)
 #define ELOG(__TAG__, ...) __android_log_print(ANDROID_LOG_ERROR, __TAG__, DEF_LOG_FMT, __VA_ARGS__)
+#endif
 
     inline jclass fdjclz(JNIEnv *env, char const *name)
     {
