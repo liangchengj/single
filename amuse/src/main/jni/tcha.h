@@ -1,35 +1,52 @@
 /**
- * Created at 2020/7/14 07:14.
- * 
+ * Created at 2020/7/20 14:40.
+ *
  * In order to use JNI perfectly.
- * 
+ *
  * @author Liangcheng Juves
  */
-#ifdef __cplusplus
+#ifndef _TCHA_H
+#define _TCHA_H
+
+// #ifdef __cpluscplus
+#include "../../../../../../../AppData/Local/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/jni.h"
+
 extern "C"
 {
-#endif
+// #endif
 
-#ifndef tcha_h
-#define tcha_h
-#endif
+JNIEnv *tcha_env;
 
-//#include <jni.h>
-#include "../../../../../../AppData/Local/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/jni.h"
+void envinit(JNIEnv *env);
 
-JNIEnv *__JNIEnv__;
+jstring cstr_jstr(char const *cs);
+char const *jstr_cstr(jstring jstr);
 
-void __jnienv(JNIEnv *env, jobject thiz);
-jclass jnigoc(jobject jobj);
-
-void __jnienv(JNIEnv *env, jobject thiz) {
-    __JNIEnv__ = env;
+void envinit(JNIEnv *env) {
+    tcha_env = env;
 }
 
-jclass jnigoc(jobject jobj){
-    return (jclass)(*__JNIEnv__).GetObjectClass(__JNIEnv__,jobj);
+#ifdef JNI_H_ /* Old */
+extern "C"
+jstring cstr_jstr(char const *cs) {
+    return (*tcha_env)->NewStringUTF(tcha_env, cs);
 }
+#elif defined(_JAVASOFT_JNI_H_) /* New */
 
-#ifdef __cplusplus
+jstring cstr_jstr(char const *cs)
+    {
+        return tcha_env->NewStringUTF(cs);
+    }
+
+    char const *jstr_cstr(jstring jstr)
+    {
+        return tcha_env->GetStringUTFChars(jstr, JNI_FALSE);
+    }
+
+#endif /* JNI_H_ */
+
+// #ifdef __cpluscplus
 }
-#endif
+// #endif
+
+#endif /* _TCHA_H */
