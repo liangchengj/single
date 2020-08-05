@@ -92,607 +92,582 @@ import static com.meyoustu.amuse.graphics.Color.isLightColor;
  */
 abstract class ActivityWrapper {
 
-  private Activity activity;
-  private Window window;
-  View decorView;
+    private Activity activity;
+    private Window window;
+    View decorView;
 
-  private ActivityWrapper(Activity activity) {
-    this.activity = activity;
-  }
-
-  static ActivityWrapper newInstance(Activity activity) {
-    return new ActivityWrapper(activity) {
-      @Override
-      public int hashCode() {
-        return super.hashCode();
-      }
-    };
-  }
-
-  /** Load the dynamic link library by detecting whether it is annotated with "@Native". */
-  void loadJNILibByAnnotation() {
-    String[] nativeLibNames = getClassAnnotatedValue(Native.class, String[].class);
-    if (null != nativeLibNames) {
-      for (String nativeLibName : nativeLibNames) {
-        if (!nativeLibName.isEmpty()) {
-          System.loadLibrary(nativeLibName);
-        }
-      }
+    private ActivityWrapper(Activity activity) {
+        this.activity = activity;
     }
-  }
 
-  private int decorViewSystemUiVisibility;
-
-  private void setDecorViewSystemUiVisibility(int visibility) {
-    decorViewSystemUiVisibility |= visibility;
-    decorView.setSystemUiVisibility(decorViewSystemUiVisibility);
-  }
-
-  // In order to adaptively initialize the System Bar.
-  private void initSysBar() {
-    if (!isDarkTheme()) {
-      if (SDK_INT >= LOLLIPOP) {
-        @ColorInt int statusBarColor = window.getStatusBarColor();
-        @ColorInt int navigationBarColor = window.getNavigationBarColor();
-
-        @ColorInt int oldApiBarColor = Color.initWith(222);
-
-        if (isLightColor(statusBarColor) || statusBarColor == Color.TRANSPARENT) {
-          if (SDK_INT >= M) {
-            setDecorViewSystemUiVisibility(
-                SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
-          } else {
-            window.setStatusBarColor(oldApiBarColor);
-          }
-        }
-        if (isLightColor(navigationBarColor) || navigationBarColor == Color.TRANSPARENT) {
-          if (SDK_INT >= N) {
-            setDecorViewSystemUiVisibility(
-                SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
-          } else {
-            window.setNavigationBarColor(oldApiBarColor);
-          }
-        }
-      }
-    }
-    if (SDK_INT >= P) {
-      window.setNavigationBarDividerColor(Color.TRANSPARENT);
-    }
-  }
-
-  private void initSysBarByAnnotation() {
-    if (!isDarkTheme()) {
-      @ColorRes int statusVal = getClassAnnotatedValue(StatusBarColor.class, int.class);
-      if (statusVal != -1 && SDK_INT >= LOLLIPOP) {
-        window.setStatusBarColor(getResColor(statusVal));
-      }
-
-      @ColorRes int navigationVal = getClassAnnotatedValue(NavigationBarColor.class, int.class);
-      if (navigationVal != -1 && SDK_INT >= LOLLIPOP) {
-        window.setNavigationBarColor(getResColor(navigationVal));
-      }
-    }
-  }
-
-  /* Use certain rules to parse the application version number. */
-  private long parseVersion(String versionName) {
-    versionName = versionName.replace("_", "");
-    versionName = versionName.replace(".", "");
-    versionName = versionName.replace("-", "");
-    return Long.parseLong(versionName);
-  }
-
-  @LayoutRes
-  int initView() {
-    @LayoutRes int contentViewVal = getClassAnnotatedValue(ContentView.class, int.class);
-    if (contentViewVal != -1) {
-      activity.setContentView(contentViewVal);
-    }
-    return -1;
-  }
-
-  void onDecorViewConfig(View decorView
-      /* The current class is not used and is provided to "activity"'s subclasses. */ ) {
-    window = activity.getWindow();
-    this.decorView = window.getDecorView();
-    setDecorViewSystemUiVisibility(SYSTEM_UI_FLAG_LAYOUT_STABLE);
-    int decorViewConfigVal = getClassAnnotatedValue(DecorViewConfig.class, int.class);
-    if (decorViewConfigVal != -1) {
-      setDecorViewSystemUiVisibility(decorViewConfigVal);
-    } else {
-      initSysBarByAnnotation();
-      // In order to adaptively initialize the System Bar.
-      initSysBar();
-      if (getClass().isAnnotationPresent(WindowFullScreen.class)) {
-        setWindowFullScreen();
-      }
-    }
-  }
-
-  void setDecorViewRadius(int radius) {
-    App.setViewRadius(radius, decorView);
-  }
-
-  /* Set the Activity window to full screen display. */
-  void setWindowFullScreen() {
-    if (SDK_INT <= KITKAT) {
-      activity
-          .getWindow()
-          .setFlags(
-              WindowManager.LayoutParams.FLAG_FULLSCREEN,
-              WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      decorView.postDelayed(
-          new Runnable() {
+    static ActivityWrapper newInstance(Activity activity) {
+        return new ActivityWrapper(activity) {
             @Override
-            public void run() {
-              setWindowFullScreen();
+            public int hashCode() {
+                return super.hashCode();
             }
-          },
-          1500);
+        };
     }
-    decorView.setSystemUiVisibility(HIDE_SYS_BARS);
-  }
 
-  /** Determine whether the system opens the dark theme. */
-  boolean isDarkTheme() {
-    return (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-        == Configuration.UI_MODE_NIGHT_YES;
-  }
-
-  void setViewRadius(int radius, @IdRes int... ids) {
-    if (null != ids) {
-      if (ids.length != 0) {
-        View[] views = new View[ids.length];
-        for (int i = 0; i < views.length; i++) {
-          views[i] = activity.findViewById(ids[i]);
-        }
-        App.setViewRadius(radius, views);
-      }
-    }
-  }
-
-  void setViewOval(@IdRes int... ids) {
-    if (null != ids) {
-      if (ids.length != 0) {
-        View[] views = new View[ids.length];
-        for (int i = 0; i < views.length; i++) {
-          views[i] = activity.findViewById(ids[i]);
-        }
-        App.setViewOval(views);
-      }
-    }
-  }
-
-  /** Used for the view press effect and contains the click event of the view. */
-  void effectClick(View v, final ClickListener clickListener) {
-    clickListener.initialize(v, v.getId());
-    v.setOnTouchListener(
-        new EffectClickListener() {
-          @Override
-          public void onTouchDown(View v, int vId) {
-            clickListener.onTouchDown(v, vId);
-          }
-
-          @Override
-          public void onTouchUp(View v, int vId) {
-            clickListener.onTouchUp(v, vId);
-          }
-
-          @Override
-          public void onClick(View v, int vId) {
-            clickListener.onClick(v, vId);
-          }
-        });
-  }
-
-  /** @return ShortcutManager -> Used to manage desktop shortcuts. */
-  ShortcutManager getShortCutManager() {
-    return SDK_INT >= N_MR1 ? activity.getSystemService(ShortcutManager.class) : null;
-  }
-
-  /** Android 8.0 or above can set the desktop icon menu. */
-  void setShortCuts(ShortcutInfo... shortcutInfo) {
-    if (null != shortcutInfo) {
-      ShortcutManager shortcutManager = getShortCutManager();
-      if (null != shortcutManager) {
-        if (SDK_INT >= O) {
-          for (ShortcutInfo info : shortcutInfo) {
-            if (null != info) {
-              shortcutManager.addDynamicShortcuts(Arrays.asList(info));
+    /**
+     * Load the dynamic link library by detecting whether it is annotated with "@Native".
+     */
+    void loadJNILibByAnnotation() {
+        String[] nativeLibNames = getClassAnnotatedValue(Native.class, String[].class);
+        if (null != nativeLibNames) {
+            for (String nativeLibName : nativeLibNames) {
+                if (!nativeLibName.isEmpty()) {
+                    System.loadLibrary(nativeLibName);
+                }
             }
-          }
         }
-      }
-    }
-  }
-
-  /** Used to obtain the screen pixel density. */
-  float getDisplayDensity() {
-    return activity.getResources().getDisplayMetrics().density;
-  }
-
-  /** Get the color from the resource file. */
-  @ColorInt
-  int getResColor(@ColorRes int id) {
-    return App.getResColor(activity, id);
-  }
-
-  <T> T getClassAnnotatedValue(Class<? extends Annotation> annotation, Class<T> classOfT) {
-    return App.getClassAnnotatedValue(activity, annotation, classOfT);
-  }
-
-  @Dimension
-  int getDimensionPixelSize(@DimenRes int id) {
-    return activity.getResources().getDimensionPixelSize(id);
-  }
-
-  int getOrientation() {
-    return activity.getResources().getConfiguration().orientation;
-  }
-
-  boolean orientationIsPortrait() {
-    return getOrientation() == ORIENTATION_PORTRAIT;
-  }
-
-  boolean orientationIsLandScape() {
-    return getOrientation() == ORIENTATION_LANDSCAPE;
-  }
-
-  @Dimension
-  int getStatusBarHeight() {
-    String name = "status_bar_height";
-    return orientationIsPortrait()
-        ? getDimensionPixelSize(getDimenIdFromAndroid(name))
-        : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
-  }
-
-  @Dimension
-  int getNavigationBarHeight() {
-    String name = "navigation_bar_height";
-    return orientationIsPortrait()
-        ? getDimensionPixelSize(getDimenIdFromAndroid(name))
-        : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
-  }
-
-  ConnectivityManager getConnectivityManager() {
-    return ((ConnectivityManager) activity.getSystemService(CONNECTIVITY_SERVICE));
-  }
-
-  NotificationManager getNotificationManager() {
-    return ((NotificationManager) activity.getSystemService(NOTIFICATION_SERVICE));
-  }
-
-  InputMethodManager getInputMethodManager() {
-    return ((InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE));
-  }
-
-  TelephonyManager getTelephonyManager() {
-    return ((TelephonyManager) activity.getSystemService(TELEPHONY_SERVICE));
-  }
-
-  WifiManager getWifiManager() {
-    return ((WifiManager) ((Context) activity).getSystemService(WIFI_SERVICE));
-  }
-
-  @Dimension
-  int pxToDp(int px) {
-    return (int) (px / getDisplayDensity() + 0.5f);
-  }
-
-  int dpToPx(@Dimension float dp) {
-    return (int) (dp * getDisplayDensity() + 0.5f);
-  }
-
-  Animation loadAnimation(@AnimRes int id) {
-    return AnimationUtils.loadAnimation(activity, id);
-  }
-
-  /** Check whether the input method is displayed. */
-  boolean isInputMethodShowing() {
-    Rect rect = new Rect();
-    decorView.getWindowVisibleDisplayFrame(rect);
-    return decorView.getHeight() - rect.bottom > getNavigationBarHeight();
-  }
-
-  int getIdentifier(String name, String defType, String defPackage) {
-    return activity.getResources().getIdentifier(name, defType, defPackage);
-  }
-
-  @IdRes
-  int getId(String name, String defPkgName) {
-    return getResId(activity, name, defPkgName);
-  }
-
-  @IdRes
-  int getId(String name) {
-    return getId(name, activity.getPackageName());
-  }
-
-  @IdRes
-  int getIdFromAndroid(String name) {
-    return getId(name, PKG_ANDROID);
-  }
-
-  @LayoutRes
-  int getLayoutId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_LAYOUT, defPkgName);
-  }
-
-  @LayoutRes
-  int getLayoutId(String name) {
-    return getLayoutId(name, activity.getPackageName());
-  }
-
-  @LayoutRes
-  int getLayoutIdFromAndroid(String name) {
-    return getLayoutId(name, PKG_ANDROID);
-  }
-
-  @ArrayRes
-  int getArrayId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_ARRAY, defPkgName);
-  }
-
-  @ArrayRes
-  int getArrayId(String name) {
-    return getArrayId(name, activity.getPackageName());
-  }
-
-  @ArrayRes
-  int getArrayIdFromAndroid(String name) {
-    return getArrayId(name, PKG_ANDROID);
-  }
-
-  @StringRes
-  int getStringId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_STRING, defPkgName);
-  }
-
-  @StringRes
-  int getStringId(String name) {
-    return getStringId(name, activity.getPackageName());
-  }
-
-  @StringRes
-  int getStringIdFromAndroid(String name) {
-    return getStringId(name, PKG_ANDROID);
-  }
-
-  @DimenRes
-  int getDimenId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_DIMEN, defPkgName);
-  }
-
-  @DimenRes
-  int getDimenId(String name) {
-    return getDimenId(name, activity.getPackageName());
-  }
-
-  @DimenRes
-  int getDimenIdFromAndroid(String name) {
-    return getDimenId(name, PKG_ANDROID);
-  }
-
-  @ColorRes
-  int getColorId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_COLOR, defPkgName);
-  }
-
-  @ColorRes
-  int getColorId(String name) {
-    return getColorId(name, activity.getPackageName());
-  }
-
-  @ColorRes
-  int getColorIdFromAndroid(String name) {
-    return getColorId(name, PKG_ANDROID);
-  }
-
-  @DrawableRes
-  int getDrawableId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_DRAWABLE, defPkgName);
-  }
-
-  @DrawableRes
-  int getDrawableId(String name) {
-    return getDrawableId(name, activity.getPackageName());
-  }
-
-  @DrawableRes
-  int getDrawableIdFromAndroid(String name) {
-    return getDrawableId(name, PKG_ANDROID);
-  }
-
-  @AnimRes
-  int getAnimationId(String name, String defPkgName) {
-    return getAnimId(activity, name, defPkgName);
-  }
-
-  @AnimRes
-  int getAnimationId(String name) {
-    return getAnimationId(name, activity.getPackageName());
-  }
-
-  @AnimRes
-  int getAnimationIdFromAndroid(String name) {
-    return getAnimationId(name, PKG_ANDROID);
-  }
-
-  @XmlRes
-  int getXmlId(String name, String defPkgName) {
-    return getIdentifier(name, IDENTIFIER_XML, defPkgName);
-  }
-
-  @XmlRes
-  int getXmlId(String name) {
-    return getXmlId(name, activity.getPackageName());
-  }
-
-  @XmlRes
-  int getXmlIdFromAndroid(String name) {
-    return getXmlId(name, PKG_ANDROID);
-  }
-
-  String getImgPathFromURI(Uri uri) {
-    String result;
-    Cursor cursor = null;
-
-    try {
-      cursor = activity.getContentResolver().query(uri, null, null, null, null);
-    } catch (Throwable t) {
-      errorLog("getImgPathFromURI", t);
     }
 
-    if (null == cursor) {
-      result = uri.getPath();
-    } else {
-      cursor.moveToFirst();
-      result = cursor.getString(cursor.getColumnIndex(DATA));
-      cursor.close();
+    private int decorViewSystemUiVisibility;
+
+    private void setDecorViewSystemUiVisibility(int visibility) {
+        decorViewSystemUiVisibility |= visibility;
+        decorView.setSystemUiVisibility(decorViewSystemUiVisibility);
     }
 
-    return result;
-  }
+    // In order to adaptively initialize the System Bar.
+    private void initSysBar() {
+        if (!isDarkTheme()) {
+            if (SDK_INT >= LOLLIPOP) {
+                @ColorInt int statusBarColor = window.getStatusBarColor();
+                @ColorInt int navigationBarColor = window.getNavigationBarColor();
 
-  Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
-    Matrix matrix = new Matrix();
-    matrix.postRotate(degrees);
+                @ColorInt int oldApiBarColor = Color.initWith(222);
 
-    Bitmap flag = createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-    if (!flag.isRecycled() && degrees != 0) {
-      flag.recycle();
+                if (isLightColor(statusBarColor) || statusBarColor == Color.TRANSPARENT) {
+                    if (SDK_INT >= M) {
+                        setDecorViewSystemUiVisibility(
+                                SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    } else {
+                        window.setStatusBarColor(oldApiBarColor);
+                    }
+                }
+                if (isLightColor(navigationBarColor) || navigationBarColor == Color.TRANSPARENT) {
+                    if (SDK_INT >= N) {
+                        setDecorViewSystemUiVisibility(
+                                SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    } else {
+                        window.setNavigationBarColor(oldApiBarColor);
+                    }
+                }
+            }
+        }
+        if (SDK_INT >= P) {
+            window.setNavigationBarDividerColor(Color.TRANSPARENT);
+        }
     }
-    return flag;
-  }
 
-  /**
-   * Used to check whether a certain permission has been applied for and the user agrees to
-   * authorize, if not satisfied, reapply.
-   *
-   * @param reqCode Request code for permission.
-   * @param permissions java.lang.String[] -> The name used to store one or more permissions.
-   */
-  void chkAndApplyPermissions(int reqCode, String... permissions) {
-    App.chkAndApplyPermissions(activity, reqCode, permissions);
-  }
+    private void initSysBarByAnnotation() {
+        if (!isDarkTheme()) {
+            @ColorRes int statusVal = getClassAnnotatedValue(StatusBarColor.class, int.class);
+            if (statusVal != -1 && SDK_INT >= LOLLIPOP) {
+                window.setStatusBarColor(getResColor(statusVal));
+            }
 
-  /**
-   * Check if the app has a new version update?
-   *
-   * @param versionName It is usually the version number obtained from the server.
-   * @return "true" indicates that there is a new version of the application and it can be updated.
-   */
-  boolean appHasNewVersion(String versionName) {
-    try {
-      PackageInfo pkgInfo =
-          activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-      if (null == pkgInfo) {
-        return false;
-      }
-      long versionNow = parseVersion(pkgInfo.versionName);
-      long version = parseVersion(versionName);
-      return version > versionNow;
-    } catch (PackageManager.NameNotFoundException | NumberFormatException e) {
-      errorLog("appHasNewVersion", e);
-      return false;
+            @ColorRes int navigationVal = getClassAnnotatedValue(NavigationBarColor.class, int.class);
+            if (navigationVal != -1 && SDK_INT >= LOLLIPOP) {
+                window.setNavigationBarColor(getResColor(navigationVal));
+            }
+        }
     }
-  }
 
-  /**
-   * Push system notifications.
-   *
-   * @param id Used to confirm the identity of the notification.
-   * @param importance The importance level of the notification.
-   * @param style Notification display style.
-   * @param autoCancel It is used to set whether to recycle the notification after the notification
-   *     is pushed.
-   * @param title The title of the notification.
-   * @param message The content of the notification.
-   * @param smallIcon Used to display a small icon in the upper left corner of the notification bar.
-   * @param largeIcon Used to display the large icon in the upper left corner of the notification
-   *     bar.
-   * @param remoteViews Can be used to customize the view of notification content.
-   * @param pendingIntent The intent delivery object included in the notification.
-   */
-  synchronized void sendNotification(
-      int id,
-      int importance,
-      NotificationCompat.Style style,
-      boolean autoCancel,
-      String title,
-      String message,
-      @IdRes int smallIcon,
-      @IdRes int largeIcon,
-      RemoteViews remoteViews,
-      PendingIntent pendingIntent) {
-    App.sendNotification(
-        activity,
-        id,
-        importance,
-        style,
-        autoCancel,
-        title,
-        message,
-        smallIcon,
-        largeIcon,
-        remoteViews,
-        pendingIntent);
-  }
+    /* Use certain rules to parse the application version number. */
+    private long parseVersion(String versionName) {
+        versionName = versionName.replace("_", "");
+        versionName = versionName.replace(".", "");
+        versionName = versionName.replace("-", "");
+        return Long.parseLong(versionName);
+    }
 
-  void verboseLog(Object msg) {
-    App.verboseLog(activity, msg);
-  }
+    @LayoutRes
+    int initView() {
+        @LayoutRes int contentViewVal = getClassAnnotatedValue(ContentView.class, int.class);
+        if (contentViewVal != -1) {
+            activity.setContentView(contentViewVal);
+        }
+        return -1;
+    }
 
-  void verboseLog(Object msg, Throwable t) {
-    App.verboseLog(activity, msg, t);
-  }
+    void onDecorViewConfig(View decorView
+            /* The current class is not used and is provided to "activity"'s subclasses. */) {
+        window = activity.getWindow();
+        this.decorView = window.getDecorView();
+        setDecorViewSystemUiVisibility(SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        int decorViewConfigVal = getClassAnnotatedValue(DecorViewConfig.class, int.class);
+        if (decorViewConfigVal != -1) {
+            setDecorViewSystemUiVisibility(decorViewConfigVal);
+        } else {
+            initSysBarByAnnotation();
+            // In order to adaptively initialize the System Bar.
+            initSysBar();
+            if (getClass().isAnnotationPresent(WindowFullScreen.class)) {
+                setWindowFullScreen();
+            }
+        }
+    }
 
-  void debugLog(Object msg) {
-    App.debugLog(activity, msg);
-  }
+    void setDecorViewRadius(int radius) {
+        App.setViewRadius(radius, decorView);
+    }
 
-  void debugLog(Object msg, Throwable t) {
-    App.debugLog(activity, msg, t);
-  }
+    /* Set the Activity window to full screen display. */
+    void setWindowFullScreen() {
+        if (SDK_INT <= KITKAT) {
+            activity
+                    .getWindow()
+                    .setFlags(
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            decorView.postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            setWindowFullScreen();
+                        }
+                    },
+                    1500);
+        }
+        decorView.setSystemUiVisibility(HIDE_SYS_BARS);
+    }
 
-  void infoLog(Object msg) {
-    App.infoLog(activity, msg);
-  }
+    /**
+     * Determine whether the system opens the dark theme.
+     */
+    boolean isDarkTheme() {
+        return (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+    }
 
-  void infoLog(Object msg, Throwable t) {
-    App.infoLog(activity, msg, t);
-  }
+    void setViewRadius(int radius, @IdRes int... ids) {
+        if (null != ids) {
+            if (ids.length != 0) {
+                View[] views = new View[ids.length];
+                for (int i = 0; i < views.length; i++) {
+                    views[i] = activity.findViewById(ids[i]);
+                }
+                App.setViewRadius(radius, views);
+            }
+        }
+    }
 
-  void warnLog(Object msg) {
-    App.warnLog(activity, msg);
-  }
+    void setViewOval(@IdRes int... ids) {
+        if (null != ids) {
+            if (ids.length != 0) {
+                View[] views = new View[ids.length];
+                for (int i = 0; i < views.length; i++) {
+                    views[i] = activity.findViewById(ids[i]);
+                }
+                App.setViewOval(views);
+            }
+        }
+    }
 
-  void warnLog(Object msg, Throwable t) {
-    App.warnLog(activity, msg, t);
-  }
+    /**
+     * Used for the view press effect and contains the click event of the view.
+     */
+    void effectClick(View v, final ClickListener clickListener) {
+        clickListener.initialize(v, v.getId());
+        v.setOnTouchListener(
+                new EffectClickListener() {
+                    @Override
+                    public void onTouchDown(View v, int vId) {
+                        clickListener.onTouchDown(v, vId);
+                    }
 
-  void errorLog(Object msg) {
-    App.errorLog(activity, msg);
-  }
+                    @Override
+                    public void onTouchUp(View v, int vId) {
+                        clickListener.onTouchUp(v, vId);
+                    }
 
-  void errorLog(Object msg, Throwable t) {
-    App.errorLog(activity, msg, t);
-  }
+                    @Override
+                    public void onClick(View v, int vId) {
+                        clickListener.onClick(v, vId);
+                    }
+                });
+    }
 
-  void toastShort(Object msg) {
-    Toast.showShort(activity, msg);
-  }
+    /**
+     * @return ShortcutManager -> Used to manage desktop shortcuts.
+     */
+    ShortcutManager getShortCutManager() {
+        return SDK_INT >= N_MR1 ? activity.getSystemService(ShortcutManager.class) : null;
+    }
 
-  void toastShort(@StringRes int id) {
-    Toast.showShort(activity, id);
-  }
+    /**
+     * Android 8.0 or above can set the desktop icon menu.
+     */
+    void setShortCuts(ShortcutInfo... shortcutInfo) {
+        if (null != shortcutInfo) {
+            ShortcutManager shortcutManager = getShortCutManager();
+            if (null != shortcutManager) {
+                if (SDK_INT >= O) {
+                    for (ShortcutInfo info : shortcutInfo) {
+                        if (null != info) {
+                            shortcutManager.addDynamicShortcuts(Arrays.asList(info));
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-  void toastLong(Object msg) {
-    Toast.showLong(activity, msg);
-  }
+    /**
+     * Used to obtain the screen pixel density.
+     */
+    float getDisplayDensity() {
+        return activity.getResources().getDisplayMetrics().density;
+    }
 
-  void toastLong(@StringRes int id) {
-    Toast.showLong(activity, id);
-  }
+    /**
+     * Get the color from the resource file.
+     */
+    @ColorInt
+    int getResColor(@ColorRes int id) {
+        return App.getResColor(activity, id);
+    }
+
+    <T> T getClassAnnotatedValue(Class<? extends Annotation> annotation, Class<T> classOfT) {
+        return App.getClassAnnotatedValue(activity, annotation, classOfT);
+    }
+
+    @Dimension
+    int getDimensionPixelSize(@DimenRes int id) {
+        return activity.getResources().getDimensionPixelSize(id);
+    }
+
+    int getOrientation() {
+        return activity.getResources().getConfiguration().orientation;
+    }
+
+    boolean orientationIsPortrait() {
+        return getOrientation() == ORIENTATION_PORTRAIT;
+    }
+
+    boolean orientationIsLandScape() {
+        return getOrientation() == ORIENTATION_LANDSCAPE;
+    }
+
+    @Dimension
+    int getStatusBarHeight() {
+        String name = "status_bar_height";
+        return orientationIsPortrait()
+                ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+                : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
+    }
+
+    @Dimension
+    int getNavigationBarHeight() {
+        String name = "navigation_bar_height";
+        return orientationIsPortrait()
+                ? getDimensionPixelSize(getDimenIdFromAndroid(name))
+                : getDimensionPixelSize(getDimenIdFromAndroid(name + "_landscape"));
+    }
+
+    ConnectivityManager getConnectivityManager() {
+        return ((ConnectivityManager) activity.getSystemService(CONNECTIVITY_SERVICE));
+    }
+
+    NotificationManager getNotificationManager() {
+        return ((NotificationManager) activity.getSystemService(NOTIFICATION_SERVICE));
+    }
+
+    InputMethodManager getInputMethodManager() {
+        return ((InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE));
+    }
+
+    TelephonyManager getTelephonyManager() {
+        return ((TelephonyManager) activity.getSystemService(TELEPHONY_SERVICE));
+    }
+
+    WifiManager getWifiManager() {
+        return ((WifiManager) ((Context) activity).getSystemService(WIFI_SERVICE));
+    }
+
+    @Dimension
+    int pxToDp(int px) {
+        return (int) (px / getDisplayDensity() + 0.5f);
+    }
+
+    int dpToPx(@Dimension float dp) {
+        return (int) (dp * getDisplayDensity() + 0.5f);
+    }
+
+    Animation loadAnimation(@AnimRes int id) {
+        return AnimationUtils.loadAnimation(activity, id);
+    }
+
+    /**
+     * Check whether the input method is displayed.
+     */
+    boolean isInputMethodShowing() {
+        Rect rect = new Rect();
+        decorView.getWindowVisibleDisplayFrame(rect);
+        return decorView.getHeight() - rect.bottom > getNavigationBarHeight();
+    }
+
+    int getIdentifier(String name, String defType, String defPackage) {
+        return activity.getResources().getIdentifier(name, defType, defPackage);
+    }
+
+    @IdRes
+    int getId(String name, String defPkgName) {
+        return getResId(activity, name, defPkgName);
+    }
+
+    @IdRes
+    int getId(String name) {
+        return getId(name, activity.getPackageName());
+    }
+
+    @IdRes
+    int getIdFromAndroid(String name) {
+        return getId(name, PKG_ANDROID);
+    }
+
+    @LayoutRes
+    int getLayoutId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_LAYOUT, defPkgName);
+    }
+
+    @LayoutRes
+    int getLayoutId(String name) {
+        return getLayoutId(name, activity.getPackageName());
+    }
+
+    @LayoutRes
+    int getLayoutIdFromAndroid(String name) {
+        return getLayoutId(name, PKG_ANDROID);
+    }
+
+    @ArrayRes
+    int getArrayId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_ARRAY, defPkgName);
+    }
+
+    @ArrayRes
+    int getArrayId(String name) {
+        return getArrayId(name, activity.getPackageName());
+    }
+
+    @ArrayRes
+    int getArrayIdFromAndroid(String name) {
+        return getArrayId(name, PKG_ANDROID);
+    }
+
+    @StringRes
+    int getStringId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_STRING, defPkgName);
+    }
+
+    @StringRes
+    int getStringId(String name) {
+        return getStringId(name, activity.getPackageName());
+    }
+
+    @StringRes
+    int getStringIdFromAndroid(String name) {
+        return getStringId(name, PKG_ANDROID);
+    }
+
+    @DimenRes
+    int getDimenId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_DIMEN, defPkgName);
+    }
+
+    @DimenRes
+    int getDimenId(String name) {
+        return getDimenId(name, activity.getPackageName());
+    }
+
+    @DimenRes
+    int getDimenIdFromAndroid(String name) {
+        return getDimenId(name, PKG_ANDROID);
+    }
+
+    @ColorRes
+    int getColorId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_COLOR, defPkgName);
+    }
+
+    @ColorRes
+    int getColorId(String name) {
+        return getColorId(name, activity.getPackageName());
+    }
+
+    @ColorRes
+    int getColorIdFromAndroid(String name) {
+        return getColorId(name, PKG_ANDROID);
+    }
+
+    @DrawableRes
+    int getDrawableId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_DRAWABLE, defPkgName);
+    }
+
+    @DrawableRes
+    int getDrawableId(String name) {
+        return getDrawableId(name, activity.getPackageName());
+    }
+
+    @DrawableRes
+    int getDrawableIdFromAndroid(String name) {
+        return getDrawableId(name, PKG_ANDROID);
+    }
+
+    @AnimRes
+    int getAnimationId(String name, String defPkgName) {
+        return getAnimId(activity, name, defPkgName);
+    }
+
+    @AnimRes
+    int getAnimationId(String name) {
+        return getAnimationId(name, activity.getPackageName());
+    }
+
+    @AnimRes
+    int getAnimationIdFromAndroid(String name) {
+        return getAnimationId(name, PKG_ANDROID);
+    }
+
+    @XmlRes
+    int getXmlId(String name, String defPkgName) {
+        return getIdentifier(name, IDENTIFIER_XML, defPkgName);
+    }
+
+    @XmlRes
+    int getXmlId(String name) {
+        return getXmlId(name, activity.getPackageName());
+    }
+
+    @XmlRes
+    int getXmlIdFromAndroid(String name) {
+        return getXmlId(name, PKG_ANDROID);
+    }
+
+    String getImgPathFromURI(Uri uri) {
+        String result;
+        Cursor cursor = null;
+
+        try {
+            cursor = activity.getContentResolver().query(uri, null, null, null, null);
+        } catch (Throwable t) {
+            errorLog("getImgPathFromURI", t);
+        }
+
+        if (null == cursor) {
+            result = uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            result = cursor.getString(cursor.getColumnIndex(DATA));
+            cursor.close();
+        }
+
+        return result;
+    }
+
+    Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+
+        Bitmap flag = createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        if (!flag.isRecycled() && degrees != 0) {
+            flag.recycle();
+        }
+        return flag;
+    }
+
+    /**
+     * Used to check whether a certain permission has been applied for and the user agrees to
+     * authorize, if not satisfied, reapply.
+     *
+     * @param reqCode     Request code for permission.
+     * @param permissions java.lang.String[] -> The name used to store one or more permissions.
+     */
+    void chkAndApplyPermissions(int reqCode, String... permissions) {
+        App.chkAndApplyPermissions(activity, reqCode, permissions);
+    }
+
+    /**
+     * Check if the app has a new version update?
+     *
+     * @param versionName It is usually the version number obtained from the server.
+     * @return "true" indicates that there is a new version of the application and it can be updated.
+     */
+    boolean appHasNewVersion(String versionName) {
+        try {
+            PackageInfo pkgInfo =
+                    activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
+            if (null == pkgInfo) {
+                return false;
+            }
+            long versionNow = parseVersion(pkgInfo.versionName);
+            long version = parseVersion(versionName);
+            return version > versionNow;
+        } catch (PackageManager.NameNotFoundException | NumberFormatException e) {
+            errorLog("appHasNewVersion", e);
+            return false;
+        }
+    }
+
+    void verboseLog(Object msg) {
+        App.verboseLog(activity, msg);
+    }
+
+    void verboseLog(Object msg, Throwable t) {
+        App.verboseLog(activity, msg, t);
+    }
+
+    void debugLog(Object msg) {
+        App.debugLog(activity, msg);
+    }
+
+    void debugLog(Object msg, Throwable t) {
+        App.debugLog(activity, msg, t);
+    }
+
+    void infoLog(Object msg) {
+        App.infoLog(activity, msg);
+    }
+
+    void infoLog(Object msg, Throwable t) {
+        App.infoLog(activity, msg, t);
+    }
+
+    void warnLog(Object msg) {
+        App.warnLog(activity, msg);
+    }
+
+    void warnLog(Object msg, Throwable t) {
+        App.warnLog(activity, msg, t);
+    }
+
+    void errorLog(Object msg) {
+        App.errorLog(activity, msg);
+    }
+
+    void errorLog(Object msg, Throwable t) {
+        App.errorLog(activity, msg, t);
+    }
+
+    void toastShort(Object msg) {
+        Toast.showShort(activity, msg);
+    }
+
+    void toastShort(@StringRes int id) {
+        Toast.showShort(activity, id);
+    }
+
+    void toastLong(Object msg) {
+        Toast.showLong(activity, msg);
+    }
+
+    void toastLong(@StringRes int id) {
+        Toast.showLong(activity, id);
+    }
 }

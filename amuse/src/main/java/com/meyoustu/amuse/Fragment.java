@@ -427,7 +427,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment implements
       @IdRes int largeIcon,
       RemoteViews remoteViews,
       PendingIntent pendingIntent) {
-    activityWrapper.sendNotification(
+    App.sendNotification(
         id,
         importance,
         style,

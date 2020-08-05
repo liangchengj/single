@@ -18,7 +18,7 @@
            SHARED
 
            # Provides a relative path to your source file(s).
-           src/main/jni/amuse.c src/main/jni/multidex.cpp src/main/jni/tcha.h)
+           src/main/jni/amuse.c src/main/jni/multidex.cpp src/main/jni/jnivk.h)
 
    find_library( # Defines the name of the path variable that stores the
            # location of the NDK library.
