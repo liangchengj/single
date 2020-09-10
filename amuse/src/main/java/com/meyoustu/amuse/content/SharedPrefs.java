@@ -47,7 +47,7 @@ public final class SharedPrefs {
 
   @Nullable
   public String getString(String key, @Nullable Object defValue) {
-    return sharedPreferences.getString(key, null == defValue ? null : defValue.toString());
+    return sharedPreferences.getString(key, null == defValue ? "" : defValue.toString());
   }
 
   @Nullable
@@ -91,12 +91,16 @@ public final class SharedPrefs {
 
   public SharedPrefs putNumber(String key, @NonNull Number value) {
     if (null == value) {
-      edit().putString(key, "null").apply();
+      // Do nothing.
+      return this;
     } else if (value.getClass() == int.class || value.getClass() == Integer.class) {
       edit().putInt(key, value.intValue()).apply();
     } else if (value.getClass() == long.class || value.getClass() == Long.class) {
       edit().putLong(key, value.longValue()).apply();
-    } else if (value.getClass() == float.class || value.getClass() == Float.class) {
+    } else if (value.getClass() == float.class
+        || value.getClass() == Float.class
+        || value.getClass() == double.class
+        || value.getClass() == Double.class) {
       edit().putFloat(key, value.floatValue()).apply();
     }
     return this;
