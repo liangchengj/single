@@ -390,17 +390,18 @@ extern "C"
     typedef JavaVMAttachArgs JVMAttachArgs;
     typedef JavaVMInitArgs JVMInitArgs;
 
-    /*
-     * VM initialization functions.
-     *
-     * Note these are the only symbols exported for JNI by the VM.
-     */
-
+#ifdef JNI_VERSION_1_8
 #ifdef _JNI_IMPLEMENTATION_
 #define _JNI_IMPORT_OR_EXPORT_ JNIEXPORT
 #else
 #define _JNI_IMPORT_OR_EXPORT_ JNIIMPORT
 #endif /* _JNI_IMPLEMENTATION_ */
+
+    /*
+     * VM initialization functions.
+     *
+     * Note these are the only symbols exported for JNI by the VM.
+     */
 
     _JNI_IMPORT_OR_EXPORT_ jint JNICALL
     JNI_GetDefaultJVMInitArgs(void *);
@@ -411,11 +412,13 @@ extern "C"
     _JNI_IMPORT_OR_EXPORT_ jint JNICALL
     JNI_GetCreatedJVMs(JVM **, jsize, jsize *);
 
+#endif /* JNI_VERSION_1_8 */
+
     JNIEXPORT JNIEnv *_jenv;
-    jbool JNIX_SetJNIEnv(JNIEnv *);
+    void JNIX_SetJNIEnv(JNIEnv *);
 
 #ifdef __cplusplus
-}
+} /* extern "C" */
 #endif /* __cplusplus */
 
 #endif /* _JNIX_H */
