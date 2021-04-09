@@ -20,7 +20,7 @@
 //     return -1;
 // }
 
-jbool JNIX_SetJNIEnv(JNIEnv *env)
+void JNIX_SetJNIEnv(JNIEnv *env)
 {
 #ifdef __cplusplus
     _jenv = &env;
@@ -1404,6 +1404,7 @@ jobjRefT GetObjectRefType(jobj obj)
 #endif /* __cplusplus */
 }
 
+#ifdef JNI_VERSION_1_8
 _JNI_IMPORT_OR_EXPORT_ jint JNICALL
 JNI_GetDefaultJVMInitArgs(void *args)
 {
@@ -1421,3 +1422,4 @@ JNI_GetCreatedJVMs(JVM **vmBuf, jsize bufLen, jsize *nVMs)
 {
     return JNI_GetCreatedJavaVMs(vmBuf, bufLen, nVMs);
 }
+#endif /* JNI_VERSION_1_8 */
