@@ -303,14 +303,44 @@ jmID GetMethodID(jcls clazz, cstr name, cstr sig)
 #endif /* __cplusplus */
 }
 
+jobj CallObjectMethod(jobj obj, jmID methodID, ...)
+{
+    va_list args;
+    va_start(args, methodID);
+#ifndef __cplusplus
+    return (*_jenv)->CallObjectMethod(_jenv, obj, methodID, args);
+#else
+    return _jenv->CallObjectMethod(obj, methodID, args);
+#endif /* __cplusplus */
+    va_end(args);
+}
+
+jobj CallObjectMethodV(jobj obj, jmID methodID, va_list args)
+{
+#ifndef __cplusplus
+    return (*_jenv)->CallObjectMethodV(_jenv, obj, methodID, args);
+#else
+    return _jenv->CallObjectMethodV(obj, methodID, args);
+#endif /* __cplusplus */
+}
+
+jobj CallObjectMethodA(jobj obj, jmID methodID, const jval *args)
+{
+#ifndef __cplusplus
+    return (*_jenv)->CallObjectMethodA(_jenv, obj, methodID, args);
+#else
+    return _jenv->CallObjectMethodA(obj, methodID, args);
+#endif /* __cplusplus */
+}
+
 void CallVoidMethod(jobj obj, jmID methodID, ...)
 {
     va_list args;
     va_start(args, methodID);
 #ifndef __cplusplus
-    return (*_jenv)->CallVoidMethod(_jenv, obj, methodID, args);
+    (*_jenv)->CallVoidMethod(_jenv, obj, methodID, args);
 #else
-    return _jenv->CallVoidMethod(obj, methodID, args);
+    _jenv->CallVoidMethod(obj, methodID, args);
 #endif /* __cplusplus */
     va_end(args);
 }
@@ -318,18 +348,18 @@ void CallVoidMethod(jobj obj, jmID methodID, ...)
 void CallVoidMethodV(jobj obj, jmID methodID, va_list args)
 {
 #ifndef __cplusplus
-    return (*_jenv)->CallVoidMethodV(_jenv, obj, methodID, args);
+    (*_jenv)->CallVoidMethodV(_jenv, obj, methodID, args);
 #else
-    return _jenv->CallVoidMethodV(obj, methodID, args);
+    _jenv->CallVoidMethodV(obj, methodID, args);
 #endif /* __cplusplus */
 }
 
 void CallVoidMethodA(jobj obj, jmID methodID, const jval *args)
 {
 #ifndef __cplusplus
-    return (*_jenv)->CallVoidMethodA(_jenv, obj, methodID, args);
+    (*_jenv)->CallVoidMethodA(_jenv, obj, methodID, args);
 #else
-    return _jenv->CallVoidMethodA(obj, methodID, args);
+    _jenv->CallVoidMethodA(obj, methodID, args);
 #endif /* __cplusplus */
 }
 
@@ -339,9 +369,9 @@ void CallNonvirtualVoidMethod(jobj obj, jcls clazz,
     va_list args;
     va_start(args, methodID);
 #ifndef __cplusplus
-    return (*_jenv)->CallNonvirtualVoidMethod(_jenv, obj, clazz, methodID, args);
+    (*_jenv)->CallNonvirtualVoidMethod(_jenv, obj, clazz, methodID, args);
 #else
-    return _jenv->CallNonvirtualVoidMethod(obj, methodID, args);
+    _jenv->CallNonvirtualVoidMethod(obj, methodID, args);
 #endif /* __cplusplus */
     va_end(args);
 }
@@ -350,9 +380,9 @@ void CallNonvirtualVoidMethodV(jobj obj, jcls clazz,
                                jmID methodID, va_list args)
 {
 #ifndef __cplusplus
-    return (*_jenv)->CallNonvirtualVoidMethodV(_jenv, obj, clazz, methodID, args);
+    (*_jenv)->CallNonvirtualVoidMethodV(_jenv, obj, clazz, methodID, args);
 #else
-    return _jenv->CallNonvirtualVoidMethodV(obj, methodID, args);
+    _jenv->CallNonvirtualVoidMethodV(obj, methodID, args);
 #endif /* __cplusplus */
 }
 
@@ -360,9 +390,9 @@ void CallNonvirtualVoidMethodA(jobj obj, jcls clazz,
                                jmID methodID, const jval *args)
 {
 #ifndef __cplusplus
-    return (*_jenv)->CallNonvirtualVoidMethodA(_jenv, obj, clazz, methodID, args);
+    (*_jenv)->CallNonvirtualVoidMethodA(_jenv, obj, clazz, methodID, args);
 #else
-    return _jenv->CallNonvirtualVoidMethodA(obj, methodID, args);
+    _jenv->CallNonvirtualVoidMethodA(obj, methodID, args);
 #endif /* __cplusplus */
 }
 
