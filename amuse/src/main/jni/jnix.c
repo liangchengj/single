@@ -195,7 +195,7 @@ void SetJNIEnv(JNIEnv *env)
 #ifndef __cplusplus
         (*_jenv)->DeleteGlobalRef(_jenv, globalRef);
 #else
-    return _jenv->DeleteGlobalRef(globalRef);
+    _jenv->DeleteGlobalRef(globalRef);
 #endif /* __cplusplus */
     }
     void DeleteLocalRef(jobj localRef)
@@ -203,7 +203,7 @@ void SetJNIEnv(JNIEnv *env)
 #ifndef __cplusplus
         (*_jenv)->DeleteLocalRef(_jenv, localRef);
 #else
-    return _jenv->DeleteLocalRef(localRef);
+    _jenv->DeleteLocalRef(localRef);
 #endif /* __cplusplus */
     }
     jbool IsSameObject(jobj ref1, jobj ref2)
