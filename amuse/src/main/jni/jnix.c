@@ -145,7 +145,7 @@ void SetJNIEnv(JNIEnv *env)
 #ifndef __cplusplus
         (*_jenv)->ExceptionDescribe(_jenv);
 #else
-    return _jenv->ExceptionDescribe();
+    _jenv->ExceptionDescribe();
 #endif /* __cplusplus */
     }
     void ExceptionClear()
@@ -840,9 +840,9 @@ void SetJNIEnv(JNIEnv *env)
         va_list args;
         va_start(args, methodID);
 #ifndef __cplusplus
-        return (*_jenv)->CallNonvirtualVoidMethod(_jenv, obj, clazz, methodID, args);
+        (*_jenv)->CallNonvirtualVoidMethod(_jenv, obj, clazz, methodID, args);
 #else
-    return _jenv->CallNonvirtualVoidMethod(obj, clazz, methodID, args);
+    _jenv->CallNonvirtualVoidMethod(obj, clazz, methodID, args);
 #endif /* __cplusplus */
         va_end(args);
     }
@@ -2035,9 +2035,9 @@ void SetJNIEnv(JNIEnv *env)
     void *GetDirectBufferAddress(jobj buf)
     {
 #ifndef __cplusplus
-        return (*_jenv)->GetDirectBufferAddress(_jenv, buf);
+        (*_jenv)->GetDirectBufferAddress(_jenv, buf);
 #else
-    return _jenv->GetDirectBufferAddress(buf);
+    _jenv->GetDirectBufferAddress(buf);
 #endif /* __cplusplus */
     }
     jlong GetDirectBufferCapacity(jobj buf)
