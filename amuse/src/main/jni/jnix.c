@@ -10,14 +10,18 @@
 // JNI_OnLoad(JVM *vm, void *reserved)
 // {
 // #ifdef __cplusplus
+//     if (vm->GetEnv(reinterpret_cast<void **>(&_jenv), JNI_VERSION_1_6) != JNI_OK)
+//     {
+//         goto err;
+//     }
 // #else
-//     if ((*vm)->GetEnv(vm, (void **)&_jenv, JNI_VERSION_1_4) != JNI_OK)
+//     if ((*vm)->GetEnv(vm, (void **)&_jenv, JNI_VERSION_1_6) != JNI_OK)
 //     {
 //         goto err;
 //     }
 // #endif /* __cplusplus */
 // err:
-//     return -1;
+//     return JNI_ERR;
 // }
 
 #ifdef __cplusplus
