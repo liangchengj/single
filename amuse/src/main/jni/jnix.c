@@ -116,7 +116,7 @@ void SetJNIEnv(JNIEnv *env)
 #endif /* __cplusplus */
     }
 
-    jint Throw(jthrowable obj)
+    jint Throw(jtr obj)
     {
 #ifndef __cplusplus
         return (*_jenv)->Throw(_jenv, obj);
@@ -132,7 +132,7 @@ void SetJNIEnv(JNIEnv *env)
     return _jenv->ThrowNew(clazz, message);
 #endif /* __cplusplus */
     }
-    jthrowable ExceptionOccurred()
+    jtr ExceptionOccurred()
     {
 #ifndef __cplusplus
         return (*_jenv)->ExceptionOccurred(_jenv);
@@ -1967,9 +1967,9 @@ void SetJNIEnv(JNIEnv *env)
     void *GetPrimitiveArrayCritical(jarr array, jbool *isCopy)
     {
 #ifndef __cplusplus
-        return (*_jenv)->GetPrimitiveArrayCritical(_jenv, array, isCopy);
+        (*_jenv)->GetPrimitiveArrayCritical(_jenv, array, isCopy);
 #else
-    return _jenv->GetPrimitiveArrayCritical(array, isCopy);
+    _jenv->GetPrimitiveArrayCritical(array, isCopy);
 #endif /* __cplusplus */
     }
     void ReleasePrimitiveArrayCritical(jarr array, void *carray, jint mode)
